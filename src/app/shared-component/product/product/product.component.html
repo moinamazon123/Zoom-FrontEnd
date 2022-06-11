@@ -1,0 +1,162 @@
+<!-- dispaly all product -->
+
+<div *ngIf="role != 'Admin'" style="background-color: #206c5c;color:white; padding: 5px;">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h2>Please Select Any Product To Continue</h2>
+  </div>
+</div>
+<div fxLayout="row">
+  <div fxLayoutAlign="center center">
+    <mat-icon>filter_list</mat-icon>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+
+    <mat-form-field style="font-size: 17px;">
+      <mat-label>Filter by Grade</mat-label>
+      <mat-select [(ngModel)]="slectedgrade" (selectionChange)="
+      gradeChange({
+        pageNo: 0,
+        maxResult: 20
+      });
+      this.page = 1
+    ">
+        <mat-option value="all">All</mat-option>
+        <mat-option *ngFor="let item of gradelist" [value]="item.gradeId">Grade {{ item.gradeName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+    <mat-form-field style="font-size: 17px;">
+      <mat-label>Filter by Program</mat-label>
+      <mat-select [(ngModel)]="slectedsylabus" (selectionChange)="
+    syllabusChange({
+      pageNo: 0,
+      maxResult: 20
+    });
+    this.page = 1
+    ">
+        <mat-option value="all">All</mat-option>
+        <mat-option *ngFor="let item of syllabuslist" [value]="item.syllabusId">{{ item.syllabusName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+  <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+    <mat-form-field style="font-size: 17px;">
+      <mat-label>Filter by Status</mat-label>
+      <mat-select [(ngModel)]="selectedstatus" (selectionChange)="
+      statuschange({
+        pageNo: 0,
+        maxResult: 20
+      });
+      this.page = 1
+      ">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="1">active</mat-option>
+        <mat-option value="0">inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button *ngIf="role == 'Admin'" mat-raised-button (click)="openUserDialogforNew(null)" color="primary">
+        <mat-icon matTooltip="Add New Product">add_to_photos</mat-icon>Add yolearn Product
+      </button>
+      <button style='margin-left: 20px;' *ngIf="role == 'Admin'" mat-raised-button (click)="openUserDialogforNew1(null)"
+        color="primary">
+        <mat-icon matTooltip="Add New Product">add_to_photos</mat-icon>Add School Product
+      </button>
+      <mat-button-toggle value="search">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input">
+      <input matInput placeholder="Search product..." [(ngModel)]="searchText" name="search" />
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- show skeleton at the beginning -->
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxFlex="100" fxLayout=" row " *ngIf="products[0] && skeletonHide">
+  
+  <div
+    *ngFor="let product of products"
+    fxFlex="100" fxFlex.gt-md="33" fxFlex.md="75" class="flex-p">
+    <mat-card class="p-0" [style.height.px]="'370'">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">{{ product.subscriptionName }}</h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" *ngIf="role == 'Admin'">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openUserDialogforEdit(product)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      </mat-menu>
+      <div class="user-content" fxLayout="row" fxL>
+        <div fxLayout="column" class="user-details transition-2">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span><span><b>Grade :</b></span> {{ product.gradeName }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">book</mat-icon>
+            <span><span><b>Program :</b></span> {{ product.syllabusName }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span><span><b>Valid Till :</b></span> {{ product.validTill1 }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 5px;">
+            <mat-icon class="muted-text">credit_card</mat-icon>
+            <span><span><b>Price :</b></span> <b class="textclr"> Rs. {{ product.price }}</b></span>
+          </p>
+
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 5px;">
+            <mat-icon class="muted-text">credit_card</mat-icon>
+            <span><span><b>Orginal Price :</b></span> <b class="textclr"> Rs. {{ product.price }}</b></span>
+          </p>
+
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">description</mat-icon>
+            <span><span><b>Description :</b></span></span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center"
+            style="padding-left:45px;white-space: pre-wrap;margin-bottom: 5px;" [innerHtml]="product.description"></p>
+          <div *ngIf="role != 'Admin'" class="divider"></div>
+          <button *ngIf="role != 'Admin'" style="margin-top: 7px;" mat-raised-button color="primary"
+            (click)="openDialogBox(product)">Buy Now</button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf="products" fxLayout="row wrap">
+  <div fxFlex="100" class="flex-p">
+    <mat-card class="p-0 text-center">
+      <pagination-controls class="gradus-pagination" autoHide="true" maxSize="3" (pageChange)="onPageChanged($event)">
+      </pagination-controls>
+    </mat-card>
+  </div>
+</div>

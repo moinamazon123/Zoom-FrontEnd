@@ -1,0 +1,94 @@
+<!-- mat-dialog heading -->
+
+<div class="heading" fxLayoutAlign="center center">
+  <h1 mat-dialog-title style="margin-top: 5px;"><span *ngIf="!user">Add</span><span *ngIf="user">Edit</span> Admin</h1>
+</div>
+
+<!-- mat-dialog-content -->
+
+<div mat-dialog-content>
+  <form [formGroup]="form" autocomplete="off" class="user-form">
+    <mat-tab-group class="vertical-tabs">
+      <mat-tab label="Basic">
+        <div fxLayout="column">
+          <mat-form-field class="w-100">
+            <mat-placeholder> <mat-icon>person</mat-icon>Email </mat-placeholder>
+            <input matInput formControlName="primaryEmail" required />
+            <mat-error *ngIf="form.controls['firstName'].errors?.required">Email is required</mat-error>
+            <mat-error *ngIf="form.controls['primaryEmail'].hasError('invalidEmail')">Invalid Email Address!!(no space allowed at beginning or end)</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('minlength')">Email isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('maxlength')">Email is to long , maximum of 30 characters</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <mat-placeholder> <mat-icon>vpn_key</mat-icon> Password </mat-placeholder>
+            <input matInput formControlName="password" required [type]="passwordHide ? 'password' : 'text'" />
+            <mat-icon matSuffix (click)="passwordHide = !passwordHide" style="cursor:pointer">{{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon>
+            <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long , maximum of 10 characters</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-tab>
+      <mat-tab label="Personal">
+        <div fxLayout="column">
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Name" formControlName="firstName" />
+            <mat-error *ngIf="form.controls['firstName'].errors?.required">First Name is required</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('minlength')">First Name isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('maxlength')">First Name is to long , maximum of 30 characters</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Only Alphabets!!</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Surname" formControlName="lastName" />
+            <mat-error *ngIf="form.controls['lastName'].errors?.required">lastName is required</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('minlength')">lastName isn't long enough, minimum of 2 characters</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('maxlength')">lastName is too long , maximum of 15 characters</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Only Alphabets!!</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="address" formControlName="address" />
+            <mat-error *ngIf="form.controls['address'].errors?.required">address is required</mat-error>
+            <mat-error *ngIf="form.controls['address'].hasError('minlength')">address isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['address'].hasError('maxlength')">address is too long , maximum of 100 characters</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="city" formControlName="city" />
+            <mat-error *ngIf="form.controls['city'].errors?.required">city is required</mat-error>
+            <mat-error *ngIf="form.controls['city'].hasError('minlength')">city isn't long enough, minimum of 2 characters</mat-error>
+            <mat-error *ngIf="form.controls['city'].hasError('maxlength')">city is too long , maximum of 30 characters</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-tab>
+      <mat-tab label="Contacts">
+        <div fxLayout="column" class="form-field-outer">
+          <mat-form-field class="w-100">
+            <mat-select placeholder="Country" formControlName="countryCode">
+              <mat-option *ngFor="let countrycode of countryCode" [value]="countrycode.code">{{ countrycode.name }} ({{ countrycode.code }})</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['countryCode'].errors?.required">Country Code is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Phone" formControlName="mobileNum" />
+            <mat-error *ngIf="form.controls['mobileNum'].errors?.required">Phone number is required</mat-error>
+            <mat-error *ngIf="form.controls['mobileNum'].hasError('minlength')">contact number isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['mobileNum'].hasError('maxlength')">contact number is to long , maximum of 10 characters</mat-error>
+            <mat-error *ngIf="form.controls['mobileNum'].hasError('pattern')">Only Numbers!!</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</div>
+
+<!--mat-dialog-actions  -->
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+  <button mat-raised-button color="primary" *ngIf="!user" (click)="registeradmin(form.value)" [mat-dialog-close]="form.value" [disabled]="!form.valid">
+    <span>Save</span>
+  </button>
+  <button mat-raised-button color="primary" *ngIf="user" (click)="updateAdmin(form.value)" [mat-dialog-close]="form.value" [disabled]="!form.valid">
+    <span>Update</span>
+  </button>
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

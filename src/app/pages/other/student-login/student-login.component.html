@@ -1,0 +1,136 @@
+<!-- login page for parent and student -->
+
+<div fxFill class="root">
+  <div fxLayout="row wrap" fxLayoutAlign="center center" class="h-100 scroll-container">
+    <div class="flex-container" style="max-height: -webkit-fill-available !important">
+      <mat-card class="p-0 mat-elevation-z24 ">
+        <div fxLayout="column" fxLayoutAlign="center center" class="backclr box-header" style="padding: 20px;">
+          <img src="assets/img/Logo_v81.svg" style="width: 30%;margin-bottom: 10px;" />
+          <a mat-button style="font-size: 15px;margin-top: 7px;" *ngIf="puser">Parent Login</a>
+          <a mat-button style="font-size: 15px;margin-top: 7px;" *ngIf="suser">Choose an student account </a>
+        </div>
+        <mat-card-content fxLayout="column" fxLayoutAlign="end center">
+          <mat-accordion class="example-headers-align " style="padding: 20px; " fxFlex="100">
+            <div class="demo" *ngIf="showOrHide"></div>
+            <div *ngIf="puser">
+              <div *ngFor="let user of pusers;">
+                <div *ngIf="!showOrHide" fxLayout="column" fxLayoutAlign="end center">
+                  <mat-expansion-panel style="padding:10px;" class="mat-elevation-z24">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <img *ngIf="user.image"
+                          src="https://app.yolearn.com/appyolearn/UserImages/{{ user.sAccountId }}.jpg" id="img" />
+                        <div *ngIf="!user.image" class="circle" fxLayoutAlign="center center"
+                          [ngStyle]="{ 'background-color': colorArray[user.colorNumber] }">
+                          {{ user.firstLetter }}
+                        </div>
+                        <span fxLayout="row" fxLayoutAlign="center center"
+                          style="font-weight: 500;margin-left: 50px;width:189px">{{ user.firstName }} {{ user.lastName }}</span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="form" autocomplete="off">
+                      <mat-form-field class="w-100">
+                        <input matInput placeholder="Password" ngDefaultControl formControlName="password" required
+                          [type]="passwordHide ? 'password' : 'text'" />
+                        <mat-icon style="cursor: pointer" matSuffix (click)="passwordHide = !passwordHide"
+                          style="cursor:pointer">{{
+                        passwordHide ? "visibility_off" : "visibility"
+                      }}</mat-icon>
+                        <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough,
+                          minimum of 5 characters</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long enough,
+                          maximum of 10 characters</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!
+                        </mat-error>
+                      </mat-form-field>
+                    </form>
+
+                    <mat-action-row>
+                      <button mat-raised-button id="parent" *ngIf="user.userRole == 'parent'" color="primary"
+                        (click)="onloginforParent(form.value, user, user.userRole, $event)">
+                        Login as Parent <mat-icon>input</mat-icon>
+                      </button>
+                      <button mat-raised-button cdkFocusInitial *ngIf="user.userRole == 'student'" color="primary"
+                        (click)="onloginforStudent(form.value, user, user.userRole, $event)">
+                        Login as Student <mat-icon>input</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="openUserDialog(user)">Forgot Password?</button>
+                    </mat-action-row>
+                  </mat-expansion-panel>
+                  <button fxLayout="column" fxLayoutAlign="end center" mat-raised-button color="primary"
+                    style="margin-top: 25px;" class="mat-elevation-z12 box-button" (click)="puser=false;suser=true;clearip()">
+                    Login as student ?
+                  </button>
+                </div>
+
+              </div>
+            </div>
+            <div *ngIf="suser" >
+              <div *ngFor="let user of users | slice:1; let i = index">
+                <div *ngIf="!showOrHide" fxLayout="column" fxLayoutAlign="end center">
+                  <mat-expansion-panel style="padding:10px;" class="mat-elevation-z24">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <img *ngIf="user.image"
+                          src="https://app.yolearn.com/appyolearn/UserImages/{{ user.sAccountId }}.jpg" id="img" />
+                        <div *ngIf="!user.image" class="circle" fxLayoutAlign="center center"
+                          [ngStyle]="{ 'background-color': colorArray[user.colorNumber] }">
+                          {{ user.firstLetter }}
+                        </div>
+                        <span fxLayout="row" 
+                          style="font-weight: 500;margin-left: 50px;width:189px">{{ user.firstName }} {{ user.lastName }}</span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="form" autocomplete="off">
+                      <mat-form-field class="w-100">
+                        <input matInput placeholder="Password" ngDefaultControl formControlName="password" required
+                          [type]="passwordHide ? 'password' : 'text'" />
+                        <mat-icon style="cursor: pointer" matSuffix (click)="passwordHide = !passwordHide"
+                          style="cursor:pointer">{{
+                        passwordHide ? "visibility_off" : "visibility"
+                      }}</mat-icon>
+                        <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough,
+                          minimum of 5 characters</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long enough,
+                          maximum of 10 characters</mat-error>
+                        <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!
+                        </mat-error>
+                      </mat-form-field>
+                    </form>
+
+                    <mat-action-row>
+                      <button mat-raised-button id="parent" *ngIf="user.userRole == 'parent'" color="primary"
+                        (click)="onloginforParent(form.value, user, user.userRole, $event)">
+                        Login as Parent <mat-icon>input</mat-icon>
+                      </button>
+                      <button mat-raised-button cdkFocusInitial *ngIf="user.userRole == 'student'" color="primary"
+                        (click)="onloginforStudent(form.value, user, user.userRole, $event)">
+                        Login as Student <mat-icon>input</mat-icon>
+                      </button>
+                      <button mat-button color="primary" (click)="openUserDialog(user)">Forgot Password?</button>
+                    </mat-action-row>
+                  </mat-expansion-panel>
+                 
+                </div>
+
+              </div>
+              <div  fxLayout="row" fxLayoutAlign="center center">
+              <button  fxLayout="column" fxLayoutAlign="center center" mat-raised-button color="primary"
+              (click)="puser=true;suser=false;clearip()" style="margin-top: 25px;" class="mat-elevation-z12 box-button">
+                Login as parent ?
+              </button>
+            </div>
+            </div>
+
+          </mat-accordion>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div id="app-spinner" *ngIf="showspinner">
+    <mat-spinner color="primary"></mat-spinner>
+    <h4>loading...</h4>
+  </div>
+</div>

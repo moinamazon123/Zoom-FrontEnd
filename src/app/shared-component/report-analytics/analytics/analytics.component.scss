@@ -1,0 +1,48 @@
+.height {
+    height: auto;
+}
+
+.board {
+    width: 500px;
+    height: 200px;
+  background: silver;
+}
+
+.board-text {
+    color:black;
+  //font-family: "Walter Turncoat", cursive;
+  position: absolute;
+}
+
+.skeleton:empty {
+    position: absolute;
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: calc(100% - 50px);
+  
+    height: 100px; /* change height to see repeat-y behavior */
+  
+    background-image: 
+    radial-gradient(circle 20px at 20px 20px, lightgray 99%, transparent 0),
+    //  linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%),
+      linear-gradient(lightgray 10px, transparent 0), 
+      linear-gradient(lightgray 10px, transparent 0), 
+      linear-gradient(lightgray 10px, transparent 0); 
+     
+  
+    background-repeat: repeat-y;
+  
+    background-size:  /* circle  50px 200px,  highlight */ 1050px 200px, 1300px 200px, 750px 200px;
+  
+    background-position: /* circle  60px 0,  highlight */ 15px 0, 15px 40px, 15px 80px;
+   
+
+  
+    // animation: shine 1s infinite;
+}
+
+
+
+

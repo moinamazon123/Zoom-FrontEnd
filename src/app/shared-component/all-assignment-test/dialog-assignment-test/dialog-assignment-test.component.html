@@ -1,0 +1,107 @@
+
+<!-- dialog box to add new assignment or test -->
+
+
+<div class="heading" fxLayoutAlign="center center" ><h1  mat-dialog-title style="margin-top: 5px;"> Add New <span *ngIf="data == 'Assignment'">Assignment</span><span *ngIf="data == 'Test'">Test</span> </h1></div>
+<div mat-dialog-content>
+  <form [formGroup]="form" autocomplete="off" style="margin-bottom: 10px;">
+    <mat-form-field class="w-100">
+      <input matInput placeholder="Title" formControlName="title" />
+      <mat-error *ngIf="form.controls['title'].errors?.required">Title is required!!</mat-error>
+      <mat-error *ngIf="form.controls['title'].hasError('minlength')">Title should be minimum 2 character length..!!</mat-error>
+      <mat-error *ngIf="!!form.controls['title'].hasError('maxlength')">Title should be maximum 150 character length..!!</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-around" fxLayoutGap="20px">
+      <mat-form-field>
+        <mat-select formControlName="gradeId" placeholder="grades" [(ngModel)]="selectedValueOfGrade" (selectionChange)="selectsys($event.value)">
+          <mat-option *ngFor="let grdae of grades" value="{{ grdae.gradeId }}">{{ grdae.gradeName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="syllabusId" placeholder="Program" (selectionChange)="selectsub($event.value)">
+          <mat-option *ngFor="let grdae of syllabus" [value]="grdae.syllabusId">{{ grdae.syllabusName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="subjectId" placeholder="subject">
+          <mat-option *ngFor="let grdae of subject" [value]="grdae.subjectId">{{ grdae.subjectName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxLayout.xs="column">
+      <mat-form-field>
+          <input matInput [matDatepicker]="start"  placeholder="Start Date" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+          <mat-datepicker #start></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput [ngxTimepicker]="picker" #picker [format]="24" placeholder="Start Time" formControlName="time">
+          <ngx-material-timepicker #picker></ngx-material-timepicker>
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput placeholder="Test duration(in minutes)"  formControlName="durationinMinutes">
+    
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('maxlength')">Duration should be maximum 5 character length..!!</mat-error>
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('minlength')">Duration should be minimum 1 character length..!!</mat-error>
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('pattern')">Only Numbers !!!</mat-error>
+      </mat-form-field>
+  </div>
+    <div fxLayout="row" fxLayout.xs="column" style="margin-top:15px;">
+      <h4 fxLayout="row" style="margin-right:15px">Give Access To :</h4>
+      <mat-radio-group #rGroup class="example-radio-group" formControlName="for">
+        <mat-radio-button style="margin-right:20px;margin-bottom: 15px" class="example-radio-button" *ngFor="let accessfor of access" [value]="accessfor"> {{ accessfor }} </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div fxLayout="row">
+      <div fxLayout="row" fxFlex="100" fxLayoutGap="20px" *ngIf="data == 'Assignment'" style="margin-top: 15px;">
+        <div fxLayout="row">
+          <h4 style="margin-right: 15px;margin-top: 8px;">Upload Assignment:</h4>
+          <input id="files" (change)="fileChangeforAssignment($event)" accept=".xml" type="file" #file multiple hidden required />
+          <button mat-raised-button (click)="file.click()" type="button" [disabled]="isDisabled"><i class="material-icons" matTooltip="Choose file for assignment">search</i> Choose</button>
+        </div>
+        <div fxLayout="row" >
+          <button
+            [disabled]="isDisableduploadbutton"
+            *ngIf="assignment"
+            [ngStyle]="(resendForAssignment && { 'background-color': '#00695c' }) || { 'background-color': '#f44336' }"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="uploadforAssignment()"
+          >
+            <i class="material-icons" style="margin-right: 4px">cloud_upload</i> <span *ngIf="!uploadTrueFalaseForAssign">Upload</span><span *ngIf="uploadTrueFalaseForAssign">Uploading...</span> {{ assignment | slice: 0:20 }}
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxFlex="100" fxLayoutGap="20px" style="margin-top: 15px;" *ngIf="data == 'Test'">
+        <div fxLayout="row">
+          <h4 style="margin-right: 15px;margin-top: 8px;">Upload Test:</h4>
+          <input id="files1" (change)="fileChangeforTest($event)" accept=".xml" type="file" #file1 multiple hidden required />
+          <button mat-raised-button (click)="file1.click()" type="button" [disabled]="isDisabled"><i class="material-icons" matTooltip="Choose file for test">search</i> Choose</button>
+        </div>
+        <div fxLayout="row" >
+          <button
+            [disabled]="isDisableduploadbutton"
+            [ngStyle]="(resendForTest && { 'background-color': '#00695c' }) || { 'background-color': '#f44336' }"
+            *ngIf="test"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="uploadforTest()"
+          >
+            <i class="material-icons" style="margin-right: 4px">cloud_upload</i> <span *ngIf="!uploadTrueFalaseForTest">Upload</span><span *ngIf="uploadTrueFalaseForTest">Uploading...</span> {{ test | slice: 0:20 }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <pre id="events"></pre>
+  </form>
+</div>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+  <button mat-raised-button color="primary" [mat-dialog-close]="form.value" [disabled]="!form.valid" (click)="newAssignmentorTest(form.value)"><span>Save</span></button>
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>
+

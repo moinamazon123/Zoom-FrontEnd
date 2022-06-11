@@ -1,0 +1,109 @@
+<!-- view report of test -->
+
+<div fxFill>
+  <div style="background-color: #206c5c;color:white; padding: 5px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveback()">keyboard_backspace</mat-icon>
+      <h2>{{ fileName }}</h2>
+      <div fxLayout="column" style="margin-right:70px;">
+        <h3>Total Particpants: {{ result.length }}</h3>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" class="mat-elevation-z8">
+    <mat-form-field fxFlex="100" class="p-1" fx>
+      <input matInput placeholder="Search Test Report..." (keyup)="applyFilter($event.target.value)" autocomplete="off" />
+    </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" fxFill>
+      <ng-container matColumnDef="no">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Sl.No</th>
+        <td class="text-center" mat-cell *matCellDef="let element; let i = index">{{ element.no }} )</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firsName">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Student Name</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.firsName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalScore">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Total Mark</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.totalScore }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="writeAnswers">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Scored Mark</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.writeAnswers }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Remarks">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Performance rating</th>
+        <td class="text-center" mat-cell *matCellDef="let element">
+          <circle-progress
+            *ngIf="element.remarks < 50"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'red'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+          <circle-progress
+            *ngIf="element.remarks >= 50 && element.remarks < 75"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'orange'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+
+          <circle-progress
+            *ngIf="element.remarks < 85 && element.remarks >= 75"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'blue'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+          <circle-progress
+            *ngIf="element.remarks >= 85"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="7"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'#00695c'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div *ngIf="!dataSource && !notfound"><div class="skeleton"></div></div>
+    <div *ngIf="notfound && !dataSource" fxLayoutAlign="center center">
+      <h1 style="margin-top: 26px !important;margin-bottom: 26px !important; opacity:0.5;">No Test Report Found!!!</h1>
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

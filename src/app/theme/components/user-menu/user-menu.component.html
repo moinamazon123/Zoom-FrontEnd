@@ -1,0 +1,31 @@
+<button matTooltip="Profile" mat-icon-button [matMenuTriggerFor]="userMenu" #userMenuTrigger="matMenuTrigger">
+    <mat-icon>account_circle</mat-icon>
+</button>
+
+<mat-menu #userMenu="matMenu" [overlapTrigger]="false" class="toolbar-dropdown-menu user-menu">
+    <!--<span (mouseleave)="userMenuTrigger.closeMenu()">-->
+    <!-- <mat-toolbar color="primary"> -->
+        <!-- <div fxLayout="column" fxLayoutAlign="space-around center" class="user-info" style="margin-top: 10px;margin-bottom: 10px;">
+            <img *ngIf="role!='guest'" class="user-img" id="imgidprofile" src={{image}} onerror="this.onerror=null;this.src='assets/img/users/default-user.jpg';">
+            <div *ngIf=" role=='guest'" class="user-img1" fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon >person_pin</mat-icon>
+            </div>
+            <div style="margin-top: 5px;">
+                <p *ngIf="!appsettings.userdetails.firstName">Guest</p>
+                <p *ngIf="appsettings.userdetails.firstName">{{appsettings.userdetails.firstName}} {{appsettings.userdetails.lastName}} <br>
+                    <small *ngIf="appsettings.role=='student'">(Student)</small><small *ngIf="appsettings.role=='Admin'">(Admin)</small><small
+                        *ngIf="appsettings.role=='teacher'">(teacher)</small></p>
+            </div>
+        </div> -->
+    <!-- </mat-toolbar> -->
+
+    <!-- <div class="divider"></div> -->
+    <a mat-menu-item routerLink="/Profile/Details" fxLayoutAlign="center center" *ngIf="role!='guest' && urlParameter != 'Guest'">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+    </a>
+    <a mat-menu-item (click)="clearlocalstorage()" fxLayoutAlign="center center">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Log out</span>
+    </a>
+</mat-menu>

@@ -1,0 +1,17 @@
+<!-- select other grade to see other grade classes -->
+
+<div fxLayout="column" fxLayoutAlign="center center"  style="background-color:#f2f2f2;">
+  <h2  style="text-align:center;">Please choose the grade for other Demo classes</h2>
+
+  <mat-form-field  fxFlex="5">
+    <mat-select (selectionChange)="selectedGrade($event.value)" [(ngModel)]="selected" name="grade">
+      <mat-option *ngFor="let grade of grades" [value]="grade">
+       Grade {{ grade }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<!-- import demo upcoming class from shared component -->
+
+<app-demo-upcomingclass></app-demo-upcomingclass>

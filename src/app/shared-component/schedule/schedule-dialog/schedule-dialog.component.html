@@ -1,0 +1,104 @@
+<!-- schedule dialog box for scheduling new class or edit existing class -->
+
+<div style="color: green;" *ngIf="validToken">Your Token is Valid</div>
+<div style="color: red;" *ngIf="!validToken">Your Token is In Valid! Go To Create <a  href="/#/dashboard/admin/Zoomtoken">Generate</a></div>
+<div class="heading" fxLayoutAlign="center center">
+  <h1 mat-dialog-title><span *ngIf="!form.controls.isEdit.value">Add</span><span *ngIf="form.controls['isEdit'].value">Edit</span> Event</h1>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="form" autocomplete="off" style="margin-bottom: 10px;">
+    <mat-form-field class="w-100">
+      <input matInput placeholder="Title" formControlName="title" />
+      <mat-error *ngIf="form.controls['title'].errors?.required">Title is required!!</mat-error>
+      <mat-error *ngIf="form.controls['title'].hasError('minlength')">Title should be minimum 2 character length..!!</mat-error>
+      <mat-error *ngIf="form.controls['title'].hasError('maxlength')">Title should be maximum 150 character length..!!</mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-select placeholder="Teacher" formControlName="presenterUniqueName">
+        <mat-option class="hi" *ngFor="let user of users" value="{{ user.accountId }}" [disabled]="user.status">
+          <span>{{ user.status ? user.firstName + " " + user.lastName + " " + "(Blocked)" : user.firstName + " " + user.lastName }}</span></mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <div fxLayout="row wrap" fxLayout.sm="column" fxLayoutAlign="space-around" fxLayoutGap.gt-sm="20px">
+      <mat-form-field>
+        <mat-select formControlName="gradeId" placeholder="Grade" [(ngModel)]="selectedGrade" (selectionChange)="selectsys($event.value) && !grdaes.disabled">
+          <mat-option  *ngFor="let grdae of grdaes" [disabled]='grdae.disabled' value="{{ grdae.gradeId }}">{{ grdae.gradeName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="syllabusId" placeholder="Program" [(ngModel)]="selectedSyllabus" (selectionChange)="selectsub($event.value)">
+          <mat-option *ngFor="let grdae of sys" value="{{ grdae.syllabusId }}">{{ grdae.syllabusName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="subjectId" placeholder="Subject" (selectionChange)="selectchapter(selectedGrade, selectedSyllabus, $event.value)">
+          <mat-option *ngFor="let grdae of sub" [value]="grdae.subjectId">{{ grdae.subjectName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="chapterId" placeholder="Chapter">
+          <mat-option *ngFor="let chapter of chapter" [disabled]="chapter.disabled" [value]="chapter.chapterId">{{ chapter.chapterName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="batchId" placeholder="Batch" [(value)]="selectedBatch" >
+          <mat-option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between" fxLayout.xs="column">
+      <mat-form-field fxFlex="30">
+        <input matInput [matDatepicker]="start" [min]="minDate" placeholder="Start Date" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+        <mat-datepicker #start></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFlex="30">
+        <input matInput [ngxTimepicker]="picker" #picker [format]="24" placeholder="Start Time" formControlName="time" />
+        <ngx-material-timepicker #picker></ngx-material-timepicker>
+      </mat-form-field>
+      <mat-form-field fxFlex="30">
+        <input matInput placeholder="Class duration(in minutes)" formControlName="durationinMinutes" />
+        <mat-error *ngIf="form.controls['durationinMinutes'].errors?.required">Duration is required!!</mat-error>
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('maxlength')">Duration should be maximum 5 character length..!!</mat-error>
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('pattern')">Duration should be minimum 1 character length..!!</mat-error>
+        <mat-error *ngIf="form.controls['durationinMinutes'].hasError('pattern')">Only Numbers !!!</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-md="column" style="margin-top:15px;margin-bottom:10px;">
+      <h4 fxLayout="row" style="margin-bottom:5px;">Give Access To :</h4>
+      <mat-radio-group #rGroup class="example-radio-group" formControlName="for"  (change)="$event.value!='Members' ? selectedBatch=null:selectedBatch">
+        <mat-radio-button style="margin-right:20px;margin-bottom: 15px;margin-left:8px;" class="example-radio-button" *ngFor="let accessfor of access" [value]="accessfor">
+          {{ accessfor }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <pre id="events"></pre>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+  <button mat-raised-button color="primary" *ngIf="!form.controls.isEdit.value" [mat-dialog-close]="form.value" [disabled]="!form.valid" (click)="scheduleforNewZoomMeeting(form.value)">
+    <span>Save</span>
+  </button>
+ 
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="form.value"
+    [disabled]="!form.valid"
+    *ngIf="form.controls['isEdit'].value && !user.isEdit"
+    (click)="scheduleforUpdate(form.value)"
+  >
+    <span>Update</span>
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="form.value"
+    *ngIf="user.isEdit && form.controls['sessionId'].value"
+    (click)="deleteupcomingclass(form.controls['sessionId'].value)"
+  >
+    <span>Delete</span>
+  </button>
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

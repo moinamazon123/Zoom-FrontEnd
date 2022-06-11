@@ -1,0 +1,145 @@
+.mat-header-cell {
+  font-weight: 900 !important;
+  background-color: #206c5c;
+  color: white !important;
+  font-size: 16px;
+}
+
+
+
+
+::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: yellow !important;
+  text-align: end;
+}
+
+.mat-row:nth-child(odd) {
+  background-color: rgba(235, 235, 235, 0.67) !important;
+}
+
+.mat-row:nth-child(even) {
+  background-color: rgba(235, 235, 235, 0.18) !important;
+}
+
+
+
+
+.example-container {
+  position: fixed;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background: transparent !important;
+}
+
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  background: rgba(255, 0, 0, 0.5);
+}
+
+.example-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-container .mat-drawer-backdrop {
+  display: none;
+}
+
+.user-search {
+  width: 0;
+  overflow: hidden;
+  transition: 0.3s;
+  .mat-form-field {
+    width: 100% !important;
+    text-align: center !important;
+    height: 36px;
+  }
+  .mat-form-field-infix {
+    padding: 5px;
+  }
+  .mat-input-element {
+    text-align: center;
+  }
+  &.show {
+    width: 100%;
+    overflow: visible;
+  }
+}
+
+.main-div {
+  margin-top: 20px;
+}
+
+.skeleton:empty {
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: calc(100% - 50px);
+  height: 350px; /* change height to see repeat-y behavior */
+
+  background-image: 
+  // radial-gradient(circle 20px at 20px 20px, lightgray 99%, transparent 0),
+  //  linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%),
+    linear-gradient(lightgray 10px, transparent 0), 
+    linear-gradient(lightgray 10px, transparent 0), 
+    linear-gradient(lightgray 10px, transparent 0); 
+    
+   
+
+  background-repeat: repeat-y;
+
+  background-size: 1172px 130px, 1309px 130px, 1012px 130px;
+
+  background-position: 15px 0, 15px 40px, 15px 80px;
+ 
+
+
+  // animation: shine 1s infinite;
+}
+
+
+
+::ng-deep .mat-tab-label-active {
+  background-color: #c9e9e6;
+}
+
+::ng-deep .mat-paginator-container {
+  justify-content: center !important;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #00695C !important;
+}
+
+.delete_btn {
+  color: #ff5f52
+}
+
+.center {
+  text-align: center;
+}
+td{
+  text-align: center;
+}
+

@@ -1,0 +1,96 @@
+.user-name{
+    padding: 0 12px;
+    font-weight: 400;
+}
+.user-content{
+    .user-img{
+        position: relative;
+        img{
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            &.blocked{
+                opacity: 0.5;
+            }
+        }
+        .mat-icon{
+            position: absolute;
+            top: -12px;
+            left: -11px;      
+            font-size: 96px;
+            height: 96px;
+            width: 96px;            
+        }
+    }
+    .mat-slide-toggle{
+        margin-top: 15px;
+    }
+    .user-details{
+    padding: 10px;
+
+        margin-left: 10px;
+        span{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .mat-icon{
+            padding: 2px 10px;
+        } 
+        &.blocked{
+            opacity: 0.5;
+        }
+    }    
+}
+
+.user-search{
+    width: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    .mat-form-field{
+        width: 100% !important;
+        text-align: center !important;
+        height: 36px;        
+    }
+    .mat-form-field-infix{
+        padding: 5px;
+    }
+    .mat-input-element{
+        text-align: center;
+    }
+    &.show{
+        width: 100%;
+        overflow: visible;
+    }
+}
+
+.user-spinner{
+    position: absolute;
+    top:0; right: 0; bottom: 0; left:0;
+}
+
+
+
+.background-color {
+    background-image: linear-gradient(to right bottom, #79f9e8, #8bf6cd, #a4f1b1, #beea99, #d8e186, #e2df7e, #edde77, #f9db71, #f7e36b, #f3ea66, #eef362, #e7fb5f);
+}
+
+.stat-buttons {
+    overflow-x: hidden !important;
+   
+}
+
+.border {
+    border-bottom-right-radius: 100px;
+    background-image: linear-gradient(to right top, #f2ddee, #fadae5, #ffd7da, #ffd7cd, #fcd8c1, #f8dabf, #f4ddbe, #efdfbe, #f0e1c4, #f1e3ca, #f1e6d0, #f2e8d6);
+}
+
+.filterBtn {
+    margin-left: 8px;
+}
+
+
+
+
+
+

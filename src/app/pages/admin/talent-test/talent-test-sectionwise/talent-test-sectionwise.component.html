@@ -1,0 +1,193 @@
+<div>
+  <div style="background-color: #00695c;color:white; padding: 15px;" fxLayout="row" fxLayoutAlign="space-between center">
+    <div><mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveToPreviousPage()">keyboard_backspace</mat-icon></div>
+    <div fxLayout="row" style="font-weight: 600; font-size: 24px;">Section Wise Mark</div>
+    <div></div>
+  </div>
+
+  <div>
+    <!-- section 1 mark -->
+
+    <div style="padding: 30px;font-size: 24px;font-weight: 600" fxLayout="row" fxLayoutAlign="center center">Section 1 Marks : {{ section1count }}</div>
+    <div>
+      <table fxFill="100" mat-table [dataSource]="sectiondata">
+        <ng-container matColumnDef="Q1">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q1</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q1 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q2">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q2</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q2 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q3">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q3</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q3 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q4">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q4</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q4 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q5">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q5</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q5 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q6">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q6</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q6 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q7">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q7</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q7 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q8">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q8</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q8 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q9">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q9</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q9 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q10">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q10</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q10 | safe: 'html'"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="section1"></tr>
+        <tr mat-row *matRowDef="let row; columns: section1"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- section 2 mark -->
+
+  <div>
+    <div style="padding: 30px;font-size: 24px;font-weight: 600" fxLayout="row" fxLayoutAlign="center center">Section 2 Mark : {{ section2count }}</div>
+    <div>
+      <table fxFill="100" mat-table [dataSource]="sectiondata">
+        <ng-container matColumnDef="Q11">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q11</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q11 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q12">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q12</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q12 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q13">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q13</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q13 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q14">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q14</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q14 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q15">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q15</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q15 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q16">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q16</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q16 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q17">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q17</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q17 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q18">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q18</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q18 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q19">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q19</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q19 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q20">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q20</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q20 | safe: 'html'"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="section2"></tr>
+        <tr mat-row *matRowDef="let row; columns: section2"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- section 3 mark -->
+
+  <div>
+    <div style="padding: 30px;font-size: 24px;font-weight: 600" fxLayout="row" fxLayoutAlign="center center">Section 3 Marks : {{ section3count }}</div>
+    <div>
+      <table fxFill="100" mat-table [dataSource]="sectiondata">
+        <ng-container matColumnDef="Q21">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q21</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q21 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q22">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q22</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q22 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q23">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q23</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q23 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q24">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q24</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q24 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q25">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q25</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q25 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q26">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q26</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q26 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q27">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q27</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q27 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q28">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q28</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q28 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q29">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q29</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q29 | safe: 'html'"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Q30">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Q30</th>
+          <td style="text-align: center" mat-cell *matCellDef="let row" [innerHTML]="row.Q30 | safe: 'html'"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="section3"></tr>
+        <tr mat-row *matRowDef="let row; columns: section3"></tr>
+      </table>
+    </div>
+  </div>
+</div>

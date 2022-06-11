@@ -1,0 +1,84 @@
+<!-- dialog box to display test result -->
+
+<div *ngIf="!data.showResult && data.showExpireDialog">
+  <div fxLayout="column" fxLayoutAlign="space-between center">
+<div><mat-icon  style="cursor:pointer;color: red; margin:15px; font-size: 30px;">timer_off</mat-icon></div>
+    <h1 mat-dialog-title>Test Time Expired !!!</h1>
+    <div style="margin: 10px;" class="divider"></div>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button (click)="showResultFunc()" mat-raised-button color="primary">Show Result</button>
+</div>
+  </div>
+</div>
+
+<div *ngIf="data.showResult && !data.showExpireDialog">
+<div fxFlex="row" fxLayoutAlign="space-between center" style="background-color: #00695c; margin-bottom: 15px;">
+  <div style="margin-left:15px; color: white;"><h1 mat-dialog-title>Test Report</h1></div>
+  <div style="margin-right:15px;"><mat-icon (click)="close()" style="cursor:pointer;color: red">cancel</mat-icon></div>
+</div>
+<div mat-dialog-content [style.width.px]="400">
+  <div fxFlex="column">
+    <p style="font-size:16px;">
+      Total Questions :<span style="font-weight:700"> {{ data.total }}</span>
+    </p>
+    <p style="font-size:16px;">
+      Attempted Questions: <span style="font-weight:700"> {{ data.attemted }}</span>
+    </p>
+    <div fxFlex="row" fxLayoutAlign="center" style="margin-top:20px;">
+      <div *ngIf="showProgress">
+        <circle-progress
+          [percent]="100"
+          [radius]="50"
+          
+          [outerStrokeWidth]="10"
+          [innerStrokeWidth]="4"
+          [outerStrokeColor]="'#78C000'"
+          [innerStrokeColor]="'#C7E596'"
+          [animation]="true"
+          [animationDuration]="3000"
+          [subtitleFormat]="formatSubtitle"
+          [animateTitle]="true"
+          [showBackground]="false"
+        >
+        </circle-progress>
+      </div>
+
+      <div *ngIf="!showProgress" fxFlex="row" style="padding: 5px;">
+        <h3><u>Result :</u></h3>
+        <div style="font-size:16px;padding-top: 5px;">
+          Correct Answer : <span style="font-weight: bold"> {{ data.correct }}</span>
+        </div>
+        <p style="font-size:16px;padding-top: 5px;">
+          Wrong Answer : <span style="font-weight: bold">{{ data.total - data.correct }}</span>
+        </p>
+        <p style="font-size:16px;padding-top: 5px;">
+          Toatl Performace: <span style="font-weight: bold">{{ performance }} %</span>
+        </p>
+        <h3 style="padding: 5px;font-size: 16px;">
+          Remarks :
+          <span [ngStyle]="(count === 0 && { color: 'red' }) || (count === 1 && { color: '#c5e02f' }) || (count == 2 && { color: 'blue' }) || (count == 3 && { color: '#00695c' })">{{
+            remarksText
+          }}</span>
+        </h3>
+      </div>
+      <div *ngIf="!showProgress">
+        <circle-progress
+          [percent]="(data.correct / data.total) * 100"
+          [radius]="50"
+         
+          [outerStrokeWidth]="10"
+          [innerStrokeWidth]="4"
+          [outerStrokeColor]="'#00695c'"
+          [innerStrokeColor]="'#C7E596'"
+          [animation]="true"
+          [animationDuration]="500"
+          [subtitleFormat]="formatSubtitleForResult"
+          [animateTitle]="true"
+          [showBackground]="false"
+        >
+        </circle-progress>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

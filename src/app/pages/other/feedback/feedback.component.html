@@ -1,0 +1,94 @@
+<div *ngIf="role == 'student'">
+  <div fxFlex="row" fxFlex.lt-sm="column" fxLayoutAlign.gt-sm="center center" style="margin-top: 15px;">
+    <mat-card class="p-0 mat-elevation-z24 box" style="overflow: auto" [style.width.px]="'500'">
+      <div fxLayout="column" fxLayoutAlign="center center" class="bg-primary box-header">
+        <button routerLink="/register" mat-fab color="accent" class="mat-elevation-z12">
+          <mat-icon>videocam</mat-icon>
+        </button>
+        <a mat-button>Feedback about the class...</a>
+      </div>
+      <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content " [style.height.px]="'650'">
+        <mat-card fxLayout="column" class="mat-elevation-z12 box-content-inner" [style.height.px]="'690'">
+          <div>
+            <span class="box-content-header" fxLayoutAlign="center center">Class Details</span>
+            <div class="divider" style="margin-bottom: 10px;margin-top: 10px;"></div>
+
+            <!-- display class details for rating -->
+
+            <mat-card-content style="margin-bottom:15px;">
+              <p style="font-size: 16;font-weight: 500;padding: 5px;">Class Title : {{ sessionDetails?.title }}</p>
+              <p style="font-size: 16;font-weight: 500;padding: 5px;">Subject : {{ sessionDetails?.subjectName }}</p>
+              <p style="font-size: 16;font-weight: 500;padding: 5px;">Teacher Name : {{ sessionDetails?.presenterDisplayName }}</p>
+            </mat-card-content>
+            <span class="box-content-header" fxLayoutAlign="center center">Rating For Teacher</span>
+            <div class="divider" style="margin-bottom: 10px;margin-top: 10px;"></div>
+            <mat-card-content fxFlex="row" fxLayoutAlign="center center">
+              <bar-rating
+                (rateChange)="ratefunction($event)"
+                [rate]="0"
+                [max]="5"
+                [theme]="'stars'"
+                [showText]="false"
+                [titles]="['Bad', 'Mediocre', 'Good', 'Awesome', 'Very Good']"
+              ></bar-rating>
+            </mat-card-content>
+          </div>
+
+          <!-- reason for the rating if rating is below 3 -->
+
+          <div style="margin-top: 20px;" *ngIf="optionSwitch == 1">
+            <span class="box-content-header" fxLayoutAlign="center center">Tell us what went wrong?</span>
+            <div class="divider" style="margin-bottom: 10px;margin-top: 10px;"></div>
+            <mat-card-content fxLayoutAlign="center center">
+              <mat-radio-group class="example-radio-group" [(ngModel)]="optionSelected">
+                <mat-radio-button ngDefaultControl class="example-radio-button" *ngFor="let options of option1to3" [value]="options" fxFill style="padding:10px;">
+                  {{ options }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-card-content>
+          </div>
+
+          <!-- reason for the rating if rating is above 4 -->
+
+          <div style="margin-top: 20px;" *ngIf="optionSwitch == 2">
+            <span class="box-content-header" fxLayoutAlign="center center">What went perfect for you!!!</span>
+            <div class="divider" style="margin-bottom: 10px;margin-top: 10px;"></div>
+            <mat-card-content fxLayoutAlign="center center">
+              <mat-radio-group class="example-radio-group" [(ngModel)]="optionSelected">
+                <mat-radio-button ngDefaultControl class="example-radio-button" *ngFor="let options of option4to5" [value]="options" fxFill style="padding:10px;">
+                  {{ options }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-card-content>
+          </div>
+          <div>
+            <!-- comment if any -->
+
+            <span class="box-content-header" fxLayoutAlign="center center">comment</span>
+            <div class="divider" style="margin-bottom: 10px;margin-top: 10px;"></div>
+            <form [formGroup]="form" autocomplete="off">
+              <mat-form-field class="w-100">
+                <textarea formControlName="comment" matInput placeholder="comment about the class"></textarea>
+                <mat-error *ngIf="form.controls['comment'].hasError('maxlength')">Comment is too long , maximum of 255 characters</mat-error>
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-card>
+      </mat-card-content>
+      <div
+        fxFlex="row"
+        fxLayoutAlign="space-evenly  center"
+        style="margin-bottom: 20px;
+            margin-top: 5px;"
+      >
+        <button mat-raised-button color="primary" (click)="submit(form.value)" [disabled]="rating <= 0 || !optionSelected">Submit</button>
+        <button mat-raised-button color="warn" (click)="goToDashboard()">Skip</button>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf="role != 'student' || showSpinner" id="app-spinner">
+  <mat-spinner color="primary"></mat-spinner>
+  <h4>loading...</h4>
+</div>

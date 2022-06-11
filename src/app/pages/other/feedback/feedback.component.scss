@@ -1,0 +1,44 @@
+.br-text {
+  margin-left: 33px;
+  margin-top: 10px;
+  font-weight: 700;
+  color: rebeccapurple !important;
+}
+
+#app-spinner {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background: #11998e;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  z-index: 999999;
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: visibility 0.5s, opacity 0.3s linear;
+  -moz-transition: visibility 0.5s, opacity 0.3s linear;
+  transition: visibility 0.5s, opacity 0.3s linear;
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+  }
+  h4 {
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    text-transform: uppercase;
+    -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+    -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+    -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+    animation: loading-text-opacity 2s linear 0s infinite normal;
+  }
+}

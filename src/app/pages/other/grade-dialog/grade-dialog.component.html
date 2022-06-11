@@ -1,0 +1,26 @@
+<div fxFlex="100">
+  <div fxLayout="column" fxLayoutAlign="center center" >
+    <h1 mat-dialog-title>Please Choose the Grade For</h1>
+    <h1 mat-dialog-title>Which You Want a Demo ?</h1>
+  </div>
+
+<div class="divider"></div>
+
+  <div mat-dialog-content>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <mat-radio-group fxLayoutAlign="space-around-center" class="example-radio-group" [(ngModel)]="answer" style="padding: 10px;">
+        <mat-radio-button
+          (click)="routerForDemo()"
+          style="padding: 5px;font-weight: 500 ; margin-left: 7px;"
+          class="example-radio-button"
+          *ngFor="let option of options"
+          [value]="option"
+        >
+          {{ option }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top:10px;">
+    </div>
+  </div>
+</div>

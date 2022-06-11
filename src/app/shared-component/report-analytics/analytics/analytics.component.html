@@ -1,0 +1,338 @@
+<!-- show the analytics for student and teacher -->
+
+<div *ngIf="!showEvaluatedTable">
+<div style="background-color: #206c5c;color:white; padding: 5px; margin-bottom:8px;">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveToPreviousPage()">keyboard_backspace</mat-icon>
+    <h2>Analytics</h2>
+    <div fxLayout="column" style="margin-right:30px;">
+      <h3 *ngIf="userFullName !== 'NA'">Name : {{ userFullName }}</h3>
+      <h3 *ngIf="role == 'Students' && userFullName !== 'NA'">Class : {{ className }}</h3>
+    </div>
+  </div>
+</div>
+
+<!-- attendence analytics -->
+
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.gt-sm="center center">
+  <mat-card fxFlex.gt-sm="80">
+    <div style="background-color: rgb(126, 138, 135);color:white; padding: 5px;">
+      <div fxLayout="row" fxLayoutAlign="center" style="padding:5px;"><h3>Attendance Analytics</h3></div>
+    </div>
+
+    <mat-card-content>
+      <div class="w-100 height" #resizedDiv fxLayout.gt-md="row" fxLayout.lt-md="row">
+        <div style="margin-top: 10px;" fxFlex="100" fxLayoutAlign="center center">
+          <div>
+            <circle-progress
+              [radius]="100"
+              [space]="-10"
+              [titleFontSize]="50"
+              [subtitleFontSize]="16"
+              [percent]="precentage"
+              [outerStrokeWidth]="10"
+              [outerStrokeColor]="'#4882c2'"
+              [innerStrokeColor]="'#e7e8ea'"
+              [innerStrokeWidth]="10"
+              [animateTitle]="false"
+              [animationDuration]="700"
+              [showUnits]="true"
+              [showBackground]="false"
+            ></circle-progress>
+          </div>
+        </div>
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+          <div class="board-text">
+            <p style="padding: 5px;font-size: 16px;" *ngIf="role == 'Students'">
+              Total Number of Classes Held : <b> {{ totalClass }}</b>
+            </p>
+            <p style="padding: 5px;font-size: 16px;" *ngIf="role == 'Teachers' && attendedClass>0">
+              Total Number of Classes Assigned : <b> {{ attendedClass }}</b>
+            </p>
+            <p *ngIf="role == 'Students'" style="padding: 5px;font-size: 16px;">
+              Number of Classes Attended: <b> {{ attendedClass }}</b>
+            </p>
+            <p   *ngIf="role == 'Teachers' && attendedClass>0" style="padding: 5px;font-size: 16px;">
+              Number of Classes Conducted: <b> {{ totalClass }}</b>
+            </p>
+            <p style="padding: 5px;font-size: 16px;"  *ngIf="role == 'Teachers' && attendedClass>0">
+              Attendence in % : <b> {{ precentage }} </b>
+            </p>
+            <h3 style="padding: 5px;font-size: 16px;">
+              Remarks :
+              <span
+                [ngStyle]="(count === 0 && { color: 'red' }) || (count === 1 && { color: '#c5e02f' }) || (count == 2 && { color: '#00dcff' }) || (count == 3 && { color: '#00695c' })"
+                >{{ remark }}</span
+              >
+            </h3>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- test analytics for student -->
+
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign.gt-sm="center center" style="margin-top:10px;">
+  <mat-card fxFlex.gt-sm="80" *ngIf="role == 'Students'">
+    <div style="background-color: rgb(126, 138, 135);color:white; padding: 5px;">
+      <div fxLayout="row" fxLayoutAlign="center" style="padding:5px;"><h3>Test Analytics</h3></div>
+    </div>
+
+    <mat-card-content>
+      <div class="w-100 height" #resizedDiv fxLayout="row" fxLayout.lt-md="row" fxLayoutAlign="space-around center">
+        <div *ngIf="testReport.length > 0" fxFlex="100" fxLayoutAlign="center center">
+          <ngx-charts-pie-chart
+            [view]="[420, 220]"
+            [scheme]="colorScheme"
+            [results]="dataForDonutGraph"
+            [legend]="showLegend"
+            [explodeSlices]="explodeSlices"
+            [labels]="showLabels"
+            [doughnut]="doughnut"
+            [gradient]="gradient"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+        <div *ngIf="testReport.length == 0" fxLayout="row" fxFlex="100" fxLayoutAlign="center center">
+          <div><h1 style="margin-top: 10px !important; opacity:0.5;">No Analytics Found!!!</h1></div>
+        </div>
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" style="height: 250px;">
+          <div class="board-text">
+            <p style="padding: 5px;font-size: 16px;">
+              Total Number of Test : <b> {{ totalTestCount }}</b>
+            </p>
+            <p style="padding: 5px;font-size: 16px;">
+              Total Test Attempted : <b> {{ testReport.length }}</b>
+            </p>
+            <p style="padding: 5px;font-size: 16px;">
+              Overall Performance : <b> {{ totalPerformance }} %</b>
+            </p>
+            <h3 style="padding: 5px;font-size: 16px;">
+              Remarks :
+              <span
+                [ngStyle]="
+                  (countForTest === 0 && { color: '#00695c' }) ||
+                  (countForTest === 1 && { color: '#00dcff' }) ||
+                  (countForTest == 2 && { color: '#c5e02f' }) ||
+                  (countForTest == 3 && { color: 'red' })
+                "
+                >{{ remarkForTest }}</span
+              >
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="row" fxLayoutAlign="end end">
+        <button mat-raised-button color="primary" (click)="showTestReport=true;classReport=false">Test Report</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+<!-- rating analytics for teacher -->
+
+  <mat-card fxFlex.gt-sm="80" *ngIf="role == 'Teachers'">
+    <div style="background-color: rgb(126, 138, 135);color:white; padding: 5px;">
+      <div fxLayout="row" fxLayoutAlign="center" style="padding:5px;"><h3>Rating Analytics</h3></div>
+    </div>
+    <mat-card-content>
+      <div class="w-100 height" #resizedDiv fxLayout="row" fxLayout.lt-md="row" fxLayoutAlign="center center">
+        <div style="margin-top: 30px;" fxFlex="100" fxLayoutAlign="center center">
+          <bar-rating
+            [rate]="averageRating"
+            [max]="5"
+            [theme]="'stars'"
+            [showText]="false"
+            [readOnly]="true"
+            [titles]="['Bad', 'Mediocre', 'Good', 'Awesome', 'Very Good']"
+          ></bar-rating>
+        </div>
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" style="height: 250px;">
+          <div class="board-text">
+            <p style="padding: 5px;font-size: 16px;">
+              Number of People Rated : <b> {{ totalCountofRaing }}</b>
+            </p>
+            <p style="padding: 5px;font-size: 16px;">
+              Overall Rating : <b> {{ averageRating }}</b>
+            </p>
+
+            <h3 style="padding: 5px;font-size: 16px;">
+              Remarks :
+              <span
+                [ngStyle]="
+                  (countforRatingRemark === 0 && { color: '#00695c' }) ||
+                  (countforRatingRemark === 1 && { color: '#00dcff' }) ||
+                  (countforRatingRemark == 2 && { color: '#c5e02f' }) ||
+                  (countforRatingRemark == 3 && { color: 'red' })
+                "
+                >{{ ratingRemark }}</span
+              >
+            </h3>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- test report of the student -->
+
+<div fxFlex="row" style="margin-top:10px;" *ngIf="showTestReport">
+  <div style="background-color: #00695c;color:white; padding: 5px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="padding:10px;">
+      <button mat-mini-fab color="warn" style="margin-left:30px;cursor: pointer;margin-top: -5px;"><mat-icon (click)="showTestReport = false; classReport = false">close</mat-icon></button>
+      <h2>Test Report</h2>
+      <div fxLayout="column" style="margin-right:70px;">
+        <h3>Total Test Attempted: {{ testReport.length }}</h3>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" class="mat-elevation-z8">
+    <mat-form-field fxFlex="100" class="p-1"> <input matInput placeholder="Search Test Report..." (keyup)="applyFilterforTest($event.target.value)" autocomplete="off" /> </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="datasourceforTest" class="mat-elevation-z8" fxFill>
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalScore">
+        <th mat-header-cell *matHeaderCellDef>Totalal Mark</th>
+        <td mat-cell *matCellDef="let element">{{ element.totalScore }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="writeAnswers">
+        <th mat-header-cell *matHeaderCellDef>Scored Mark</th>
+        <td mat-cell *matCellDef="let element">{{ element.writeAnswers }}</td>
+      </ng-container>
+
+     
+
+      <ng-container matColumnDef="Remarks">
+        <th mat-header-cell *matHeaderCellDef>Performance rating</th>
+        <td mat-cell *matCellDef="let element">
+          <circle-progress
+            *ngIf="element.remarks < 50"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'red'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+          <circle-progress
+            *ngIf="element.remarks >= 50 && element.remarks < 75"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'orange'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+
+          <circle-progress
+            *ngIf="element.remarks < 85 && element.remarks >= 75"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="10"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'blue'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+          <circle-progress
+            *ngIf="element.remarks >= 85"
+            [percent]="element.remarks"
+            [radius]="20"
+            [titleFontSize]="7"
+            [outerStrokeWidth]="6"
+            [innerStrokeWidth]="2"
+            [outerStrokeColor]="'#00695c'"
+            [innerStrokeColor]="'#00695c'"
+            [animation]="true"
+            [showSubtitle]="false"
+            [animationDuration]="300"
+          ></circle-progress>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="button">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button color="primary" (click)="showEvaluatedTable = true; readfile(element.testFileName, element.title, element.fileId)">View Evaluated Paper</button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsForTest"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsForTest"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[0, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+</div>
+
+<!-- test answers -->
+
+<div *ngIf="showEvaluatedTable">
+  <div fxLayout="row" fxLayoutAlign="space-around cen" style="margin-bottom:15px;">
+    <div style="background-color: #00695c;color:white; padding: 5px;" fxFill>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" style="margin-left: 20px;">
+          <button mat-mini-fab color="accent"><mat-icon style="font-weight: 600; cursor: pointer;" (click)="tabChangedprev()" matTooltip="previous">keyboard_arrow_left</mat-icon></button>
+          <button mat-mini-fab color="accent" style="margin-left:10px;">
+            <mat-icon style="font-weight: 600;cursor: pointer;" (click)="tabChangednext()" matTooltip="next">keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+        <h2>{{ testname }}</h2>
+        <div fxLayout="column" style="margin-right:70px; margin-top: 5px;" (click)="showEvaluatedTable = false">
+          <button mat-mini-fab color="warn" style="margin-left:30px;cursor: pointer;margin-top: -10px;" ><mat-icon>close</mat-icon></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxFlexFill>
+    <mat-tab-group class="" (selectedTabChange)="questionchange()" [backgroundColor]="colors[1]" [(selectedIndex)]="questionIndex" fxFill>
+      <mat-tab id="tab-group" fxfill *ngFor="let ques of question; let i = index">
+        <ng-template mat-tab-label
+          ><span [ngStyle]="{ color: 'white' }">question {{ i + 1 }}</span></ng-template
+        >
+        <br />
+        <br />
+        <div fxFlexOffset="5" fxLayout="row" fxLayoutGap="10px"><h2 style="color:teal" [innerHTML]="ques.question | safe: 'html'" fxLayout="row"></h2></div>
+        <mat-radio-group fxFlexOffset="7" fxLayoutGap="20px" style="margin-top: 10px" fxLayout="column" class="example-radio-group">
+          <mat-radio-button
+          [disabled]="true"
+            [checked]="FinalAnswers['qn' + (i + 1)] == j + 1 ? true : false"
+            [color]="colors[2]"
+            class="example-radio-button"
+            *ngFor="let opt of ques.options; let j = index"
+            [value]="opt"
+          >
+          <h2 [innerHTML]="opt | safe: 'html'">
+          </h2>
+          
+          </mat-radio-button>
+        </mat-radio-group>
+        <br />
+        <br />
+        <br />
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

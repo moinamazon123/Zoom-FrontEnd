@@ -1,0 +1,52 @@
+<!-- take assignment -->
+
+<div fxLayout="column"  fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-raised-button color="primary" (click)="tabChangedprev()">Previous</button> <button mat-raised-button color="primary" (click)="tabChangednext()">Next</button>
+    <button mat-raised-button color="primary" (click)="moveback()">End Assignment</button>
+  </div>
+  <div fxLayout="row" fxFlexFill>
+    <mat-tab-group class="" (selectedTabChange)="questionchange()" [backgroundColor]="colors[1]" [(selectedIndex)]="questionIndex" fxFill>
+      <mat-tab id="tab-group" fxfill *ngFor="let ques of question; let i = index">
+       
+        <!-- question number -->
+       
+        <ng-template mat-tab-label
+          ><span [ngStyle]="{ color: 'white' }">question {{ i + 1 }}</span></ng-template
+        >
+        <br />
+        <br />
+
+        <!-- question -->
+
+        <div fxFlexOffset="5" fxLayout="row" fxLayoutGap="10px"><h2 style="color:teal" [innerHTML]="ques.question | safe:'html'" fxLayout="row"></h2></div>
+        
+        
+        <!-- options -->
+        
+        <mat-radio-group fxFlexOffset="7" fxLayoutGap="20px" style="margin-top: 10px" fxLayout="column" class="example-radio-group">
+          <mat-radio-button [color]="colors[2]" class="example-radio-button" *ngFor="let opt of ques.options" (change)="answerselected(opt)" [value]="opt">
+            <h2 [innerHTML]="opt | safe: 'html'"></h2>
+          </mat-radio-button>
+        </mat-radio-group>
+        <br />
+        <br />
+
+        <!--show selected answer correct or wrong-->
+
+        <h2 fxFlexOffset="7" [ngStyle]="(selectedanswer === 'Wrong Answer' && { color: 'red' }) || (selectedanswer === 'You Are Right' && { color: 'green' })" fxLayoutGap="20px">
+          {{ selectedanswer }} <button mat-raised-button color="warn" *ngIf="selectedanswer == 'Wrong Answer'" (click)="solution(); solutionshow = true">See Solution</button>
+        </h2>
+        <br />
+
+        <!-- solution -->
+        
+        <mat-card *ngIf="solutionshow" fxFlex="100">
+          <h3 style="color:#00695c" fxLayout="7">Solution:</h3>
+          <div fxLayout="row" fxLayoutAlign="end"><mat-icon [ngStyle]="{ color: '#ff5252' }" (click)="solutionshow = false" style="cursor:pointer">cancel</mat-icon></div>
+          <h4 style="color:#00695c" class="answers" [innerHTML]="ques.answer | safe: 'html'"></h4>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

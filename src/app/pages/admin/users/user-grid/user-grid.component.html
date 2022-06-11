@@ -1,0 +1,312 @@
+<!-- <form> -->
+  <!-- filter for admin -->
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center"  *ngIf="breadcrumb.pageTitle == ' > Students'">
+
+  <div fxLayout="row" fxFlex="16">
+    <div fxLayoutAlign="center center">
+      <mat-icon>filter_list</mat-icon>
+    </div>
+    <mat-form-field>
+      <mat-label>Filter by Grade</mat-label>
+      <mat-select name="slectedgrade" [(ngModel)]="slectedgrade" (selectionChange)="
+          gradeChange({
+            pageNo: 1,
+            maxResult: 9
+          });
+          this.page = 1
+        ">
+        <mat-option value="all">All</mat-option>
+        <mat-option *ngFor="let item of gradelist"  [value]="item.gradeId">Grade {{ item.gradeName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    
+
+  </div>
+
+  <div fxLayout="row" fxFlex="16">
+    <div fxLayoutAlign="center center">
+      <mat-icon>filter_list</mat-icon>
+    </div>
+    <mat-form-field style="font-size: 17px;">
+      <mat-label>Filter by program</mat-label>
+      <mat-select name="slectedsylabus" [(ngModel)]="slectedprogram" (selectionChange)="
+      programchange({
+        pageNo: 1,
+        maxResult: 9
+      });
+      this.page = 1
+    ">
+        <!-- <mat-option value="all">All</mat-option> -->
+        <mat-option *ngFor="let item of syllabuslist" [value]="item.syllabusId">{{ item.syllabusName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    
+
+  </div>
+
+  <div fxLayout="row"  fxLayoutAlign="center end" fxFlex="16">
+    <mat-form-field>
+      <input matInput [matDatepicker]="start" [max]="mindate" placeholder="Start Date" disabled name="startDate" [(ngModel)]="startDate"  (dateChange)="finalstartendDate( {pageNo: 1, maxResult: 9});this.page = 1" />
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker #start disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row"  fxLayoutAlign="center end" fxFlex="16">
+    <mat-form-field>
+      <input matInput [matDatepicker]="end" [min]="startDate"  [max]="mindate" placeholder="end Date" disabled  name="endDate" [(ngModel)]="endDate"  (dateChange)="finalstartendDate( {pageNo: 1, maxResult: 9});this.page = 1" />
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker #end [disabled]="!startDate"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center center" >
+    <!-- <button mat-raised-button color="primary" [disabled]="users.length == 0" (click)="onExportExcel()">Export To Excel</button> -->
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start center" >
+    <button mat-raised-button color="primary" color="accent"  (click)="resetFilter({
+      pageNo: 1,
+      maxResult: 9
+    })">RESET</button>
+  </div>
+</div>
+ <!-- filter for admin ends -->
+<!-- </form> -->
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+
+  <div fxLayout="row">
+   
+    <div *ngIf="breadcrumb.pageTitle == ' > Parents'" fxLayout="column" fxLayoutAlign="start center" fxFlexOffset='1' >
+      <button mat-raised-button color="primary"  (click) = "parentexporttoexcel()">Export To Excel</button>
+   </div>
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button mat-raised-button color="primary" *ngIf="breadcrumb.pageTitle == ' > Teachers'"
+        (click)="openUserDialogforAdd(null)">
+        <mat-icon matTooltip="Add New Teacher">person_add</mat-icon>Add Teacher
+      </button>
+      <div *ngIf="breadcrumb.pageTitle == ' > Teachers'" fxLayout="column" fxLayoutAlign="start center" fxFlexOffset='1' >
+        <button mat-raised-button color="primary"  (click) = "teacherexporttoexcel()">Export To Excel</button>
+     </div>
+      <mat-button-toggle *ngIf="breadcrumb.pageTitle == ' > Students'" value="search" (click) = "searchFilter(1)">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle  *ngIf="breadcrumb.pageTitle != ' > Students'" value="search">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+      
+    </mat-button-toggle-group>
+    
+
+  </div>
+
+<!-- //serach for student filter -->
+<form *ngIf="breadcrumb.pageTitle == ' > Students'" class="user-search" [class.show]="true" autocomplete="off">
+    <mat-form-field class="user-search-input"><input  (keyup)="applyFilter($event.target.value)" (focusout)="focusOutFunction()"  matInput placeholder="Search here..."
+       [(ngModel)]="searchFilterData"  name="searchFilterData" /></mat-form-field>
+  </form>
+  <!-- //serach for student filter -->
+
+  <form *ngIf="breadcrumb.pageTitle != ' > Students'" class="user-search" [class.show]="controls.value == 'search'" autocomplete="off" >
+    <mat-form-field class="user-search-input" ><input (keyup)="applyFilter($event.target.value)" matInput placeholder="Search user...(based on any field)"
+        [(ngModel)]="searchText" name="search" /></mat-form-field>
+  </form>
+  <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="breadcrumb.pageTitle != ' > Students'">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="primary" [routerLink]="['/dashboard/admin/', role]">
+        <mat-icon>view_list</mat-icon>List View
+      </button>
+      <button mat-raised-button color="accent">
+        <mat-icon>view_module</mat-icon>Grid View
+      </button>
+    </mat-button-toggle-group>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="breadcrumb.pageTitle == ' > Students'">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="accent">
+        <mat-icon>view_module</mat-icon>Grid View
+      </button>
+      <button mat-raised-button color="primary" [routerLink]="['/dashboard/admin/', role]">
+        <mat-icon>view_list</mat-icon>List View
+      </button>
+    </mat-button-toggle-group>
+  </div>
+</div>
+
+<!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100">
+  <div fxLayout="column" fxLayoutAlign="center start" fxFlex="10">
+    <button mat-raised-button color="primary" class="filterBtn" (click)="gradeSelection=true">
+      <mat-icon>tune</mat-icon>Filter
+    </button>
+  </div>
+
+  <div *ngIf="gradeSelection" fxLayout="row" fxFlex="100">
+     
+    <div fxLayout="column" fxLayoutAlign="center start" fxFlex="20">
+      <mat-form-field>
+        <mat-label>Select an option</mat-label>
+        <mat-select [(value)]="gradeSelected" (selectionChange)="onGradeSelected($event)">
+          <mat-option [value]="grade" *ngFor="let grade of gradeData">{{grade}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center center" fxFlex="10">
+      <button mat-raised-button color="primary" (click)="onExportExcel()">Export to excel</button>
+    </div>
+
+  </div>
+</div> -->
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonHide">
+  <div
+    *ngFor="let user of (users | UserSearchPipe: searchText | paginate: { itemsPerPage: 9, currentPage: page, totalItems: length })"
+    fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card class="p-0">
+      <!-- Name and edit option -->
+
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 *ngIf="!user.status" class="user-name">{{ user.fullName }}</h3>
+        <h3 *ngIf="user.status" class="user-name">{{ user.fullName }} blocked</h3>
+
+        <button *ngIf="(breadcrumb.pageTitle == ' > Teachers' || breadcrumb.pageTitle == ' > Parents') && !user.status"
+          mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <button style="visibility: hidden" *ngIf="breadcrumb.pageTitle == ' > Teachers' && user.status" mat-icon-button
+          [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <button style="visibility:hidden" mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"
+          *ngIf="breadcrumb.pageTitle == ' > Students' || breadcrumb.pageTitle == ' > Demo Members'">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button *ngIf="breadcrumb.pageTitle == ' > Teachers'" mat-menu-item (click)="openUserDialogforUpdate(user)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button *ngIf="breadcrumb.pageTitle == ' > Parents'" mat-menu-item (click)="openParentInfo(user)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>More Info</span>
+        </button>
+      </mat-menu>
+
+      <!-- user Info -->
+
+      <div fxLayout="row" class="user-content">
+        <!-- user Image & block option for student and taecher  -->
+
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center" class="border">
+          <div class="user-img">
+            <img *ngIf="!user.image" src="assets/img/users/default-user.jpg" class="transition-2 hvr-grow"
+              [class.blocked]="user.status" />
+            <img *ngIf="user.image && user.userRole != 'parent'"
+              src="https://app.yolearn.com/appyolearn/UserImages/{{ user.accountId }}.jpg" class="transition-2 hvr-grow"
+              [class.blocked]="user.status" />
+            <img *ngIf="user.image && user.userRole == 'parent'"
+              src="https://app.yolearn.com/appyolearn/UserImages/{{ user.mainAccountId }}.jpg"
+              class="transition-2 hvr-grow" [class.blocked]="user.status" />
+            <mat-icon *ngIf="user.status" class="warn-color">block</mat-icon>
+          </div>
+
+          <div class="user-social"
+            *ngIf="breadcrumb.pageTitle == ' > Teachers' || breadcrumb.pageTitle == ' > Students'">
+            <mat-slide-toggle color="primary" [checked]="user.status" (change)="user.status = !user.status"
+              (change)="statuschange(user, $event)"></mat-slide-toggle>
+          </div>
+        </div>
+
+        <!-- Info -->
+
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2 " [class.blocked]="user.status">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">perm_identity</mat-icon>
+            <span>{{ user.accountId }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle != ' > Students'" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">mail_outline</mat-icon>
+            <span>{{ user.primaryEmail }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle == ' > Students'" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">wc</mat-icon>
+            <span>Parent Name : {{ user.parentFirstName }} {{ user.parentLastName }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle == ' > Teachers' || breadcrumb.pageTitle == ' > Parent'" fxLayout="row"
+            fxLayoutAlign="start center">
+            <mat-icon class="muted-text">call</mat-icon>
+            <span> {{ user.mobileNum }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle == ' > Demo Members'" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">call</mat-icon>
+            <span> {{ user.mobileNum }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle == ' > Students'" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span> Class {{ user.gradeName }}</span>
+          </p>
+          <p *ngIf="breadcrumb.pageTitle == ' > Students'" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span> Program : {{ user.syllabusName }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 7px;">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span>Joined {{ user.dateOfCreation }}</span>
+          </p>
+
+          <!-- class report & analytics for teacher & student -->
+
+          <div *ngIf="user.userRole == 'student' || user.userRole == 'teacher'" class="divider"></div>
+          <div fxLayout="row wrap" fxLayout.lt-lg="column" fxLayoutAlign="space-between center"
+            *ngIf="user.userRole == 'student' || user.userRole == 'teacher'" style="padding: 5px;">
+            <button fxFlex.gt-md="48" *ngIf="user.userRole == 'teacher'" class="stat-buttons" fxLayout="row"
+              fxLayoutAlign="space-around center" [disabled]="user.status" mat-button color="primary"
+              (click)="openReport(role, user.fullName, user.accountId)">
+              <mat-icon class="muted-text"> library_books </mat-icon>
+              <span> Class Report </span>
+            </button>
+            <button fxFlex.gt-md="48" *ngIf="user.userRole == 'student'" class="stat-buttons" fxLayout="row"
+              fxLayoutAlign="space-around center" [disabled]="user.status" mat-button color="primary"
+              (click)="openReportForStudent(user)">
+              <mat-icon class="muted-text"> library_books </mat-icon>
+              <span> Class Report </span>
+            </button>
+            <button [disabled]="user.status" class="stat-buttons" fxLayout="row" fxLayoutAlign="space-around center"
+              fxFlex="50" mat-button color="primary" (click)="showAnalytics(user)">
+              <mat-icon class="muted-text">pie_chart</mat-icon>
+              <span> View Analytics </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+   <div  fxLayout="row" fxFlex="100" fxLayoutAlign="center center" *ngIf="users.length == 0 "><h1 style="opacity:0.5;">No  Users Found!!!</h1></div>
+
+
+  <div *ngIf="!users.length == 0" fxLayout="row wrap" fxFill>
+    <div fxFlex="100" class="flex-p">
+      <mat-card class="p-0 text-center">
+        <!-- <pagination-controls class="gradus-pagination" autoHide="true" (pageChange)="onPageChanged($event)">
+        </pagination-controls> -->
+        <mat-paginator [hidePageSize]="false" [pageSize]="pageSize" [pageIndex]="pageNo" (page)="pageEvent = $event; pageno($event)" [length]="lengthForPagination" [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+      </mat-card>
+    </div>
+  </div>
+</div>

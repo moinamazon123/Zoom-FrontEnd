@@ -1,0 +1,28 @@
+.winner-data {
+    margin-top:20px;
+border: 2px solid black;
+height: 150px;
+
+}
+
+.vertical-border {
+    border-right: 2px;
+}
+
+.mat-row:nth-child(odd){
+    background-color: rgba(235, 235, 235, 0.67) !important;
+}
+
+.mat-row:nth-child(even){
+    background-color: rgba(235, 235, 235, 0.18) !important;
+}
+
+.mat-header-cell{
+    font-weight: bold !important;
+    // color: #00695b !important;
+    background-color: antiquewhite !important;
+}
+
+::ng-deep .mat-paginator-container {
+    justify-content: center !important;
+}

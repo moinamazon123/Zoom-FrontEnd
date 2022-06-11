@@ -1,0 +1,68 @@
+<!-- dialog box to add or edit the product -->
+
+<div class="heading" fxLayoutAlign="center center"><h1 mat-dialog-title style="margin-top: 5px;"><span *ngIf="!user">Add</span><span *ngIf="user">Edit</span> Product </h1></div>
+
+<div mat-dialog-content [style.width.px]="'370'">
+    <form [formGroup]="form" autocomplete="off" class="user-form">
+                <div fxLayout="column">
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Product Name" formControlName="subscriptionName">
+                        <mat-error *ngIf="form.controls['subscriptionName'].errors?.required">subscriptionName is required</mat-error>
+                        <mat-error *ngIf="form.controls['subscriptionName'].hasError('minlength')">subscriptionName isn't long
+                            enough, minimum of 2 characters</mat-error>
+                        <mat-error *ngIf="form.controls['subscriptionName'].hasError('maxlength')">subscriptionName is too long
+                            , maximum of 15 characters</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <mat-select placeholder="Select grade" formControlName="gradeId" (selectionChange)="selectsys($event.value)">
+                            <mat-option [disabled]="grade.disabled" *ngFor='let grade of allgrades' [value]="grade.gradeId" >{{grade.gradeName}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.controls['gradeId'].errors?.required">Grade is required</mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select formControlName="syllabusId" placeholder="Program" >
+                            <mat-option *ngFor='let grdae of syllabus' [value]="grdae.syllabusId">{{grdae.syllabusName}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.controls['syllabusId'].errors?.required">Program is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput [matDatepicker]="start" (focus)="start.open()"  placeholder="Start Date" formControlName="validFrom">
+                        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+                        <mat-datepicker #start></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100">
+                        <input matInput [matDatepicker]="end" (focus)="end.open()" placeholder="end Date" formControlName="validTill">
+                        <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+                        <mat-datepicker #end></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Price" formControlName="price">
+                        <mat-error *ngIf="form.controls['price'].errors?.required">price is required</mat-error>
+                        <mat-error *ngIf="form.controls['price'].hasError('pattern')">Only Number!!!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Orginal Price" formControlName="originalPrice">
+                        <mat-error *ngIf="form.controls['originalPrice'].errors?.required">price is required</mat-error>
+                        <mat-error *ngIf="form.controls['originalPrice'].hasError('pattern')">Only Number!!!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <textarea  matInput placeholder="Description" formControlName="description"></textarea>
+                        <mat-error *ngIf="form.controls['description'].errors?.required">description is required</mat-error>
+                        <mat-error *ngIf="form.controls['description'].hasError('minlength')">description isn't long enough,
+                            minimum of 2 characters</mat-error>
+                        <mat-error *ngIf="form.controls['description'].hasError('maxlength')">description is too long , maximum
+                            of 150 characters</mat-error>
+                    </mat-form-field>
+                </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" [mat-dialog-close]="form.value" [disabled]="!form.valid" *ngIf="user.user"
+        (click)="updateproduct(form.value)"><span>update</span></button>
+    <button mat-raised-button color="primary" (click)='createproduct(form.value)' *ngIf="!user.user" [mat-dialog-close]="form.value"
+        [disabled]="!form.valid"><span>Save</span></button>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

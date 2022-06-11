@@ -1,0 +1,83 @@
+<!-- to display the talent-test registered student with total count for each grade-->
+
+
+<div>
+  <div style="background-color: #206c5c;color:white; padding: 15px;" fxLayout="row" fxLayoutAlign="space-between center">
+    <div style="padding-left: 20px;"><button mat-stroked-button color="accent" [routerLink]="['/dashboard/admin/Talenttest/Result']">Talent Test Results</button></div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="font-size: 35px;">Talent Test Detail</div>
+    <div fxLayout="column" style="margin-right: 10px;">
+      <h4>
+        Total Candidates of Class 6 : <b> {{ count6 }} </b>
+      </h4>
+      <h4>
+        Total Candidates of class 7 : <b> {{ count7 }} </b>
+      </h4>
+      <h4>
+        Total Candidates of class 8 : <b> {{ count8 }} </b>
+      </h4>
+      <h4>
+        Total Candidates of class 9 : <b> {{ count9 }}</b>
+      </h4>
+    </div>
+  </div>
+  <mat-form-field fxFill>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Candidate" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  <table fxFill="100" mat-table [dataSource]="datasource" matSort (matSortChange)="sortData($event)" matSortDisableClear>
+
+    <ng-container matColumnDef="no">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let row">{{ row.no }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Id">
+      <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Candidate ID</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.candidateId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="candidateName">
+      <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Candidate Name</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.candidateName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fatherName">
+      <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Parent Name</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.fatherName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="garde">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>Class</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.grade }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="schoolName">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>School Name</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.schoolName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>Email</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phoneNo">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>Phone No.</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.phone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th class="text-center" mat-header-cell *matHeaderCellDef>Address</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.address }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumOfTalentTest"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumOfTalentTest"></tr>
+  </table>
+
+  <div *ngIf="talentTest.length == 0" fxLayout="column" fxLayoutAlign="center center" class="user-spinner">
+    <mat-spinner color="primary"></mat-spinner>
+    <h4>Loading TalentTest...</h4>
+  </div>
+  <mat-paginator  #paginator [pageSizeOptions]="[20, 30, 50, 100]"></mat-paginator>
+</div>

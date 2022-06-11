@@ -1,0 +1,50 @@
+<mat-toolbar color="primary" [fxLayoutAlign]="settings.menuType != 'mini' ? 'space-between center' : 'center center'" class="sidenav-header">
+  <a (click)="closeSubMenus()"
+    ><div fxLayout="row" fxLayoutAlign="center center">
+      <img fxLayoutAlign="end center " src="assets/img/Logo_v8.svg" style="width: 60%;" /></div
+  ></a>
+</mat-toolbar>
+
+<div style="height: 186px" fxLayout="column" fxLayoutAlign="center center" class="user-block transition-2" [class.show]="settings.sidenavUserBlock">
+  <div
+    [fxLayout]="settings.menuType != 'default' ? 'column' : 'row'"
+    [fxLayoutAlign]="settings.menuType != 'default' ? 'center center' : 'space-around center'"
+    class="user-info-wrapper"
+  >
+    <img
+      *ngIf="role != 'guest'"
+      (click)="file.click()"
+      class="user-img-upload"
+      id="imgidprofile"
+      matTooltip="click to edit Image"
+      matTooltipPosition="left"
+      src="{{ img }}"
+      onerror="this.onerror=null;this.src='assets/img/users/default-user.jpg';"
+    />
+
+    <div *ngIf="role == 'guest'">
+      <mat-icon fxLayoutAlign="center center" style="font-size: 70px;">person_pin</mat-icon>
+    </div>
+  </div>
+
+  <div class="user-info" fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 8px;">
+    <p *ngIf="!appSettings.userdetails.firstName">Guest</p>
+    <p *ngIf="appSettings.userdetails" class="name">
+      {{ appSettings.userdetails.firstName }}
+      {{ appSettings.userdetails.lastName }}
+    </p>
+    <!-- <small *ngIf="appSettings.role == 'student'" class="position">(Student) </small> -->
+    <small *ngIf="role == 'teacher'" class="position">(Teacher)</small>
+    <small *ngIf="role == 'Admin'" class="position">(Admin)</small>
+    <small *ngIf="role == 'teacher' || role == 'Admin' || role == 'student' || role == 'parent'" class="muted-text" style="margin-bottom: 5px;">Member since {{ appSettings.userdetails.dateOfCreation }}</small>
+    <!-- <small *ngIf="role == 'student'" style="font-weight: bold"><span style="font-weight: bold !important;">Valid Till</span> - {{appSettings.userdetails.SubscriptionDayLeft | date: 'dd'}}<sup> {{(appSettings.userdetails.SubscriptionDayLeft | date: 'dd') | datesuffix}}</sup> {{appSettings.userdetails.SubscriptionDayLeft | date: 'MMMM'}} {{appSettings.userdetails.SubscriptionDayLeft | date: 'yyyy'}}</small> -->
+    <small *ngIf="role == 'guest' || !role" class="muted-text">Welcome, to Yolearn..</small>
+  </div>
+  <input id="files" (change)="fileChange($event)" accept=".jpg" type="file" #file multiple hidden required />
+
+</div>
+
+<div id="sidenav-menu-outer" class="sidenav-menu-outer" perfectScrollbar [class.user-block-show]="settings.sidenavUserBlock">
+  <span *ngIf="!menuItems">loading....</span>
+  <app-vertical-menu [menuItems]="menuItems" [menuParentId]="0"></app-vertical-menu>
+</div>

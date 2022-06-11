@@ -1,0 +1,59 @@
+<!-- display viewers of the recorded class -->
+
+<div style="background-color: #00695c;color:white; padding: 5px;">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveback()">keyboard_backspace</mat-icon>
+    <h2>{{title}}</h2>
+    <div fxLayout="column" style="margin-right:70px;">
+      <h3>Total views: {{totalView}}</h3>
+      <h3>Class Duration: {{duration}} min</h3>
+    </div>
+  </div>
+</div>
+
+<div fxLayout="row" class="mat-elevation-z8">
+  <mat-form-field fxFlex="100" class="p-1" fx>
+    <input matInput placeholder="Search Recorded Statistics..." (keyup)="applyFilter($event.target.value)" autocomplete="off">
+  </mat-form-field>
+</div>
+
+
+<table  style="width: 100%" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" matSortDisableClear>
+  <ng-container matColumnDef="Sl.No">
+      <th class="text-center"  mat-header-cell *matHeaderCellDef>Sl.No</th>
+      <td class="text-center"  mat-cell *matCellDef="let row; let i = index">{{row.No}} )</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Unique Name">
+      <th class="text-center"  mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Unique Name</th>
+      <td class="text-center"   mat-cell *matCellDef="let row">{{ row.Unique_Name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Display Name">
+      <th class="text-center"  mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Display Name</th>
+      <td class="text-center"   mat-cell *matCellDef="let row">{{ row.displayName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Duration of view">
+      <th class="text-center"   mat-header-cell *matHeaderCellDef>Duration of view (min)</th>
+      <td class="text-center"   mat-cell *matCellDef="let row">{{ row.Duration_of_view }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="View Percentage">
+      <th class="text-center"   mat-header-cell *matHeaderCellDef>View Percentage</th>
+      <td  class="text-center"  mat-cell *matCellDef="let row">
+      <circle-progress  [percent]="row.view_percentage" [radius]="20" [titleFontSize]='10' [outerStrokeWidth]="6"
+        [innerStrokeWidth]="2" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'" [animation]="true"
+        [showSubtitle]="false" [animationDuration]="300"></circle-progress>
+        </td>
+    </ng-container>
+
+  
+    <tr mat-header-row *matHeaderRowDef="displaycolumnForViewers"></tr>
+    <tr mat-row *matRowDef="let row; columns: displaycolumnForViewers"></tr>
+</table>
+<div *ngIf="notfound && !dataSource" fxLayoutAlign="center center">
+  <h1 style="margin-top: 26px !important;margin-bottom: 26px !important; opacity:0.5;">No Recorded View Found!!!</h1>
+</div>
+<div *ngIf="!dataSource && !notfound"><div class="skeleton"></div></div>
+<mat-paginator [hidePageSize]="true" [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>

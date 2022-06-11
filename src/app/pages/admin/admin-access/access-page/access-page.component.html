@@ -1,0 +1,31 @@
+<!-- header contain back button & admin Name -->
+<div fxLayout="row" fxLayoutAlign="space-between center" style="background-color: #206c5c;color:white; padding: 5px;margin-bottom: 20px;">
+  <div>
+    <mat-icon style="margin-left:30px;cursor: pointer;" (click)="goBack()" matTooltip="recorded classes">keyboard_backspace </mat-icon>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h2>Admin Access</h2>
+  </div>
+  <div style="margin-right: 10px;">
+    <h3>Admin Name: {{ fullName }}</h3>
+  </div>
+</div>
+
+<!-- sidenav name with mat-slide-toggle button -->
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div [formGroup]="form" fxLayout="column"  style="height: auto;width:70%;border: 1px solid black;">
+    <div *ngFor="let controlerName of controlerName; let i = index">
+      <div  fxLayout="row" fxFlex="100"  >
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="50" >
+          <span fxFlex="50" fxLayoutAlign="end center"
+            ><mat-icon>{{ icon[i] }}</mat-icon></span
+          ><span fxFlex="50" fxLayoutAlign="start center" style="padding-left: 10px;font-weight: 900 !important;">{{ sidenav[i] }}</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="50">
+          <mat-slide-toggle formControlName="{{ controlerName }}" (change)="submitAccess(form.value)" class="example-margin"> </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="divider"></div>
+    </div>
+  </div>
+</div>

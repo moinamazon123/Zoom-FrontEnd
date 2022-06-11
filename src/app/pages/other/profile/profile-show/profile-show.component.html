@@ -1,0 +1,99 @@
+
+<!-- show user details -->
+
+<div class="container">
+    <div fxFlex="33.3" fxFlex.lt-md="100" class="flex-p">
+      <mat-card class="custom-card">
+        <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
+          <mat-card-title class="m-0"> <h3>Profile</h3> </mat-card-title>
+          <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+        </mat-card-header>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item (click)="openUserDialogforEdit(null)">
+            <mat-icon>person</mat-icon>
+            <span>Edit Profile</span>
+          </button>
+          <button mat-menu-item (click)="openUserDialogforPassword(null)">
+            <mat-icon>mode_edit</mat-icon>
+            <span>Change Password</span>
+          </button>
+        </mat-menu>
+  
+        <div fxLayout="row" fxLayoutAlign="center center" style="margin-top:30px;">
+          <img
+            *ngIf="role != 'guest'"
+            id="img"
+            mat-card-image
+            src="{{ img }}"
+            alt="profile photo"
+            (mouseenter)="displayuploadimgIcon()"
+            (mouseleave)="displaynoneuploadimgIcon()"
+            onerror="this.onerror=null;this.src='assets/img/users/default-user.jpg';"
+          />
+          <span id="uploadimgicon" style="position:absolute;display: none;" (mouseenter)="iconhover()" matTooltip="click to upload new image"
+            ><mat-icon style="font-size: 26px;cursor: pointer;" id="icon" (click)="file.click()">camera_enhance</mat-icon></span
+          >
+        </div>
+  
+        <input id="files" (change)="fileChange($event)" accept=".jpg" type="file" #file multiple hidden required />
+  
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start center">
+            <button mat-menu-item style="margin-top: 10px;">
+              <mat-icon>account_circle</mat-icon>
+              <span><b>Name : </b></span> <span>{{ appsetting.userdetails.firstName }} {{ appsetting.userdetails.lastName }}</span>
+            </button>
+            <button mat-menu-item style="margin-top: 10px;">
+              <mat-icon>mail_outline</mat-icon>
+              <span><b>Email : </b></span> <span>{{ appsetting.userdetails.primaryEmail }}</span>
+            </button>
+            <button mat-menu-item style="margin-top: 10px;" *ngIf="role != 'student'">
+              <mat-icon>call</mat-icon>
+              <span><b>Phone Number : </b></span> <span>{{ appsetting.userdetails.mobileNum }}</span>
+            </button>
+            <button mat-menu-item style="margin-top: 10px;" *ngIf="role == 'student'">
+              <mat-icon>school</mat-icon>
+              <span><b>Class : </b></span> <span>{{ appsetting.userdetails.gradeName }}</span>
+            </button>
+            <button mat-menu-item style="margin-top: 10px;" *ngIf="role == 'student'">
+              <mat-icon>school</mat-icon>
+              <span><b>Program : </b></span> <span>{{ appsetting.userdetails.syllabusName }}</span>
+            </button>
+            <button mat-menu-item style="margin-top: 10px;">
+              <mat-icon>date_range</mat-icon>
+              <span><b>Date of Joining : </b></span> <span>{{ appsetting.userdetails.dateOfCreation }}</span>
+            </button>
+           
+          </div>
+          <button *ngIf="role == 'parent' || role == 'teacher'" mat-button color="primary" style="margin-top: 10px;" (click)= "Unsubscribe()">
+            <mat-icon>unsubscribe</mat-icon>
+            <span style="margin-left: 10px;" *ngIf="appsetting.userdetails.mailStatus"><b> Subscribe to Mail/SMS </b></span> 
+            <span style="margin-left: 10px;" *ngIf="!appsetting.userdetails.mailStatus"><b> UnSubscribe to Mail/SMS </b></span> 
+          </button>
+  
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions fxLayoutAlign="end center">
+          <button *ngIf="role == 'Admin'" mat-raised-button color="primary" routerLink="/dashboard/admin">
+            <span style="margin:5px;">Home</span>
+            <mat-icon>home</mat-icon>
+          </button>
+          <button *ngIf="role == 'student'" mat-raised-button color="primary" routerLink="/dashboard/student">
+            <span style="margin:5px;">Home</span>
+            <mat-icon>home</mat-icon>
+          </button>
+          <button *ngIf="role == 'parent'" mat-raised-button color="primary" routerLink="/dashboard/parent">
+            <span style="margin:5px;">Home</span>
+            <mat-icon>home</mat-icon>
+          </button>
+          <button *ngIf="role == 'teacher'" mat-raised-button color="primary" routerLink="/dashboard/teacher">
+            <span style="margin:5px;">Home</span>
+            <mat-icon>home</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  
+  </div>
+  

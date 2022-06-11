@@ -1,0 +1,43 @@
+<div fxFlex="row" fxLayoutAlign="space-around center">
+  <!--display all the student of particular syllabus who are not assigned to any batch  -->
+
+  <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 30px;">
+    <h2>Students Not assigned with batches</h2>
+    <div
+      style="min-height: 600px;margin-top: 20px;"
+      cdkDropList
+      #studentList="cdkDropList"
+      [cdkDropListData]="studentListdata"
+      [cdkDropListConnectedTo]="[batchlist]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="skeleton" *ngIf="!skeletonHideForAllStudent"></div>
+      <div class="example-box" *ngFor="let item of studentListdata; let i = index" cdkDrag>{{ i + 1 }} ) {{ item.firstName }} {{ item.lastName }} ({{item.sAccountId}})</div>
+      <span fxLayout="row" fxLayoutAlign="center center" *ngIf="studentListdata.length == 0 && skeletonHideForBatchStudent"
+        ><h1 style="margin-top: 26px !important; margin-bottom:10px; opacity:0.5;">No Students Found!!!</h1></span
+      >
+    </div>
+  </div>
+
+  <!-- list of student added to the batch -->
+
+  <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 30px;">
+    <h2>Students In Batch</h2>
+    <div
+      style="min-height: 600px;margin-top: 20px;"
+      cdkDropList
+      #batchlist="cdkDropList"
+      [cdkDropListData]="batchListdata"
+      [cdkDropListConnectedTo]="[studentList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="skeleton" *ngIf="!skeletonHideForBatchStudent"></div>
+      <div class="example-box" *ngFor="let item of batchListdata; let i = index" cdkDrag>{{ i + 1 }} ) {{ item.firstName }} {{ item.lastName }} ({{item.sAccountId}})</div>
+      <span fxLayout="row" fxLayoutAlign="center center" *ngIf="batchListdata.length == 0 && skeletonHideForBatchStudent"
+        ><h1 style="margin-top: 26px !important; margin-bottom:10px; opacity:0.5;">No Students Found!!!</h1></span
+      >
+    </div>
+  </div>
+</div>

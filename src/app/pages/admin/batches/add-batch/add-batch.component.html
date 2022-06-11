@@ -1,0 +1,35 @@
+<div class="heading" fxLayoutAlign="center center"><h1 mat-dialog-title style="margin-top: 5px;">Create Batch</h1></div>
+
+<div mat-dialog-content [style.width.px]="'370'">
+  <form [formGroup]="form" autocomplete="off" class="user-form">
+    <div fxLayout="column">
+      <mat-form-field class="w-100">
+        <input matInput placeholder="Batch Name" formControlName="batchName" />
+        <mat-error *ngIf="form.controls['batchName'].errors?.required">Batch Name is required</mat-error>
+        <mat-error *ngIf="form.controls['batchName'].hasError('minlength')">Batch Name isn't long enough, minimum of 2 characters</mat-error>
+        <mat-error *ngIf="form.controls['batchName'].hasError('maxlength')">Batch Name is too long , maximum of 50 characters</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <mat-select placeholder="Select Grade" formControlName="gradeId" (selectionChange)="selectsys($event.value)">
+          <mat-option *ngFor="let grade of grades" [value]="grade.gradeId">{{ grade.gradeName }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['gradeId'].errors?.required">Grade is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <mat-select placeholder="Select Program" formControlName="syllabusId" >
+          <mat-option *ngFor="let syllabus of Syllabus" [value]="syllabus.syllabusId">{{ syllabus.syllabusName }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['syllabusId'].errors?.required">Program is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        <mat-error *ngIf="form.controls['description'].hasError('minlength')">description isn't long enough, minimum of 2 characters</mat-error>
+        <mat-error *ngIf="form.controls['description'].hasError('maxlength')">description is too long , maximum of 30 characters</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="createBatch(form.value)" [mat-dialog-close]="form.value" [disabled]="!form.valid"><span>Save</span></button>
+</div>

@@ -1,0 +1,106 @@
+@import "../../styles/variables";
+
+.pin{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    fill: currentColor;
+}
+
+.sidenav-header{
+    padding: 0 10px !important;
+}
+
+.user-block{
+    height: 0;
+    position: relative;  
+    z-index: 1; 
+    overflow: hidden;  
+    img{
+        width: 80px; 
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 50%;       
+    }
+    .user-info-wrapper{
+        padding: 6px 6px;
+        margin: 9px 0;
+        width: 100%;
+        .user-info{
+            text-align: center;
+            .name{
+                font-size: 15px
+            }
+            .position{
+                font-size: 13px;
+            }
+        }
+    } 
+    &.show{
+        height: $sidenav-user-block-height;
+    }      
+} 
+
+.sidenav-menu-outer{
+    height: calc(100% - #{$toolbar-height}); 
+    &.user-block-show{
+        height: calc(100% - #{$toolbar-height + $sidenav-user-block-height}); 
+    } 
+}
+
+.user-img{
+    position: relative;
+    img{
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        &.blocked{
+            opacity: 0.5;
+        }
+    }
+    .mat-icon{
+        position: absolute;
+   
+      
+        font-size: 70px;
+        height: 50px;
+        width: 50px;            
+    }
+}
+
+.small-logo{
+    margin-left: 9px;
+    border-radius: 50%;
+
+}
+
+.logo{
+    margin-left: -75px;
+}
+
+.blinking{
+    animation:blinkingText 2.5s infinite;
+  }
+  @keyframes blinkingText{
+      0%{     color: rgb(36, 241, 70);    }
+      25%{    color: rgb(240, 23, 34); }
+      50%{    color: rgb(36, 241, 70); }
+      75%{    color: rgb(240, 23, 34); }
+      100%{   color: rgb(36, 241, 70);    }
+  }
+
+.user-img-upload{
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+  .user-img-upload:hover{
+  opacity: 0.5;
+   
+}
+
+
+
+  

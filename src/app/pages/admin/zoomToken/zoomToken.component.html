@@ -1,0 +1,13 @@
+<form>
+ 
+  <div *ngIf="msgFlg">
+    <div class="alert alert-success">Token Saved!</div>
+  </div>
+  <div class="form-group">
+    <label for="zoomToken">Zoom Token</label>
+    <input type="text" class="form-control" name="token" id="zoomToken" [(ngModel)]="token" aria-describedby="zoomTokenhelp" placeholder="Enter Zoom Token">
+    <small id="zoomHelp" class="form-text text-muted">Never share your token with anyone else.</small>
+  </div>
+  
+  <button type="submit" (click)="saveToken()" class="btn btn-primary">Submit</button>
+</form>

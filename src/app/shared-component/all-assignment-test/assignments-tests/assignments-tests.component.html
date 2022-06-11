@@ -1,0 +1,99 @@
+<!-- dispaly all assignment and test -->
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p" style="margin-bottom: 20px;">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button *ngIf="role == 'Admin' && AssignmentOrTest == 'Assignment'" matTooltip="Add New Assignment" mat-raised-button color="primary" (click)="openDialog()">
+        <mat-icon>add_to_photos</mat-icon> Add Assignment
+      </button>
+      <button *ngIf="role == 'Admin' && AssignmentOrTest == 'Test'" matTooltip="Add New Test" mat-raised-button color="primary" (click)="openDialog()">
+        <mat-icon>add_to_photos</mat-icon> Add Test
+      </button>
+      <mat-button-toggle value="search"> <mat-icon matTooltip="search">search</mat-icon> </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input"> <input matInput placeholder="Search Assignment based on title..." [(ngModel)]="searchText" name="search" /> </mat-form-field>
+  </form>
+</div>
+
+<!-- dispaly skeleton at the beginning -->
+
+<div fxLayout="row wrap" fxLayout.xs="column" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" fxLayout.xs="column" *ngIf="skeletonHide">
+  <div
+    *ngFor="let ResultData of (ResultData | AssignmentTest: searchText | paginate: { itemsPerPage: 9, currentPage: page, totalItems: length })"
+    fxFlex="100"
+    fxFlex.gt-md="33.3"
+    fxFlex.md="50"
+    class="flex-p"
+  >
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="start center">
+        <h3 class="user-name" style="padding: 12px;text-overflow: ellipsis;font-variant: small-caps;text-transform: lowercase; font-size: larger">{{ ResultData.title }}</h3>
+      </div>
+      <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+          <div class="user-img" *ngIf="AssignmentOrTest == 'Assignment'"><mat-icon>book</mat-icon></div>
+          <div class="user-img" *ngIf="AssignmentOrTest == 'Test'"><mat-icon>assignment_turned_in</mat-icon></div>
+        </div>
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Subject :</b></span> {{ ResultData.subjectName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span
+              ><span><b>Grade :</b></span> {{ ResultData.gradeName }}</span
+            >
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment</mat-icon>
+            <span
+              ><span><b>Program :</b></span> {{ ResultData.syllabusName }}</span
+            >
+          </p>
+
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">today</mat-icon>
+            <span
+              ><span><b>Date-Of-Creation :</b></span> {{ ResultData.dateOfCreation }}
+            </span>
+          </p>
+          <div class="divider" style="margin-top: 8px;margin-bottom: 8px;"></div>
+          <button mat-raised-button color="primary" *ngIf="role == 'Admin' && AssignmentOrTest == 'Test'" (click)="testReport(ResultData)">View Test Report</button>
+          <button mat-raised-button color="primary" [disabled]="ResultData.alreadyDone" *ngIf="role == 'student' && AssignmentOrTest == 'Test'" (click)="taketest(ResultData)"><span *ngIf="ResultData.alreadyDone">Completed Test</span><span *ngIf="!ResultData.alreadyDone">Take Test</span></button>
+          <button mat-raised-button color="primary" *ngIf="(role == 'Admin' || role == 'student') && AssignmentOrTest == 'Assignment'" (click)="takeAssignment(ResultData)">
+            Practice Now
+          </button>
+          <button mat-raised-button color="primary" *ngIf="role == 'guest'" disabled>Only For Members</button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- if no assignment/test found -->
+
+  <div fxLayout="row" fxFill="60" fxLayoutAlign="center center">
+    <div *ngIf="ResultData.length == 0"><h1 style="margin-top: 26px !important; opacity:0.5;">No File Found!!!</h1></div>
+  </div>
+
+  <div fxLayout="row wrap" fxFill>
+    <div fxFlex="100" class="flex-p">
+      <mat-card class="p-0 text-center">
+        <pagination-controls class="gradus-pagination" autoHide="true" (pageChange)="getAssignmentorTestfunction($event)"></pagination-controls>
+      </mat-card>
+    </div>
+  </div>
+</div>

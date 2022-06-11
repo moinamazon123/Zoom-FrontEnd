@@ -1,0 +1,45 @@
+.mat-row:nth-child(odd) {
+    background-color: rgba(235, 235, 235, 0.67) !important;
+  }
+  
+  .mat-row:nth-child(even) {
+    background-color: rgba(235, 235, 235, 0.18) !important;
+  }
+
+  .skeleton:empty {
+    margin-left: 0px;
+    margin-right: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 1350px;
+    height: 350px; /* change height to see repeat-y behavior */
+  
+    background-image: 
+    // radial-gradient(circle 20px at 20px 20px, lightgray 99%, transparent 0),
+    //  linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%),
+      linear-gradient(lightgray 10px, transparent 0), 
+      linear-gradient(lightgray 10px, transparent 0), 
+      linear-gradient(lightgray 10px, transparent 0); 
+      
+     
+  
+    background-repeat: repeat-y;
+  
+    background-size: 1172px 130px, 1309px 130px, 1012px 130px;
+  
+    background-position: 15px 0, 15px 40px, 15px 80px;
+   
+
+  
+    // animation: shine 1s infinite;
+}
+
+.mat-header-cell{
+    font-weight: bold !important;
+    // color: #00695b !important;
+    background-color: antiquewhite !important;
+}
+
+::ng-deep .mat-paginator-container {
+    justify-content: center !important;
+  }

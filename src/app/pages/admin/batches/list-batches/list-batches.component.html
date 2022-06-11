@@ -1,0 +1,152 @@
+<!-- add batch and search -->
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button mat-raised-button (click)="openDIalogForCreateBatch(null)" color="primary"><mat-icon matTooltip="Create New Batch">add_to_photos</mat-icon>Create Batch</button>
+      <mat-button-toggle value="search">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input">
+      <input matInput placeholder="Search Batch..." [(ngModel)]="searchText" name="search" />
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- skeleton at the beginning -->
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<form>
+  <div fxLayout="row" *ngIf="role !='parent'" fxFlex="100" fxLayoutAlign="start center">
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+      <div fxLayoutAlign="end center">
+        <mat-icon>tune</mat-icon>
+      </div>
+      <mat-form-field>
+        <mat-label>Filter by Grade</mat-label>
+        <mat-select name="slectedgrade" [(ngModel)]="slectedgrade" (selectionChange)="
+                gradeChange({
+                  pageIndex: 0,
+            pageSize: 50
+          });
+          this.page = 0
+              ">
+          <mat-option value="all">All</mat-option>
+          <mat-option *ngFor="let item of gradelist" [value]="item.gradeId">Grade {{ item.gradeName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <div fxLayout="row">
+      <div fxLayoutAlign="center center">
+        <mat-icon>filter_list</mat-icon>
+      </div>
+      <mat-form-field style="font-size: 17px;">
+        <mat-label>Filter by program</mat-label>
+        <mat-select name="slectedsylabus" [(ngModel)]="slectedprogram" (selectionChange)="
+            programchange({
+              pageNo: 1,
+              maxResult: 9
+            });
+            this.page = 1
+          ">
+          <!-- <mat-option value="all">All</mat-option> -->
+          <mat-option *ngFor="let item of syllabuslist" [value]="item.syllabusId">{{ item.syllabusName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+
+    </div>
+
+  
+
+   
+
+   
+   
+
+  </div>
+  <!-- <div fxLayout="row">
+   
+    <div fxLayout="column" fxLayoutAlign="start center" fxFlexOffset='1'>
+      <button mat-raised-button color="accent" type="reset"
+        (click)="resetFilter({pageIndex: 0, pageSize: 50});this.page = 1">Reset</button>
+    </div>
+  </div> -->
+  <!-- </div> -->
+</form>
+
+
+<!-- batch in grid view -->
+
+<div fxLayout="row wrap" *ngIf="batches[0] && skeletonHide">
+  <div *ngFor="let batch of (batches | BatchPipe: searchText | paginate: { itemsPerPage: 9, currentPage: currentPage, totalItems: length })" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row">
+        <h3 class="user-name">{{ batch.batchName }}</h3>
+      </div>
+      <div class="user-content" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center">
+          <div class="user-img ">
+            <mat-icon>style</mat-icon>
+          </div>
+        </div>
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span
+              ><span><b>Class:</b></span> {{ batch.gradeName }}</span
+            >
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">class</mat-icon>
+            <span
+              ><span><b>Program :</b></span> {{ batch.syllabusName }}</span
+            >
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center" style=" margin-bottom: 5px;">
+            <mat-icon class="muted-text">description</mat-icon>
+            <span
+              ><span><b>Description :</b></span> {{ batch.description }}</span
+            >
+          </p>
+
+          <div class="divider"></div>
+          <button style="margin-top: 7px;text-overflow: ellipsis;" [disabled]="batch.seatLeft == 0" mat-raised-button color="accent" (click)="manageStudentDialog(batch)">
+            Manage Student<br>(Available Slot: {{ batch.seatLeft }} )
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+
+<!-- <div *ngIf="batches" fxLayout="row wrap">
+  <div fxFlex="100" class="flex-p">
+    <mat-card class="p-0 text-center">
+      <pagination-controls class="gradus-pagination" autoHide="true" maxSize="3" (pageChange)="onPageChanged($event)"></pagination-controls>
+    </mat-card>
+  </div>
+</div> -->
+<div *ngIf="batches" fxLayout="row wrap" fxFill>
+    <div fxFlex="100" class="flex-p">
+      <mat-card class="p-0 text-center">
+        <pagination-controls class="gradus-pagination" autoHide="true" (pageChange)="onPageChanged($event)">
+        </pagination-controls>
+      </mat-card>
+    </div>
+  </div>
+</div>

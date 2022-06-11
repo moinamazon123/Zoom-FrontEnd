@@ -1,0 +1,120 @@
+<!-- demo recorded class in grid view -->
+
+<div style="background-color: #206c5c;color:white; padding: 5px; margin-bottom: 20px;">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h2>Recorded Classes</h2>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <mat-button-toggle value="search">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input"><input matInput placeholder="Search Recorded class based on title..." [(ngModel)]="searchText" name="search"/></mat-form-field>
+  </form>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="accent"><mat-icon>view_module</mat-icon>Grid View</button>
+      <button mat-raised-button color="primary" (click)="listRouting()" ><mat-icon>view_list</mat-icon>List View</button>
+
+    </mat-button-toggle-group>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide && !notfound">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonHide">
+  <div
+    *ngFor="let demorecordedclass of (demorecordedclassrooms | RecordedSearchPipe: searchText | paginate: { itemsPerPage: 9, currentPage: page, totalItems: lengthForPagination })"
+    fxFlex="100"
+    fxFlex.gt-md="33.3"
+    fxFlex.md="50"
+    class="flex-p"
+  >
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">{{ demorecordedclass.title }}</h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+      </div>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openRecordedInfo(demorecordedclass)">
+          <mat-icon>more</mat-icon>
+          <span>More Info</span>
+        </button>
+      </mat-menu>
+
+      <div fxLayout="row" class="user-content">
+
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-around center" class="border">
+          <div class="user-img">
+            <img src="assets/img/chapter-Image/CHAP000001.png" class="transition-2 hvr-grow" class="transition-2 hvr-grow" />
+          </div>
+        </div>
+
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2 ">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Class :</b></span> {{ demorecordedclass.gradeName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Program :</b></span> {{ demorecordedclass.syllabusName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Subject :</b></span> {{ demorecordedclass.subjectName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">local_library</mat-icon>
+            <span
+              ><span><b>Teacher Name :</b></span> {{ demorecordedclass.presenterDisplayName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span
+              ><span><b>Held on :</b></span> {{ demorecordedclass.scheduledDate | date: "dd/MM/yyyy" }}
+            </span>
+          </p>
+
+          <div class="divider" style="margin: 5px;"></div>
+
+          <button style="margin-top:10px;" class="button" (click)="getintorecordedclass(demorecordedclass.replayUrl)" mat-raised-button color="primary">
+            Recorded Class
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  
+  </div>
+
+
+  <div *ngIf="notfound && skeletonHide" fxLayout="row" fxFill="60" fxLayoutAlign="center center">
+    <div ><h1 style="margin-top: 26px !important; opacity:0.5;">No Demo Recording Found!!!</h1></div>
+  </div>
+
+  <div *ngIf="demorecordedclassrooms" fxLayout="row wrap" fxFill>
+    <div fxFlex="100" class="flex-p">
+      <mat-card class="p-0 text-center"> <pagination-controls class="gradus-pagination" autoHide="true" (pageChange)="onPageChanged($event)"></pagination-controls> </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+.bgdark {
+    background-color: #303030;
+  }
+  
+  .forgotpass {
+    padding-top: 12px;
+    color: rgb(209, 37, 37);
+    cursor: pointer;
+  }
+  
+  .backimg {
+    background-image: url(https://media.istockphoto.com/photos/teal-abstract-glass-texture-background-or-pattern-creative-design-picture-id649683400?k=6&m=649683400&s=612x612&w=0&h=3n3CVa7pXgCVXVl1DYHckY7GnXP9FpRD6aoL1-3kc2M=);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+  }
+
+  #logindiv{}
+  
+  
+  #app-spinner {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background: #11998e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    z-index: 999999;
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: visibility 0.5s, opacity 0.3s linear;
+    -moz-transition: visibility 0.5s, opacity 0.3s linear;
+    transition: visibility 0.5s, opacity 0.3s linear;
+    &.hide {
+      visibility: hidden;
+      opacity: 0;
+    }
+    h4 {
+      margin-top: 10px;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      text-transform: uppercase;
+      -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+      -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+      -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+      animation: loading-text-opacity 2s linear 0s infinite normal;
+    }
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .demo:empty {
+    margin-left: 136px;
+    margin-top: 30px;
+    width: calc(500px - 50px);
+    height: 330px;
+ /* change height to see repeat-y behavior */
+  
+    background-image: radial-gradient(circle 20px at 20px 20px, lightgray 99%, transparent 0), 
+    // linear-gradient(100deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 80%),
+      linear-gradient(lightgray 10px, transparent 0), linear-gradient(lightgray 10px, transparent 0);
+  
+    background-repeat: repeat-y;
+  
+    background-size: 40px 118px, 150px 113px, 320px 112px;
+  
+    background-position: 0 0, /* circle  0 0, /* highlight */ 60px 0, 60px 40px;
+  
+    // animation: shine 1s infinite;
+  }
+  
+  @keyframes shine {
+    to {
+      background-position: 0 0,  /* 100% 0, move highlight to right */ 60px 0, 60px 40px;
+    }
+  }
+  
+  .circle {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    font-size: 16px;
+    vertical-align: middle;
+  }
+  
+  #img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+  }
+
+  .backclr {
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+   }
+ 
+  

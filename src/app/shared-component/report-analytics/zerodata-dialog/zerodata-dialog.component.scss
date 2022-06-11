@@ -1,0 +1,32 @@
+::ng-deep   .mat-dialog-container {
+    padding: 0px ;
+}
+
+.board {
+    height: 100%;
+    width: 100%;
+}
+
+.msg {
+    position: absolute;
+    color: #E8E8E8;
+    font-size: 20px;
+    font-family: "Walter Turncoat", cursive;
+    max-width:200px;
+    word-wrap:break-word;
+   
+   text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.link {
+    text-decoration: underline;
+    font-size: 20px;
+    font-family: "Walter Turncoat", cursive;
+    color: rgb(243, 158, 158);
+    cursor: pointer;
+
+}

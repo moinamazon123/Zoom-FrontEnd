@@ -1,0 +1,87 @@
+<div fxLayout="column wrap" *ngIf="role == 'Admin'">
+  <div fxFlex="100" fxFlex.gt-md="50.3" fxFlex.md="50" class="flex-p" fxLayout.xs="column">
+    <!-- Total User Count -->
+
+    <div fxFlex="100" class="flex-p">
+      <mat-card id="step1">
+        <div *ngIf="notFound" class="skeleton"></div>
+        <div *ngIf="!notFound" fxLayout="row" fxLayoutAlign="space-between center" class="muted-text">
+          <mat-icon class="icon-lg">face</mat-icon>
+          <div>
+            <h1>{{ users }}</h1>
+            <h2 class="fw-400">USERS</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Student Count -->
+
+    <div fxFlex="100" class="flex-p">
+      <mat-card id="step2">
+        <div *ngIf="notFound" class="skeleton"></div>
+        <div *ngIf="!notFound" fxLayout="row" fxLayoutAlign="space-between center" class="muted-text">
+          <mat-icon class="icon-lg">school</mat-icon>
+          <div>
+            <h1>{{ students }}</h1>
+            <h2 class="fw-400">STUDENTS</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Parent Count -->
+
+    <div fxFlex="100" class="flex-p">
+      <mat-card id="step3">
+        <div *ngIf="notFound" class="skeleton"></div>
+        <div *ngIf="!notFound" fxLayout="row" fxLayoutAlign="space-between center" class="muted-text">
+          <mat-icon class="icon-lg">wc</mat-icon>
+
+          <div>
+            <h1>{{ parent }}</h1>
+            <h2 class="fw-400">PARENTS</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Teacher Count -->
+
+    <div fxFlex="100" class="flex-p">
+      <mat-card>
+        <div *ngIf="notFound" class="skeleton"></div>
+        <div *ngIf="!notFound" fxLayout="row" fxLayoutAlign="space-between center" class="muted-text">
+          <mat-icon class="icon-lg">local_library</mat-icon>
+          <div>
+            <h1>{{ teachers }}</h1>
+            <h2 class="fw-400">TEACHERS</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Guest Count -->
+
+    <div fxFlex="100" class="flex-p">
+      <mat-card>
+        <div *ngIf="notFound" class="skeleton"></div>
+        <div *ngIf="!notFound" fxLayout="row" fxLayoutAlign="space-between center" class="muted-text">
+          <mat-icon class="icon-lg">person_pin</mat-icon>
+          <div>
+            <h1>{{ guest }}</h1>
+            <h2 class="fw-400">DEMO</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- import to-do component -->
+
+<div fxLayout="row" *ngIf="role == 'Admin'">
+  <div fxFlex="100" fxFlex.gt-sm="100" class="flex-p">
+    <app-todo></app-todo>
+  </div>
+</div>

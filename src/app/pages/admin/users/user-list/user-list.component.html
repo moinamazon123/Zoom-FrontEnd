@@ -1,0 +1,411 @@
+<!-- <form> -->
+<!-- filter for admin -->
+<div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center" *ngIf="breadcrumb.pageTitle == ' > Students'">
+
+  <div  fxLayoutAlign="center end" fxFlex="16">
+    <!-- <div fxLayoutAlign="center center">
+      <mat-icon>filter_list</mat-icon>
+    </div> -->
+    <mat-form-field>
+      <mat-label>Filter by Grade</mat-label>
+      <mat-select name="slectedgrade" [(ngModel)]="slectedgrade" (selectionChange)="
+              gradeChange({
+                pageIndex: 0,
+                pageSize: 10
+              });
+              this.page = 0
+            ">
+        <mat-option value="all">All</mat-option>
+        <mat-option *ngFor="let item of gradelist" [value]="item.gradeId">Grade {{ item.gradeName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayoutAlign="center end" fxFlex="16">
+    <!-- <div fxLayoutAlign="center center">
+      <mat-icon>filter_list</mat-icon>
+    </div> -->
+    <mat-form-field style="font-size: 17px;">
+      <mat-label>Filter by program</mat-label>
+      <mat-select name="slectedsylabus" [(ngModel)]="slectedprogram" (selectionChange)="
+      programchange({
+        pageNo: 1,
+        maxResult: 9
+      });
+      this.page = 1
+    ">
+        <!-- <mat-option value="all">All</mat-option> -->
+        <mat-option *ngFor="let item of syllabuslist" [value]="item.syllabusId">{{ item.syllabusName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center end" fxFlex="16">
+    <mat-form-field>
+      <input matInput [matDatepicker]="start" [max]="mindate" placeholder="Start Date" disabled name="startDate"
+        [(ngModel)]="startDate" (dateChange)="finalstartendDate( {pageIndex: 0, pageSize: 10});this.page = 0" />
+      <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+      <mat-datepicker #start disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center end" fxFlex="16">
+    <mat-form-field>
+      <input matInput [matDatepicker]="end" [min]="startDate" [max]="mindate" placeholder="end Date" disabled
+        name="endDate" [(ngModel)]="endDate"
+        (dateChange)="finalstartendDate( {pageIndex: 0, pageSize: 10});this.page = 0" />
+      <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+      <mat-datepicker #end [disabled]="!startDate"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button color="primary" [disabled]="length ==0" (click)="onExportExcel()">Export To Excel</button>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <button mat-raised-button color="primary" color="accent" (click)="resetFilter({
+          pageIndex: 0,
+          pageSize: 10
+        });this.page = 0">RESET</button>
+  </div>
+</div>
+<!-- filter for admin ends -->
+<!-- </form> -->
+
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button mat-raised-button color="primary" *ngIf="breadcrumb.pageTitle == ' > Teachers'"
+        (click)="openUserDialogforAdd(null)">
+        <mat-icon matTooltip="Add New Teacher">person_add</mat-icon>Add Teacher
+      </button>
+      <div *ngIf="breadcrumb.pageTitle == ' > Teachers'" fxLayout="column" fxLayoutAlign="start center"
+        fxFlexOffset='1'>
+        <button mat-raised-button color="primary" (click)="teacherexporttoexcel()">Export To Excel</button>
+      </div>
+      <div *ngIf="breadcrumb.pageTitle == ' > Parents'" fxLayout="column" fxLayoutAlign="start center" fxFlexOffset='1'>
+        <button mat-raised-button color="primary" (click)="parentexporttoexcel()">Export To Excel</button>
+      </div>
+
+      <mat-button-toggle *ngIf="breadcrumb.pageTitle == ' > Students'" value="Search" (click)="searchFilter({ pageIndex: 0,
+        pageSize: 10
+      });this.page = 0">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle *ngIf="breadcrumb.pageTitle != ' > Students'" value="Search">
+        <mat-icon matTooltip="Search">search</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+  </div>
+
+  <form *ngIf="breadcrumb.pageTitle == ' > Students'" class="user-search" [class.show]="true" autocomplete="off">
+    <mat-form-field class="user-search-input"><input matInput  (keyup)="applyFilter($event.target.value)" (focusout)="focusOutFunction({ pageIndex: 0,
+          pageSize: 10
+        });this.page = 0" [(ngModel)]="searchFilterData" name="searchFilterData" placeholder="Search here..." />
+    </mat-form-field>
+  </form>
+
+  <form *ngIf="breadcrumb.pageTitle != ' > Students'" class="user-search" [class.show]="controls.value == 'Search'"
+    autocomplete="off">
+    <mat-form-field class="user-search-input"><input matInput (keyup)="applyFilter($event.target.value)"
+        placeholder="Search user...(based on any field)" /></mat-form-field>
+  </form>
+  <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="breadcrumb.pageTitle != ' > Students'">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="accent">
+        <mat-icon>view_list</mat-icon>List View
+      </button>
+      <button mat-raised-button color="primary" [routerLink]="['Grid']">
+        <mat-icon>view_module</mat-icon>Grid View
+      </button>
+    </mat-button-toggle-group>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="breadcrumb.pageTitle == ' > Students'">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="primary" [routerLink]="['Grid']">
+        <mat-icon>view_module</mat-icon>Grid View
+      </button>
+      <button mat-raised-button color="accent">
+        <mat-icon>view_list</mat-icon>List View
+      </button>
+    </mat-button-toggle-group>
+  </div>
+</div>
+
+<!-- list of students -->
+
+<div class="mat-elevation-z8" class="main-div">
+  <table *ngIf="breadcrumb.pageTitle == ' > Students'" style="width: 100%" mat-table [dataSource]="dataSource" matSort
+    (matSortChange)="sortData($event)" matSortDisableClear>
+    <ng-container matColumnDef="No.">
+      <th mat-header-cell *matHeaderCellDef>Sl.No</th>
+      <td mat-cell *matCellDef="let row; let i = index">{{ SizeOfPage * pageNo + (i + 1) }} )</td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Student ID</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.accountId }}</td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.fullName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="gradeName">
+      <th class="centre" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Grade</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.gradeName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="syllabusName">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Program Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.syllabusName }}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="class held date">
+      <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Registration Date</th>
+      <td class="text-center" mat-cell *matCellDef="let row">{{ row.formatedDate | date : 'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="parentFullName">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Parent Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.parentFirstName }} {{ row.parentLastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="schoolName">
+      <th class="centre" mat-header-cell *matHeaderCellDef>School Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.schoolName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="primaryEmail">
+      <th class="centre" mat-header-cell *matHeaderCellDef>primaryEmail</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.primaryEmail }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mobileNumber">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Contact Number</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.mobileNumber }}</td>
+    </ng-container>
+
+    
+
+    <!-- <ng-container matColumnDef="reports">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">Reports</th>
+      <td mat-cell style="text-align: center" *matCellDef="let row">
+        <button fxFlex="50" mat-button color="primary" (click)="openReportForStudent(row)">
+          <mat-icon class="muted-text" style=" margin-right:5px;">library_books </mat-icon>
+          Class Report
+        </button>
+        <button fxFlex="50" mat-button color="primary" (click)="showAnalytics(row)">
+          <mat-icon class="muted-text">pie_chart</mat-icon>
+          View Analytics
+        </button>
+      </td>
+    </ng-container> --> 
+    <ng-container matColumnDef="block">
+      <th mat-header-cell *matHeaderCellDef>Block</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-slide-toggle color="primary" [checked]="row.status" (change)="row.status = !row.status"
+          (change)="statuschange(row)"></mat-slide-toggle>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="reports">
+      <th mat-header-cell fxFlexAlign="center" *matHeaderCellDef style="text-align: center">Reports</th>
+      <td mat-cell style="text-align: center" *matCellDef="let row">
+        <button mat-button mat-raised-button color="primary" [matMenuTriggerFor]="menu" >Reports</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item  color="primary" (click)="openReport(row.fullName, row.accountId)">Class Report</button>
+          <button mat-menu-item color="primary" (click)="showAnalytics(row)"> View Analytics</button>
+        </mat-menu>
+        <!-- <button mat-raised-button color="primary" (click)="openParentInfo(row)">More Info</button> -->
+      </td>
+    </ng-container>
+
+   
+
+    <tr mat-header-row *matHeaderRowDef="tabeldisplayedColumnsForStudent"></tr>
+    <tr mat-row *matRowDef="let row; columns: tabeldisplayedColumnsForStudent"></tr>
+  </table>
+
+  <!-- list of teacher -->
+
+  <table *ngIf="breadcrumb.pageTitle == ' > Teachers'" fxFill="100" mat-table [dataSource]="dataSource" matSort
+    (matSortChange)="sortData($event)" matSortDisableClear>
+    <ng-container matColumnDef="No.">
+      <th mat-header-cell *matHeaderCellDef>Sl.No</th>
+      <td mat-cell *matCellDef="let row; let i = index">{{ SizeOfPage * pageNo + (i + 1) }} )</td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Teacher ID</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.accountId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.fullName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phonenumber">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Mobile Number</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.mobileNum }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfCreation">
+      <th class="centre" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Date of Registration</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.dateOfCreation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="primaryEmail">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Email Id</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.primaryEmail }}</td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="reports">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">Reports</th>
+      <td mat-cell style="text-align: center" *matCellDef="let row">
+        <button fxFlex="50" mat-button color="primary" (click)="openReport(row.fullName, row.accountId)">
+          <mat-icon class="muted-text" style=" margin-right:5px;">library_books </mat-icon>
+          Class Report
+        </button>
+        <button fxFlex="50" mat-button color="primary" (click)="showAnalytics(row)">
+          <mat-icon class="muted-text">pie_chart</mat-icon>
+          View Analytics
+        </button>
+      </td>
+    </ng-container> -->
+
+
+    <ng-container matColumnDef="reports">
+      <th mat-header-cell fxFlexAlign="center" *matHeaderCellDef style="text-align: center">Reports</th>
+      <td mat-cell style="text-align: center" *matCellDef="let row">
+        <button mat-button mat-raised-button color="primary" [matMenuTriggerFor]="menu" >Reports</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item  color="primary" (click)="openReport(row.fullName, row.accountId)">Class Report</button>
+          <button mat-menu-item color="primary" (click)="showAnalytics(row)"> View Analytics</button>
+        </mat-menu>
+        <!-- <button mat-raised-button color="primary" (click)="openParentInfo(row)">More Info</button> -->
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Edit">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Edit</th>
+      <td class="centre" mat-cell *matCellDef="let row">
+        <button mat-button color="primary" (click)="openUserDialogforUpdate(row)">
+          <mat-icon class="muted-text">create</mat-icon>
+          Edit
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="block">
+      <th mat-header-cell *matHeaderCellDef>Block</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-slide-toggle color="primary" [checked]="row.status" (change)="row.status = !row.status"
+          (change)="statuschange(row)"></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tabeldisplayedColumnsForteacher"></tr>
+    <tr mat-row *matRowDef="let row; columns: tabeldisplayedColumnsForteacher"></tr>
+  </table>
+
+  <!-- list of parents -->
+
+  <table *ngIf="breadcrumb.pageTitle == ' > Parents'" fxFill="100" mat-table [dataSource]="dataSource" matSort
+    (matSortChange)="sortData($event)" matSortDisableClear>
+    <ng-container matColumnDef="No.">
+      <th mat-header-cell *matHeaderCellDef>Sl.No</th>
+      <td mat-cell *matCellDef="let row; let i = index">{{ SizeOfPage * pageNo + (i + 1) }} )</td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Parent ID</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.accountId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Name</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.firstName }} {{ row.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phonenumber">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Mobile Number</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.mobileNum }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfCreation">
+      <th class="centre" mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Date Of Registration
+      </th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.dateOfCreation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="primaryEmail">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Email Id</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.primaryEmail }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="moreinfo">
+      <th mat-header-cell fxFlexAlign="center" *matHeaderCellDef style="text-align: center"></th>
+      <td mat-cell style="text-align: center" *matCellDef="let row">
+        <button mat-raised-button color="primary" (click)="openParentInfo(row)">More Info</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tabeldisplayedColumnsForparent"></tr>
+    <tr mat-row *matRowDef="let row; columns: tabeldisplayedColumnsForparent"></tr>
+  </table>
+
+  <!-- list of guest -->
+
+  <table *ngIf="breadcrumb.pageTitle == ' > Demo Members'" fxFill="100" mat-table [dataSource]="dataSource" matSort
+    (matSortChange)="sortData($event)" matSortDisableClear>
+    <ng-container matColumnDef="No.">
+      <th mat-header-cell *matHeaderCellDef>Sl.No</th>
+      <td mat-cell *matCellDef="let row; let i = index">{{ SizeOfPage * pageNo + (i + 1) }} )</td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header matSortDirection="asc">Guest ID</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.accountId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phonenumber">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Mobile Number</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.mobileNum }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfCreation">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Date of Registration</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.dateOfCreation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="primaryEmail">
+      <th class="centre" mat-header-cell *matHeaderCellDef>Email Id</th>
+      <td class="centre" mat-cell *matCellDef="let row">{{ row.primaryEmail }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tabeldisplayedColumnsForGuest"></tr>
+    <tr mat-row *matRowDef="let row; columns: tabeldisplayedColumnsForGuest"></tr>
+  </table>
+
+  <!-- <div *ngIf="!dataSource && !notfound"><div class="skeleton"></div></div> -->
+
+  <div *ngIf="length == 0 && breadcrumb.pageTitle == ' > Students'" fxLayout="row" fxFill="60"
+    fxLayoutAlign="center center">
+    <div>
+      <h1 style="margin-top: 26px !important; margin-bottom:10px; opacity:0.5;">No Users Found!!!</h1>
+    </div>
+  </div>
+  <mat-paginator [hidePageSize]="false" [pageSize]="pageSize" [pageIndex]="pageNo"
+    (page)="pageEvent = $event; pageno($event)" [length]="lengthForPagination" [pageSizeOptions]="[10, 25, 50, 100]">
+  </mat-paginator>
+
+  <!-- <mat-paginator [hidePageSize]="true" (page)="pageEvent = $event; lengthsearch>0? searchFilter($event) : getUsers($event)" [length]="length" [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator> -->
+</div>

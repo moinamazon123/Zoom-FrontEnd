@@ -1,0 +1,50 @@
+<!-- sidenav, usermenu, vetical menu -->
+
+<mat-sidenav-container>
+  1
+  <mat-sidenav *ngIf="settings.menu == 'vertical'" [opened]="settings.sidenavIsOpened" [mode]="settings.sidenavIsPinned ? 'side' : 'over'" #sidenav class="sidenav mat-elevation-z6">
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content perfectScrollbar [disabled]="settings.fixedHeader" (psScrollY)="onPsScrollY($event)">
+    <mat-toolbar color="primary" class="flex-p-x">
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button id="tool7" matTooltip="Toggle Sidenav" *ngIf="settings.menu == 'vertical'" mat-icon-button (click)="toggleSidenav()"><mat-icon>menu</mat-icon></button>
+          <button id="tool6" matTooltip="Toggle Profile" fxShow="false" fxShow.gt-xs *ngIf="settings.menu == 'vertical'" mat-icon-button (click)="settings.sidenavUserBlock = !settings.sidenavUserBlock">
+            <mat-icon>person</mat-icon>
+          </button>
+          <!-- <a *ngIf="settings.menu == 'horizontal'" mat-raised-button color="accent" routerLink="/" (click)="closeSubMenus()" class="small-logo">G</a>
+                    <a *ngIf="settings.menu == 'horizontal'" class="logo" routerLink="/" (click)="closeSubMenus()">YoLearn</a> -->
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <p style="cursor: pointer" *ngIf="urlParameter == 'Guest' || urlParameter == 'Demo'"  class="member" (click)="routeToProduct()">Buy Subscription</p>
+          <button id="tool1" matTooltip="Refresh" mat-icon-button (click)="refresh()" type="button"><mat-icon>refresh</mat-icon></button>
+          <button id="tool2" matTooltip="Home" mat-icon-button (click)="redirecturl()" type="button"><mat-icon>home</mat-icon></button>
+          <button id="tool3" matTooltip="Help" mat-icon-button type="button"><mat-icon>info</mat-icon></button>
+          <app-fullscreen id="tool4"></app-fullscreen>
+          <app-user-menu id="tool5"></app-user-menu>
+        </div>
+      </div>
+    </mat-toolbar>
+
+    <mat-toolbar color="primary" *ngIf="settings.menu == 'horizontal'" class="horizontal-menu flex-p-x transition-2" [class.sticky]="isStickyMenu" [class.fixed-top]="!settings.fixedHeader">
+      <div fxLayout="row" fxLayoutAlign="center center" class="w-100"><app-horizontal-menu [menuParentId]="0"></app-horizontal-menu></div>
+    </mat-toolbar>
+
+    <div
+      id="main-content"
+      class="inner-sidenav-content transition-2"
+      perfectScrollbar
+      [disabled]="!settings.fixedHeader"
+      (psScrollY)="onPsScrollY($event)"
+      [class.horizontal-menu-hidden]="isStickyMenu"
+    >
+    <div *ngIf="urlParameter != 'Guest' && urlParameter != 'Demo'">
+      <app-breadcrumb ></app-breadcrumb>
+    </div>
+
+      <router-outlet></router-outlet>
+    </div>
+    <div *ngIf="showBackToTop" fxLayout="row" fxLayoutAlign="center center" class="back-to-top transition-2" (click)="scrollToTop()"><mat-icon>arrow_upward</mat-icon></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

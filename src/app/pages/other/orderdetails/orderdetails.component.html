@@ -1,0 +1,152 @@
+<div
+  class="body"
+  style="background: #11998e;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+"
+>
+
+<!-- INVOICE DETAIL -->
+
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <ng-template matStepLabel> <p style="color:white !important;">Payment Detail</p> </ng-template>
+
+    <div *ngIf="showOrderdetails" fxFlex="100" style="overflow: auto" fxLayoutAlign="center">
+      <mat-card style="width: 90%;overflow: auto" class="example-card">
+        <mat-card-header class="invoiceprint" fxLayout="column" fxLayoutAlign="space-between">
+          <div fxLayoutAlign="row"  fxFlex="100">
+            <div style="margin-top: 5px; margin-bottom: 5px; margin-left: 5px;"><img src="assets/img/Logo_v81.svg" style="width: 80%;" /></div>
+            <div fxLayoutAlign="end center" style="width: 100%;color: black;margin-right: 40px;">
+              <h3>INVOICE NUMBER: {{ purchaseDetails.orderId }}</h3>
+            </div>
+          </div>
+          <br />
+          <div fxFlex="100">
+            <h3>Bill To</h3>
+            <p>{{ purchaseDetails.billingName }}</p>
+            <p>Address: {{ purchaseDetails.billingAddress }}</p>
+            <p>City: {{ purchaseDetails.billingCity }}</p>
+            <p>State: {{ purchaseDetails.billingState }}</p>
+            <p>Country: {{ purchaseDetails.billingCountry }}</p>
+            <p>Mobile Number : {{ purchaseDetails.mobileNum }}</p>
+            <p>Email : {{ purchaseDetails.billingEmail }}</p>
+            <br />
+
+            <div style="width:100%;border-top: 2px solid silver" fxLayoutAlign="start center"></div>
+            <br />
+            <div fxLayout="row" fxFlex="100" style="font-size: 14px;font-weight: bold">
+              <div fxFlex="100" fxLayout="column">
+                <p>Payment Method: {{ purchaseDetails.payment_mode }}</p>
+                <br />
+                <p>Transaction Number: {{ purchaseDetails.tid }}</p>
+                <br />
+                <p>
+                  Transaction Status: {{ purchaseDetails.order_status }}<span *ngIf="purchaseDetails.order_status == 'Awaited'"> (We will notify once payment is success)</span>
+                </p>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="end">
+                <p>
+                  Invoice Date: <span *ngIf="purchaseDetails.trans_date != 'null'">{{ purchaseDetails.trans_date }}</span
+                  ><span *ngIf="purchaseDetails.trans_date == 'null'"> -------- </span>
+                </p>
+              </div>
+            </div>
+            <br />
+          </div>
+        </mat-card-header>
+
+        <mat-card-content class="invoiceprint">
+          <div class="invoice">
+            <div *ngIf="purchaseDetails">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" fxFill>
+                <ng-container matColumnDef="Product_Name">
+                  <th style=" background-color: #dce7e9;font-weight: bold" mat-header-cell *matHeaderCellDef><h2>Program Summary</h2></th>
+                </ng-container>
+                <ng-container matColumnDef="Amount">
+                  <th id="amt" style="text-align: center; background-color: #dce7e9;font-weight: bold" mat-header-cell *matHeaderCellDef><h2>Amount</h2></th>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+
+              <div fxLayout="row">
+                <div fxFlex="30" style="margin-top:20px">
+                  <h4 style="padding:10px"><b>Grade</b> : {{ productDetail?.gradeName }}</h4>
+                  <h4 style="padding:10px"><b>Program Name</b> : {{ productDetail?.syllabusName }}</h4>
+                  <h4 style="padding:10px"><b>Program Description</b> :</h4>
+                  <h4
+                    style="padding:10px;text-align:left;
+    white-space: pre-wrap;"
+                    [innerHtml]="productDetail?.description"
+                  ></h4>
+                  <h4 style="padding:10px"><b>Valid Till</b> : {{ productDetail?.validTill | date }}</h4>
+                  <h4 style="padding:10px"><b>Valid For Single Student</b></h4>
+                </div>
+                <div fxFlex="100" fxFlexOffset="10" style="margin-top:40px">
+                  <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                    <div style="padding:0px 0px 0px 5px;" fxLayout="column" fxLayoutAlign="start" fxFlex="28">
+                      <h3 style="font-weight: bold;">PRICE</h3>
+                    </div>
+                    <div fxLayoutAlign="start center" fxFlex="35">
+                      <p fxLayoutAlign="center center" style="margin-left:25px;font-weight: bold;text-align: left">
+                        <b>INR</b> &nbsp; {{ purchaseDetails?.mer_amount - (purchaseDetails?.mer_amount - purchaseDetails?.mer_amount * 0.8474) | number: "1.2-2" }}
+                      </p>
+                    </div>
+                  </div>
+                  <br />
+                  <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                    <div style="padding:0px 0px 0px 5px;" fxLayout="column" fxLayoutAlign="start" fxFlex="28">
+                      <h3 style="font-weight: bold">GST @18%</h3>
+                    </div>
+                    <div fxLayoutAlign="start center" fxFlex="35">
+                      <p fxLayoutAlign="center center" style="margin-left:25px;font-weight: bold;text-align: left">
+                        <b>INR</b> &nbsp; {{ purchaseDetails?.mer_amount - purchaseDetails?.mer_amount * 0.8474 | number: "1.2-2" }}
+                      </p>
+                    </div>
+                  </div>
+                  <br />
+                  <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end" *ngIf="purchaseDetails.discount_value != '0.0'">
+                    <div style="padding:0px 0px 0px 5px;" fxLayout="column" fxLayoutAlign="start" fxFlex="28">
+                      <h3 style="font-weight: bold">Discount</h3>
+                    </div>
+                    <div fxLayoutAlign="start center" fxFlex="35">
+                      <p fxLayoutAlign="center center" style="margin-left:25px;font-weight: bold;text-align: left">
+                        <b>INR</b> &nbsp; {{ purchaseDetails?.discount_value | number: "1.2-2" }}
+                      </p>
+                    </div>
+                  </div>
+                  <span *ngIf="purchaseDetails.discount_value != '0.0'"><br /></span>
+
+                  <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                    <div style="padding:8px 0 8px 5px;" fxLayout="column" fxLayoutAlign="start" fxFlex="28">
+                      <h3 style="font-weight: bold !important;">NET PAYABLE</h3>
+                    </div>
+                    <div style="padding:8px 0 8px 0px;" fxLayoutAlign="start center" fxFlex="35">
+                      <h3 fxLayoutAlign="center center" style="margin-left:25px;font-weight: bold !important;text-align: left">
+                        <b>INR</b> &nbsp; {{ purchaseDetails?.mer_amount - purchaseDetails?.discount_value | number: "1.2-2" }}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+          <br />
+          <div class="invoiceprint" fxLayout="row" fxHide.lt-sm="true" style="font-size: 20px;    color: rgb(7, 88, 92); " fxFlex="100">
+            <div fxFlexOffset="0" fxFlex="50">
+              <div fxFlex="" style="border-left:3px solid  rgb(220, 231, 233)">
+                <p fxLayoutAlign="" style="padding:10px;font-weight: bold">Thank You for choosing YOLEARN!</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="center" class="action">
+          <button mat-raised-button color="primary" (click)="printPage()">Print</button>
+          <button mat-raised-button color="primary" (click)="goback()">Go Back</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

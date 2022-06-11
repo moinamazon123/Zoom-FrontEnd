@@ -1,0 +1,94 @@
+<h1 mat-dialog-title><span *ngIf="!data">Change Password</span><span *ngIf="data">Edit Profile Details</span></h1>
+
+<!-- dialog box to set new password -->
+
+<div mat-dialog-content *ngIf="!data">
+  <form [formGroup]="form" autocomplete="off" class="user-form" [style.width.px]="375">
+    <div fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder=" Old Password" formControlName="oldPassword" />
+        <mat-error *ngIf="form.controls['oldPassword'].errors?.required">Password Required</mat-error>
+        <mat-error *ngIf="form.controls['oldPassword'].hasError('minlength')">its too small,Old Password should be minimum of 5 character length</mat-error>
+        <mat-error *ngIf="form.controls['oldPassword'].hasError('maxlength')">Old Password should be maximum of 12 character length</mat-error>
+        <mat-error *ngIf="form.controls['oldPassword'].hasError('pattern')">No space allowed in Old Password!!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder=" New Password" formControlName="newPassword" [type]="passwordHide ? 'password' : 'text'" />
+        <mat-icon matSuffix (click)="passwordHide = !passwordHide" style="cursor: pointer">{{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon>
+        <mat-error *ngIf="form.controls['newPassword'].errors?.required">New Password Required</mat-error>
+        <mat-error *ngIf="form.controls['newPassword'].hasError('minlength')">its too small,New Password should be minimum of 5 character length</mat-error>
+        <mat-error *ngIf="form.controls['newPassword'].hasError('maxlength')">New Password should be maximum of 12 character length</mat-error>
+        <mat-error *ngIf="form.controls['newPassword'].hasError('pattern')">No space allowed in New Password!!</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<!-- dialog box to edit profile details -->
+
+<div mat-dialog-content *ngIf="data">
+  <form [formGroup]="formForEdit" autocomplete="off" class="user-form" [style.width.px]="375">
+    <div fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder=" First Name" formControlName="firstName" />
+        <mat-error *ngIf="formForEdit.controls['firstName'].errors?.required">First Name Required</mat-error>
+        <mat-error *ngIf="formForEdit.controls['firstName'].hasError('minlength')">its too small,First Name should be minimum of 2 character length</mat-error>
+        <mat-error *ngIf="formForEdit.controls['firstName'].hasError('maxlength')">First Name should be maximum of 15 character length</mat-error>
+        <mat-error *ngIf="formForEdit.controls['firstName'].hasError('pattern')">Only Alphabets!!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Last Name" formControlName="lastName" />
+        <mat-error *ngIf="formForEdit.controls['lastName'].errors?.required">Last Name Required</mat-error>
+        <mat-error *ngIf="formForEdit.controls['lastName'].hasError('minlength')">its too small,Last Name should be minimum of 2 character length</mat-error>
+        <mat-error *ngIf="formForEdit.controls['lastName'].hasError('maxlength')">Last Name should be maximum of 15 character length</mat-error>
+        <mat-error *ngIf="formForEdit.controls['lastName'].hasError('pattern')">Only Alphabets!!</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <form [formGroup]="formFormobilenumber" autocomplete="off" class="user-form" [style.width.px]="375">
+    <div fxLayout="column" *ngIf="role != 'student'">
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="primaryEmail" />
+        <mat-error *ngIf="formFormobilenumber.controls['primaryEmail'].errors?.required">Email Required</mat-error>
+        <mat-error *ngIf="formFormobilenumber.controls['primaryEmail'].hasError('invalidEmail')">Invalid email address!!(no space allowed at beginning or end)</mat-error>
+      </mat-form-field>
+      <mat-form-field w-100>
+        <input matInput placeholder="Mobile Number" formControlName="mobileNum" />
+        <mat-error *ngIf="formFormobilenumber.controls['mobileNum'].errors?.required">Mobile number Required</mat-error>
+        <mat-error *ngIf="formFormobilenumber.controls['mobileNum'].hasError('pattern')">Only Numbers!!</mat-error>
+        <mat-error *ngIf="formFormobilenumber.controls['mobileNum'].hasError('maxlength')">Mobile number should be maximum of 12 character length</mat-error>
+        <mat-error *ngIf="formFormobilenumber.controls['mobileNum'].hasError('minlength')">its too small,Mobile number should be minimum of 10 character length</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<!-- mat-dialog-actions -->
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+  <button *ngIf="!data" mat-raised-button color="primary" (click)="changepassword(form.value)" [mat-dialog-close]="form.value" [disabled]="!form.valid">
+    <span>Change Password</span>
+  </button>
+  <button
+    *ngIf="data && role != 'student'"
+    mat-raised-button
+    color="primary"
+    (click)="EditProfile(formForEdit.value, formFormobilenumber.value)"
+    [mat-dialog-close]="formForEdit.value"
+    [disabled]="!formForEdit.valid || !formFormobilenumber.valid"
+  >
+    <span>Save</span>
+  </button>
+  <button
+    *ngIf="data && role == 'student'"
+    mat-raised-button
+    color="primary"
+    (click)="EditProfile(formForEdit.value, formFormobilenumber.value)"
+    [mat-dialog-close]="formForEdit.value"
+    [disabled]="!formForEdit.valid"
+  >
+    <span>Save</span>
+  </button>
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

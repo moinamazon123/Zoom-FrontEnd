@@ -1,0 +1,103 @@
+<!-- to display student list -->
+
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <button mat-raised-button color="primary" onclick="window.location.href='https://yolearn.com/#/products'" matTooltip="Add New Student">
+      <mat-icon style="margin-right: 5px;">person_add</mat-icon>Buy a course
+    </button>
+  
+    <!-- <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <mat-button-toggle value="search"> <mat-icon matTooltip="Search">search</mat-icon> </mat-button-toggle>
+    </mat-button-toggle-group> -->
+  </div>
+  <!-- <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input"> <input matInput placeholder="Search Student by First-Name..." [(ngModel)]="searchText" name="search" /> </mat-form-field>
+  </form> -->
+</div>
+
+<div fxLayout="row wrap" *ngIf="!skeletonhide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonhide" style="padding-top: 10px;padding-left: 5px;">
+  <div *ngFor="let user of users" fxFlex="100" fxFlex.gt-md="33" fxFlex.md="50" class="flex-p">
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 *ngIf="!user.status" class="user-name"> {{user.syllabusName}}</h3>
+        <h3 *ngIf="user.status" class="user-name"> {{user.syllabusName}} blocked</h3>
+        <button style="visibility: hidden" *ngIf="!user.status" mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+        <button style="visibility: hidden" *ngIf="user.status" mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+      </div>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openUserDialogforUpdate(user)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      </mat-menu>
+      <div class="user-content" fxLayout="row" >
+        <!--<div fxFlex="30" fxLayout="column" fxLayoutAlign="center center" class="border">-->
+          <!--<div class="user-img">-->
+            <!--<img *ngIf="!user.image" src="assets/img/users/default-user.jpg" class="transition-2" [class.blocked]="user.status" />-->
+            <!--<img *ngIf="user.image" src="https://app.yolearn.com/appyolearn/UserImages/{{ user.sAccountId }}.jpg" class="transition-2" [class.blocked]="user.status" />-->
+            <!--<mat-icon *ngIf="user.status" class="warn-color">block</mat-icon>-->
+          <!--</div>-->
+          <!--&lt;!&ndash; <div class="user-social"><mat-slide-toggle color="primary" [checked]="user.status" (change)="user.status = !user.status" (change)="statusUpdate(user)"></mat-slide-toggle></div> &ndash;&gt;-->
+        <!--</div>-->
+        <div fxFlex="100" fxLayout="column" class="user-details transition-2" [class.blocked]="user.status">
+            <p fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="muted-text">person</mat-icon>
+                <span><b>{{ user.firstName }} {{ user.lastName }}</b></span>
+              </p>
+        
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">school</mat-icon>
+            <span><b>Class :</b> {{ user.gradeName }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">card_membership</mat-icon>
+            <span><b>Product Name :</b> {{ user.productName }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">mail_outline</mat-icon>
+            <span><b>Email :</b> {{ user.primaryEmail }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 7px;">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span><b>Joined :</b> {{ user.dateOfCreation }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 7px;">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span><b>Valid Till :</b> {{ user.validTill | date: 'mediumDate'}}</span>
+          </p>
+        
+          <div class="divider" fxFlex="100"></div>
+          <div fxLayout="row " fxLayout.lt-md="column" fxLayoutAlign="start center" style="padding: 5px;">
+            <button [disabled]="user.status" mat-button color="primary" (click)="openReportForStudent(user)">
+              <mat-icon class="muted-text" style="margin-left:-15px;">library_books</mat-icon>Class Report
+            </button>
+            <button
+              [disabled]="user.status"
+              style="margin-left:20px;"
+              mat-button
+              color="primary"
+              (click)="showAnalytics(user)"
+            >
+              <mat-icon class="muted-text" style="margin-left:-15px;">pie_chart</mat-icon>View Analytics
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div *ngIf="noStudent"><h1 style="margin-top: 10px !important; opacity:0.5;">No Student Added!!!</h1></div>
+</div>

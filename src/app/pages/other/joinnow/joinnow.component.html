@@ -1,0 +1,93 @@
+<div fxLayout="row" fxFill fxLayoutAlign="center center" style="margin-bottom: 10px;">
+    <div *ngIf="registartion" fxLayout="row" fxFlex="100" fxLayoutAlign="center center">
+      <mat-card class="p-0 box" style="width: 348px;">
+  
+        <div fxLayout="column" fxLayoutAlign="space-evenly center">
+          <div fxLayout="column" fxLayoutAlign="center center" class=" boxheader" style="padding-top: 10px">
+            <img src="assets/img/Logo_v81.svg" style="width: 70%;margin: 10px;" />
+          </div>
+        
+         
+          <!-- <button style="font-size: 20px;" class="border-circle hvr-float-shadow" mat-raised-button color="warn" (click)="guestRegistration()">Sign
+            up for Live demo</button> -->
+          <!-- <button class="mat-raised-button border-circle hvr-float-shadow" style="background-color:#086263;color: white"
+            (click)="goToLandingPage()">
+            Sign up to buy a Course
+          </button> -->
+          <button class="mat-raised-button border-circle hvr-float-shadow"
+            style="font-size:15px;background-color:#086263;color: white" (click)="scprewellRegistration()">
+            Sign up for Score Well Program
+          </button>
+
+          Have an account ?
+          <button mat-raised-button color="accent" style="margin-bottom: 15px;margin-top:15px" (click)="registartion=false">
+            Login
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  
+    <div *ngIf="!registartion" fxLayout="row" fxFlex="50" fxFlex.lt-md="100" fxLayoutAlign="center center"
+      fxLayoutAlign.lt-md="center center">
+      <form [formGroup]="form" autocomplete="off" fxFlex="80" fxFlex.gt-sm="50" fxFlex.sm="60"
+        (keydown.enter)="$event.preventDefault()">
+        <!-- <mat-card style="background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); " class="p-0  box"> -->
+            <mat-card  class="p-0  box">
+          <div fxLayout="column" fxLayoutAlign="center center" class="box-header"
+            style="padding-bottom: 10px;padding-top: 10px">
+            <div fxLayout="column" fxLayoutAlign="center center" class=" box-header"
+              style="padding-bottom: 30px;padding-top: 30px">
+              <img src="assets/img/Logo_v81.svg" style="width: 70%;margin-bottom: 5px;" />
+            </div>
+            <h2 style="color:darkslategray;font-weight:bold;margin-top: 10px;">Login to continue</h2>
+          </div>
+          <div class="divider"></div>
+          <mat-card-content fxLayout="column" fxLayoutAlign="center center" class="box-content" [style.height.px]="'327'">
+            <mat-form-field class="colorchange" style="width:200px;margin-top: 10px;">
+              <input matInput placeholder="Enter Email" formControlName="primaryEmail" />
+              <mat-error *ngIf="form.controls['primaryEmail'].errors?.required">Email is required</mat-error>
+              <mat-error *ngIf="form.controls['primaryEmail'].hasError('invalidEmail')">Invalid email address!!
+              </mat-error>
+              <mat-error *ngIf="form.controls['primaryEmail'].hasError('minlength')">Email should be minimum of 5
+                characters</mat-error>
+              <mat-error *ngIf="form.controls['primaryEmail'].hasError('maxlength')">Email should be maximum of 30
+                characters</mat-error>
+              <mat-error *ngIf="form.controls['primaryEmail'].hasError('pattern')">No space allowed at the beginning and
+                end.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="colorchange" *ngIf="user == 'teacher' || user == 'Admin' || user == 'guest'">
+              <input matInput placeholder="Enter Password" formControlName="password" required
+                [type]="passwordHide ? 'password' : 'text'" />
+              <mat-icon matSuffix (click)="passwordHide = !passwordHide" style="cursor:pointer">
+                {{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon>
+              <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+              <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password Should be minimum of 5
+                characters</mat-error>
+              <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password should be maximum of 10
+                characters</mat-error>
+              <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!</mat-error>
+            </mat-form-field>
+            <button mat-button color="primary" style="margin-top: 5px;"
+              *ngIf="user == 'teacher' || user == 'Admin' || user == 'guest'" (click)="openUserDialog(allLoginDetail)"
+              class="forgotpass">
+              Forgot Password?
+            </button>
+  
+            <button mat-raised-button color="primary" style="margin-top: 25px;" class="mat-elevation-z12 box-button"
+              [disabled]="!form.controls.primaryEmail.valid" (click)="onSubmit(form.value, $event)">
+              Sign-In
+            </button>
+            Don't have an account yet?
+            <button mat-raised-button color="primary" style="margin-top: 25px;" class="mat-elevation-z12 box-button"
+              (click)="registartion=true">
+              Register Now
+  
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </div>
+    <div style="margin-bottom: 10px;">
+  
+    </div>
+  </div>

@@ -1,0 +1,130 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <!-- add admin icon -->
+ 
+  <div fxLayout="row">
+    
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <button mat-raised-button color="primary" (click)="openUserDialogforAdd(null)"><mat-icon matTooltip="Add New Teacher">person_add</mat-icon>Add Admin</button>
+      <div fxLayout="column" fxLayoutAlign="start center" fxFlexOffset='1' >
+        <button mat-raised-button color="primary" [disabled] = "length ==0" (click) = "adminexporttoexcel()">Export To Excel</button>
+     </div>
+      <mat-button-toggle value="search"> <mat-icon matTooltip="Search">search</mat-icon> </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- Search admin -->
+
+  <form class="user-search" [class.show]="controls.value == 'search'" autocomplete="off">
+    <mat-form-field class="user-search-input"><input matInput placeholder="Search user...(based on any field)" [(ngModel)]="searchText" name="search"/></mat-form-field>
+  </form>
+
+  <!-- Grid and list view icon -->
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+      <button mat-raised-button color="primary" [routerLink]="['/dashboard/admin/admin-access/admin-list']"><mat-icon>view_list</mat-icon>List View</button>
+      <button mat-raised-button color="accent"><mat-icon>view_module</mat-icon>Grid View</button>
+    </mat-button-toggle-group>
+  </div>
+</div>
+
+<!-- show Skeleton if no data -->
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" *ngIf="skeletonHide && notFound">
+  <h1 style="margin-top: 26px !important; margin-bottom:10px; opacity:0.5;">No Admin Found!!!</h1>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonHide && !notFound">
+  <div
+    *ngFor="let user of users | UserSearchPipe: searchText | paginate: { itemsPerPage: 9, currentPage: page, totalItems: length }"
+    fxFlex="100"
+    fxFlex.gt-md="33.3"
+    fxFlex.md="50"
+    class="flex-p"
+  >
+    <mat-card class="p-0">
+      <!-- Name and edit option -->
+
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">{{ user.fullName }}</h3>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openUserDialogforUpdate(user)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      </mat-menu>
+
+      <!-- user Info -->
+
+      <div fxLayout="row" class="user-content">
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center" class="border">
+          <div class="user-img">
+            <img *ngIf="!user.image" src="assets/img/users/default-user.jpg" class="transition-2 hvr-grow" />
+            <img *ngIf="user.image" src="https://app.yolearn.com/appyolearn/UserImages/{{ user.accountId }}.jpg" class="transition-2 hvr-grow" />
+          </div>
+        </div>
+
+        <!-- Info -->
+
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2 ">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">perm_identity</mat-icon>
+            <span>{{ user.accountId }}</span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">mail_outline</mat-icon>
+            <span>{{ user.primaryEmail }}</span>
+          </p>
+
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">call</mat-icon>
+            <span> {{ user.mobileNum }}</span>
+          </p>
+
+          <p fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 7px;">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span>Joined {{ user.dateOfCreation }}</span>
+          </p>
+
+          <!-- access permission button -->
+          
+          <div class="divider"></div>
+          <div fxLayout="row wrap" fxLayout.lt-lg="column" fxLayoutAlign="space-between center" style="padding: 5px;">
+            <button
+              class="stat-buttons"
+              fxLayout="row"
+              fxLayoutAlign="space-around center"
+              mat-button
+              color="primary"
+              [routerLink]="['/dashboard/admin/admin-access/Edit-access', user.accountId]"
+            >
+              <mat-icon class="muted-text"> library_books </mat-icon>
+              <span> Access Permission </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="users" fxLayout="row wrap" fxFill>
+    <div fxFlex="100" class="flex-p">
+      <mat-card class="p-0 text-center"> <pagination-controls class="gradus-pagination" autoHide="true" (pageChange)="onPageChanged($event)"></pagination-controls> </mat-card>
+    </div>
+  </div>
+</div>

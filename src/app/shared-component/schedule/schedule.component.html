@@ -1,0 +1,72 @@
+<!-- dispaly the calendar -->
+
+<div fxLayout="row wrap">
+    <div fxFlex="100" class="flex-p"> 
+        <mat-card class="block p-0">
+            
+            <div class="bg-primary">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  class="w-100">            
+                    <div class="">                
+                        <button mat-icon-button mwlCalendarPreviousView (viewDateChange)="datechange($event)" [view]="view" [(viewDate)]="viewDate">
+                            <mat-icon *ngIf="!settings.rtl" matTooltip="Previous Month">chevron_left</mat-icon>
+                            <mat-icon *ngIf="settings.rtl" matTooltip="Next Month">chevron_right</mat-icon>
+                        </button>
+                        <button mat-icon-button mwlCalendarToday [(viewDate)]="viewDate">
+                            <mat-icon  matTooltip="Today">today</mat-icon>
+                        </button>
+                        <button mat-icon-button mwlCalendarNextView (viewDateChange)="datechange($event)" [view]="view"   [(viewDate)]="viewDate">
+                            <mat-icon *ngIf="settings.rtl" matTooltip="Previous Month">chevron_left</mat-icon>
+                            <mat-icon *ngIf="!settings.rtl" matTooltip="Next Month">chevron_right</mat-icon>
+                        </button>
+                    </div>
+                    <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+                    <div class="">
+                        <button mat-icon-button (click)="view = 'month'">
+                            <mat-icon matTooltip="Month View">view_comfy</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="view = 'week'">
+                            <mat-icon matTooltip="Week View">view_week</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="view = 'day'">
+                            <mat-icon matTooltip="Day View">view_day</mat-icon>
+                        </button>
+                        <button *ngIf="role=='Admin'" mat-icon-button (click)="openScheduleDialog(null)">
+                            <mat-icon matTooltip="Add New Event">add</mat-icon>
+                        </button>
+                    
+                    </div>
+                </div>            
+            </div>
+
+            <div [ngSwitch]="view">
+                <mwl-calendar-month-view
+                    *ngSwitchCase="'month'"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                   
+                    [refresh]="refresh"
+                    [activeDayIsOpen]="activeDayIsOpen"
+                    (dayClicked)="dayClicked($event.day)">
+                </mwl-calendar-month-view>
+                <mwl-calendar-week-view
+                    *ngSwitchCase="'week'"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh">
+                </mwl-calendar-week-view>
+                <mwl-calendar-day-view
+                    *ngSwitchCase="'day'"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh">
+                </mwl-calendar-day-view>
+            </div>
+
+       </mat-card>
+    </div>
+</div>
+
+<div *ngIf="truefalse" fxLayout="column" fxLayoutAlign="center center" class="user-spinner" style="position:relative;margin-top:-300px !important;">   
+    <mat-spinner color="primary"></mat-spinner>  
+    <h4>loading your calender...</h4>  
+</div>

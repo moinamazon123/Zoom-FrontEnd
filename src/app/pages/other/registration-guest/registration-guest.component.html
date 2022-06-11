@@ -1,0 +1,76 @@
+<!-- guest registraion form -->
+
+<div fxLayoutAlign="center center" fxFill>
+  <form [formGroup]="form" autocomplete="off" (keydown.enter)="$event.preventDefault()" fxFlex="100" fxFlex.gt-sm="40" fxFlex.sm="20">
+    <ng-template matStepLabel> <p style="color:white !important;">Sign Up</p> </ng-template>
+    <mat-card class="p-0 mat-elevation-z24 box register" [style.height.px]="'650'">
+      <div fxLayout="column" fxLayoutAlign="center center" class="backclr box-header" style="padding-bottom: 25px;">
+        <img src="assets/img/Logo_v81.svg" style="width: 30%;margin-bottom: 5px;" />
+      </div>
+      <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content" [style.height.px]="'460'">
+        <mat-card fxLayout="column" fxLayoutAlign="start center" class="mat-elevation-z12 box-content-inner" [style.height.px]="'460'">
+          <span class="box-content-header">Register For Demo Live Class</span>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Parent's First Name" formControlName="firstName" />
+            <mat-error *ngIf="form.controls['firstName'].errors?.required">Please Enter the First Name</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('minlength')">Fist Name isn't long enough, minimum of 2 characters</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('maxlength')">First Name is too long , maximum of 20 characters</mat-error>
+            <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Only Alphabets!!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Parent's Last Name" formControlName="lastName" />
+            <mat-error *ngIf="form.controls['lastName'].errors?.required">Please Enter the Last Name</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('minlength')">Last Name isn't long enough, minimum of 2 characters</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('maxlength')">Last Name is too long , maximum of 20 characters</mat-error>
+            <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Only Alphabets!!</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <mat-select placeholder="Select Grade" formControlName="gradeId">
+              <mat-option *ngFor="let grade of grades" (click)="gradeChange(grade)" [value]="grade.gradeId">{{ grade.gradeName }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['gradeId'].errors?.required">Grade is required</mat-error>
+          </mat-form-field>
+
+          <div fxLayout="row wrap" fxLayoutAlign="space-between" style="width: 100%">
+            <mat-form-field fxFlex="30">
+              <mat-select placeholder="Country" formControlName="countryCode">
+                <mat-option *ngFor="let countrycode of countryCode" [value]="countrycode.code">{{ countrycode.name }} ({{ countrycode.code }})</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['countryCode'].errors?.required">Country Code is required</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="68">
+              <input matInput placeholder="Mobile Number" formControlName="mobileNum" />
+              <mat-error *ngIf="form.controls['mobileNum'].errors?.required">Mobile Number is required</mat-error>
+              <mat-error *ngIf="form.controls['mobileNum'].hasError('pattern')">Only Numbers!!</mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Email" formControlName="primaryEmail" />
+            <mat-error *ngIf="form.controls['primaryEmail'].errors?.required">Email is required</mat-error>
+            <mat-error *ngIf="form.controls['primaryEmail'].hasError('invalidEmail')">Invalid Email Address!!(no space allowed at beginning or end)</mat-error>
+            <mat-error *ngIf="form.controls['primaryEmail'].hasError('minlength')">primaryEmail isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['primaryEmail'].hasError('maxlength')">primaryEmail is too long , maximum of 30 characters</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Password" formControlName="password" type="password" />
+            <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough, minimum of 5 characters</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long , maximum of 20 characters</mat-error>
+            <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!</mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password" />
+            <mat-error *ngIf="form.controls.confirmPassword.errors?.required">Confirm Password is required</mat-error>
+            <mat-error *ngIf="form.controls.confirmPassword.hasError('mismatchedPasswords')">Passwords do not match</mat-error>
+          </mat-form-field>
+        </mat-card>
+        <button mat-raised-button color="primary" class="mat-elevation-z12 box-button" [disabled]="!form.valid" type="submit" (click)="onSubmit(form.value, $event)">
+          Register
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</div>

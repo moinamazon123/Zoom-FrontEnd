@@ -1,0 +1,107 @@
+<div style="background-color: #00695c;color:white; padding: 15px;" fxLayout="row" fxLayoutAlign="space-between center">
+  <div><mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveToPreviousPage()">keyboard_backspace</mat-icon></div>
+  <div fxLayout="row" style="font-weight: 600; font-size: 24px;">Talent Test Result</div>
+  <div></div>
+</div>
+
+<!-- show grades -->
+
+<div style="margin-top: 15px;" fxLayout="row" fxLayoutAlign="space-evenly center">
+  <button *ngFor="let grade of grades" [ngStyle]="grade == selectedGrade ? { 'background-color': 'cadetblue' } : {}" (click)="ResultByGrade(grade)" mat-stroked-button color="primary">
+    {{ grade }}
+  </button>
+</div>
+
+<!-- show winner -->
+
+<div class="winner-data" fxLayout="row">
+  <div fxLayout="column" fxFlex="20" fxLayoutAlign="center center" class="h-100">
+    <h2>Winner Detail:</h2>
+  </div>
+
+  <table style="margin-top: 20px;" fxFlex="80" mat-table [dataSource]="winnerData">
+    <ng-container matColumnDef="candidateId">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>CandidateId</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.candidateId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="candidateName">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Candidate Name</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.candidateName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="schoolname">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>School Name</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.schoolName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Test Duration</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.duration }}</td>
+    </ng-container>
+
+    <div matColumnDef="mark">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Total Mark</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.totalMarks }}</td>
+    </div>
+
+    <div matColumnDef="FullResult">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Section wise Mark</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row"><button mat-raised-button color="primary" (click)="sectionWiseMarkRouting(row.candidateId)">Section Wise Mark</button></td>
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="winnerTable"></tr>
+    <tr mat-row *matRowDef="let row; columns: winnerTable"></tr>
+  </table>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 20px;">
+  <h3 style="margin-right: 5px;">Filter :</h3>
+  <button mat-button [ngStyle]="true == selectedSorting ? { 'background-color': 'cadetblue' } : {}" color="primary" (click)= "sortAsending()">Top-Down</button>
+  <button mat-button [ngStyle]="false == selectedSorting ? { 'background-color': 'cadetblue' } : {}" color="primary" (click)= "sortDescending()">Down-Top</button>
+</div>
+
+<!-- all candidate mark details -->
+
+<div style="margin-top: 20px;">
+  <table fxFill="100" mat-table [dataSource]="gradeWiseData" >
+    <ng-container matColumnDef="candidateId">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>CandidateId</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.candidateId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="candidateName">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Candidate Name</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.candidateName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="schoolname">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>School Name</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.schoolName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Test Duration</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.duration }}</td>
+    </ng-container>
+
+    <div matColumnDef="mark">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Total Mark</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row">{{ row.totalMarks }}</td>
+    </div>
+
+    <div matColumnDef="FullResult">
+      <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Section wise Mark</th>
+      <td style="text-align: center;" mat-cell *matCellDef="let row"><button mat-raised-button color="primary" (click)="sectionWiseMarkRouting(row.candidateId)">Section Wise Mark</button></td>
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="winnerTable"></tr>
+    <tr mat-row *matRowDef="let row; columns: winnerTable"></tr>
+  </table>
+
+  <div *ngIf="gradeWiseData.length == 0" fxLayout="column" fxLayoutAlign="center center" class="user-spinner" style="padding: 20px;">
+    <mat-spinner color="primary"></mat-spinner>
+    <h4>Loading Result...</h4>
+  </div>
+  <mat-paginator  #paginator [pageSizeOptions]="[10, 30, 50, 100]"></mat-paginator>
+</div>

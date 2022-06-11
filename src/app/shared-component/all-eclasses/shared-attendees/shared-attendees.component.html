@@ -1,0 +1,72 @@
+<!-- dispaly the attendees -->
+
+<div >
+  <div style="background-color: #00695c;color:white; padding: 5px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveback()" matTooltip="recorded classes">keyboard_backspace </mat-icon>
+      <h2>{{ title }}</h2>
+      <div fxLayout="column" style="margin-right:70px;">
+        <p style="font-size: 16px;">
+          Date : <b>{{ classStartTime | date }}</b>
+        </p>
+        <div fxLayout="row">
+          <p style="font-size: 16px;">
+            Held at : <b>{{ classStartTime | date: "shortTime" }}</b>
+          </p>
+          <p style="font-size: 16px;margin-left: 10px;">
+            End at : <b>{{ classEndTime | date: "shortTime" }}</b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row" class="mat-elevation-z8">
+    <mat-form-field fxFlex="100" class="p-1" fx>
+      <input matInput placeholder="Search Live Statistics..." (keyup)="applyFilter($event.target.value)" autocomplete="off">
+    </mat-form-field>
+  </div>
+
+ 
+    <table style="width:100%" mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="position">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>No.</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.position }} )</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Name</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="progress">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>In Class %</th>
+        <td class="text-center" mat-cell *matCellDef="let element"><mat-progress-bar class="example-margin" [color]="color" [mode]="mode" [value]="element.progress"></mat-progress-bar></td>
+      </ng-container>
+
+      <ng-container matColumnDef="loginTime">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Login Time</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.logintime }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="logoutTime">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Logout Time</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.logouttime }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="exit">
+        <th class="text-center" mat-header-cell *matHeaderCellDef>Inactive count</th>
+        <td class="text-center" mat-cell *matCellDef="let element">{{ element.exit }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <div *ngIf="notfound && !dataSource" fxLayoutAlign="center center">
+      <h1 style="margin-top: 26px !important;margin-bottom: 26px !important; opacity:0.5;">No Recorded View Found!!!</h1>
+    </div>
+    <div *ngIf="!dataSource && !notfound"><div class="skeleton"></div></div>
+    <mat-paginator [hidePageSize]="true" [pageSizeOptions]="[10, 20, 30, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+
+ 
+

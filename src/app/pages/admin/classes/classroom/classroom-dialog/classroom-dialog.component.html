@@ -1,0 +1,40 @@
+<div *ngIf="!data.moreinfo">
+   <!-- form to add new program, subject, chapter-->
+    <div mat-dialog-content>
+      <form [formGroup]="form" autocomplete="off" class="classroomarray-form">
+        <div fxLayout="column">
+          <div class="flex-p">
+            <mat-card>
+              <mat-card-header fxLayoutAlign="center">
+                <mat-card-subtitle *ngIf="data.val == 'grade'"> <h2 class="mb-2">Add New Grade</h2> </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="data.val == 'sylabus'">
+                  <h2 class="mb-2">Add New  Program To {{ data.grade }}</h2>
+                </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="data.val == 'subject'">
+                  <h2 class="mb-2">Add New Subject To {{ data.grade }} of {{ data.sylabus }}</h2>
+                </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="data.val == 'chapter'">
+                  <h2 class="mb-2">Add New Chapter To {{ data.grade }} of {{ data.sylabus }} - {{ data.subject }}</h2>
+                </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field> <input matInput placeholder="Name" formControlName="addnew" /> </mat-form-field>
+              </mat-card-content>
+              <mat-card-content *ngIf="data.val == 'sylabus' || data.val == 'subject' || data.val == 'chapter'" fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field> <input matInput placeholder="Description" formControlName="desc" /> </mat-form-field>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+      <button *ngIf="data.val == 'grade'" mat-raised-button color="primary" (click)="postnewgrade(form.value)" [mat-dialog-close]="form.value" [disabled]="form.controls.addnew.value.length<=0"><span>Save</span></button>
+      <button *ngIf="data.val == 'sylabus'" mat-raised-button color="primary" (click)="postnewsyllabus(form.value)" [mat-dialog-close]="form.value" [disabled]="form.controls.addnew.value.length<=0"><span>Save</span></button>
+      <button *ngIf="data.val == 'subject'" mat-raised-button color="primary" (click)="postnewsubject(form.value)" [mat-dialog-close]="form.value" [disabled]="form.controls.addnew.value.length<=0"><span>Save</span></button>
+      <button *ngIf="data.val == 'chapter'" mat-raised-button color="primary" (click)="postnewchapter(form.value)" [mat-dialog-close]="form.value" [disabled]="form.controls.addnew.value.length<=0"><span>Save</span></button>
+  
+      <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    </div>
+  </div>
+  

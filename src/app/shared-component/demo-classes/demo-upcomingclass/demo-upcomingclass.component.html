@@ -1,0 +1,118 @@
+
+<!-- dispaly demo upcoming class -->
+
+<div style="background-color: #206c5c;color:white; padding: 5px; margin-bottom: 20px;">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h2>Upcoming Classes</h2>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonHide">
+  <div *ngFor="let demoliveClass of demoliveclassroom" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">{{ demoliveClass.title }}</h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+      </div>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openmoreinfoupcoming(demoliveClass)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>More Info</span>
+        </button>
+      </mat-menu>
+
+      <div fxLayout="row" class="user-content">
+        <div fxFlex="30" fxLayout="column" class="border">
+          <div class="user-img">
+            <img src="assets/img/chapter-Image/CHAP000001.png" class="transition-2 hvr-grow" class="transition-2 hvr-grow" />
+          </div>
+        </div>
+
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2 ">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Class :</b></span> {{ demoliveClass.gradeName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Program :</b></span> {{ demoliveClass.syllabusName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Subject :</b></span> {{ demoliveClass.subjectName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">local_library</mat-icon>
+            <span
+              ><span><b>Teacher Name :</b></span> {{ demoliveClass.presenterDisplayName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">date_range</mat-icon>
+            <span
+              ><span><b>Demo on :</b></span> {{ demoliveClass.scheduledDate | date: "dd/MM/yyyy" }}
+            </span>
+          </p>
+
+          <div class="divider" style="margin: 5px;"></div>
+
+          <button
+            *ngIf="demoliveClass.booked && !demoliveClass.enable"
+            class="button"
+            [disabled]="true"
+            mat-raised-button
+            color="primary"
+            style="margin-top:1px;color:#00695c;text-align: center;"
+          >
+            <mat-icon>timer</mat-icon><span style="margin-left: -4px">Starts-In : </span>
+            <app-countdown-timer [end]="demoliveClass.scheduledDate" [for]="'Guest'" (zeroTrigger)="enableLiveClass(demoliveClass, $event)"></app-countdown-timer>
+          </button>
+          <button
+            *ngIf="!demoliveClass.booked && !demoliveClass.enable"
+            class="button"
+            style="margin-top:1px;"
+            mat-raised-button
+            color="primary"
+            [disabled]="demoliveClass.noOfSeats == 0 || demoliveClass.scheduledDate < currentDate"
+            (click)="bookSlot(demoliveClass)"
+          >
+            <span *ngIf="demoliveClass.noOfSeats == 0 || demoliveClass.scheduledDate < currentDate; else content">Booking Completed</span>
+            <ng-template #content>
+              Book Slot <span style="color: orange"> ( Available Seats: {{ demoliveClass.noOfSeats }} ) </span></ng-template
+            >
+          </button>
+          <button
+            *ngIf="demoliveClass.booked && demoliveClass.enable"
+            class="button"
+            style="margin-top:1px;"
+            mat-raised-button
+            color="primary"
+            (click)="getintoclassforGuest(demoliveClass.sessionId)"
+          >
+            Attend Class
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="notfound" fxLayout="row" fxFill="60" fxLayoutAlign="center center">
+    <div><h1 style="margin-top: 26px !important; opacity:0.5;">No Demo Upcoming Found!!!</h1></div>
+  </div>
+</div>

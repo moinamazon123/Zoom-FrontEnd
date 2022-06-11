@@ -1,0 +1,131 @@
+.user-name {
+  padding: 0 12px;
+  font-weight: 400;
+}
+.user-content {
+  padding: 15px;
+  .user-img {
+    position: relative;
+    margin-top: -80px !important;
+    margin-left: -100px !important;
+    img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      &.blocked {
+        opacity: 0.5;
+      }
+    }
+    .mat-icon {
+      position: absolute;
+      top: 54px;
+      left: 55px;
+      font-size: 110px;
+      height: 96px;
+      width: 96px;
+    }
+  }
+  .mat-slide-toggle {
+    margin-top: 15px;
+  }
+  .user-details {
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mat-icon {
+      padding: 2px 10px;
+    }
+    &.blocked {
+      opacity: 0.5;
+    }
+  }
+}
+
+.user-search {
+  width: 0;
+  overflow: hidden;
+  transition: 0.3s;
+  .mat-form-field {
+    width: 100% !important;
+    text-align: center !important;
+    height: 36px;
+  }
+  .mat-form-field-infix {
+    padding: 5px;
+  }
+  .mat-input-element {
+    text-align: center;
+  }
+  &.show {
+    width: 100%;
+    overflow: visible;
+  }
+}
+
+.user-spinner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.textclr {
+  color: green;
+}
+
+.mat-row:nth-child(odd) {
+  background-color: rgba(235, 235, 235, 0.67) !important;
+}
+
+.mat-row:nth-child(even) {
+  background-color: rgba(235, 235, 235, 0.18) !important;
+}
+
+:focus {
+  outline: 0 !important;
+}
+
+.skeleton:empty {
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: calc(100% - 50px);
+  height: 350px;
+  background-image: linear-gradient(lightgray 10px, transparent 0), linear-gradient(lightgray 10px, transparent 0), linear-gradient(lightgray 10px, transparent 0);
+  background-repeat: repeat-y;
+  background-size: 1172px 130px, 1309px 130px, 1012px 130px;
+  background-position: 15px 0, 15px 40px, 15px 80px;
+}
+
+::ng-deep .mat-tab-label-active {
+  background-color: #c9e9e6;
+}
+
+.mat-header-cell {
+  font-weight: 900 !important;
+  background-color: #206c5c;
+  color: white !important;
+  font-size: 16px;
+}
+
+::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: yellow !important;
+  text-align: end;
+}
+
+::ng-deep .mat-paginator-container {
+  justify-content: center !important;
+}
+
+.filter_btn{
+margin-bottom: 10px;
+}

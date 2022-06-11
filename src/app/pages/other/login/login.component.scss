@@ -1,0 +1,109 @@
+#app-spinner{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background: #11998e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    z-index: 999999;
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: visibility 0.5s, opacity 0.3s linear;
+    -moz-transition: visibility 0.5s, opacity 0.3s linear;
+    transition: visibility 0.5s, opacity 0.3s linear;
+    &.hide{
+        visibility: hidden;
+        opacity: 0; 
+    }
+    h4{
+        margin-top: 10px;
+        letter-spacing: 0.02em;
+        opacity: 0;
+        text-transform: uppercase;
+        -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+        -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+        -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+        animation: loading-text-opacity 2s linear 0s infinite normal;
+    }
+}
+
+
+.forgotpass{
+   
+    cursor: pointer;
+}
+
+.signin {
+    color: black !important;
+}
+
+.border-circle {
+    
+        padding: 10px 30px;
+        border: none;
+        border-radius: 100px 100px 100px 100px;
+        margin: 20px;
+}
+
+.backgroundcol{
+    background: #0575E6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.imgSize {
+    width: 90px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+}
+
+
+/deep/ .mat-input-underline {
+    background-color: white !important;
+ }
+
+
+::ng-deep .colorchange  .mat-form-field-label{
+    color: darkslategray !important;
+    font-size: 16px !important;
+    margin-top: -1px !important;
+}
+
+.divider {
+    background: darkcyan !important
+}
+
+
+::ng-deep .colorchange  .mat-error{
+    color: darkslategray !important;
+}
+
+::ng-deep .colorchange  .mat-form-field-infix{
+    border-bottom:4px solid darkslategray;
+}
+
+::ng-deep .colorchange  .mat-form-field-underline{
+    border-bottom:3px solid white;
+}
+
+
+::ng-deep .colorchange  .mat-form-field-ripple{
+    border-bottom:3px solid white;
+}
+
+::ng-deep .colorchange  .mat-input-element{
+    color: darkslategray !important;
+}
+
+.boxheader{
+    padding: 30px;
+}

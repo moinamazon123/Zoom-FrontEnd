@@ -1,0 +1,147 @@
+<!-- display upcoming class -->
+
+<div style="background-color: #206c5c;color:white; padding: 5px; margin-bottom: 20px;">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h2><span *ngIf="role != 'otherTeacherClass'; else otherTeacher">Upcoming Classes</span><ng-template #otherTeacher>Upcoming Classes Of Other Teachers</ng-template></h2>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="!skeletonHide && !notfound">
+  <div *ngFor="let skeleton of skeleton" fxFlex="100" fxFlex.gt-md="33.3" fxFlex.md="50" class="flex-p">
+    <mat-card>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-body"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap" *ngIf="skeletonHide">
+  <div *ngFor="let liveClass of liveclassroom" fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="flex-p">
+    <mat-card class="p-0">
+      <div class="bg-primary" fxLayout="row" fxLayoutAlign="space-between center">
+        <h3 class="user-name">{{ liveClass.title }}</h3>
+        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger"><mat-icon>more_vert</mat-icon></button>
+      </div>
+
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="openmoreinfoupcoming(liveClass)">
+          <mat-icon>mode_edit</mat-icon>
+          <span>More Info</span>
+        </button>
+      </mat-menu>
+
+      <div fxLayout="row" class="user-content">
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="center center" class="border">
+          <div class="user-img">
+            <img src="assets/img/chapter-Image/CHAP000001.png" class="transition-2 hvr-grow" class="transition-2 hvr-grow" />
+          </div>
+        </div>
+
+        <div fxFlex="70" fxLayout="column" class="user-details transition-2 ">
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Class :</b></span> {{ liveClass.gradeName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Program :</b></span> {{ liveClass.syllabusName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">assignment_ind</mat-icon>
+            <span
+              ><span><b>Subject :</b></span> {{ liveClass.subjectName }}
+            </span>
+          </p>
+          <p fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">local_library</mat-icon>
+            <span
+              ><span><b>Teacher Name :</b></span> {{ liveClass.presenterDisplayName }}
+            </span>
+          </p>
+          
+          <p fxLayout="row" *ngIf="role == 'Admin'" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">flag</mat-icon>
+            <span
+              ><span><b>Access To:</b></span> {{ liveClass.accessTo }}
+            </span>
+          </p>
+          <p  fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="muted-text">today</mat-icon>
+            <span
+              ><span><b>Scheduled on :</b></span> {{ liveClass.scheduledDate | date: "short" }}
+            </span>
+          </p>
+
+          <div class="divider" style="margin: 5px;"></div>
+
+          <!-- role == 'guest' -->
+
+          <div *ngIf="role == 'guest'">
+            <button fxFill class="button" style="margin-top:1px;" mat-raised-button color="accent" disabled>
+              Only For Members
+            </button>
+          </div>
+
+          <!-- role == 'student' or 'Admin'  old methd commented  (click)="getintoclass(liveClass)" -->
+
+          <div *ngIf="role == 'Admin' || role == 'student' || role == 'otherTeacherClass'">
+            <button
+              fxFill
+              *ngIf="liveClass.enable && liveClass.status == 'live'"
+              class="button"
+              style="margin-top:1px;"
+              (click)="getZoomMeeting(liveClass,role)"
+              mat-raised-button
+              color="primary"
+            >
+              <span>Attend Class</span>
+            </button>
+            <button   fxFill *ngIf="liveClass.enable && liveClass.status == 'upcoming'"  class="button" style="margin-top:1px;" mat-raised-button color="accent">
+              <span (click)="getZoomMeeting(liveClass,role)" >Upcoming Class </span>
+            </button>
+
+           
+
+            <button fxFill *ngIf="!liveClass.enable" class="button" [disabled]="true" mat-raised-button color="primary" style="margin-top:1px;color:#00695c;text-align: center;">
+              <mat-icon>timer</mat-icon><span style="margin-left: -4px">Starts-In : </span>
+              <app-countdown-timer [end]="liveClass.scheduledDate" (zeroTrigger)="enableLiveClass(liveClass, $event)" [for]="'otherthanteacher'"></app-countdown-timer>
+            </button>
+          </div>
+
+          <!-- role == 'teacher' old method replaced by zoom  (click)="getintoclass(liveClass)" -->
+
+          <div *ngIf="role == 'teacher'">
+            <button fxFill *ngIf="!liveClass.enable" class="button" [disabled]="true" mat-raised-button color="primary" style="margin-top:1px;color:#00695c;text-align: center;">
+              <mat-icon>timer</mat-icon><span style="margin-left: -4px">Starts-In : </span>
+              <app-countdown-timer [end]="liveClass.scheduledDate" (zeroTrigger)="enableLiveClassForTeacher(liveClass, $event)" [for]="'teacher'"></app-countdown-timer>
+            </button>
+            <button
+              fxFill
+              *ngIf="liveClass.enable && liveClass.status == 'live'"
+              class="button"
+              style="margin-top:1px;"
+              (click)="getZoomMeeting(liveClass,role)"
+              mat-raised-button
+              color="primary"
+            >
+              <span>Launch Class</span>
+            </button>
+            <button fxFill *ngIf="liveClass.enable && liveClass.status == 'upcoming'" class="button" style="margin-top:1px;" mat-raised-button color="accent">
+              <span   (click)="getZoomMeeting(liveClass)">Prepare for Class </span> <!--(click)="prepareUrl(liveClass)"-->
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div *ngIf="skeletonHide && notfound" fxLayout="row" fxFill="60" fxLayoutAlign="center center">
+    <div><h1 style="margin-top: 26px !important; opacity:0.5;">No Upcoming Class Found!!!</h1></div>
+  </div>
+</div>
+
+

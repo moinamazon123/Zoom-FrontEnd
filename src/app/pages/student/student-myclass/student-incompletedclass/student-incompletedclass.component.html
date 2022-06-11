@@ -1,0 +1,169 @@
+<!-- display incompleted class details -->
+
+<div *ngIf="!studentid" style="background-color: #206c5c;color:white; padding: 5px; margin-bottom:8px;">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-icon style="margin-left:30px;cursor: pointer;" (click)="moveToPreviousPage()">keyboard_backspace</mat-icon>
+    <h2>Incompleted classes</h2>
+    <div fxLayout="column" style="margin-right:30px;">
+
+    </div>
+  </div>
+</div>
+
+
+<!-- filter for students dashboard -->
+<form>
+  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="100">
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+      <mat-form-field style="font-size: 17px;">
+        <mat-label>Filter by program</mat-label>
+        <mat-select name="slectedsylabus" [(ngModel)]="slectedsylabus" (selectionChange)="
+        getsubjectsforgradestudent({
+          pageNo: 1,
+          maxResult: 9
+        });
+        this.page = 1
+      ">
+          <!-- <mat-option value="all">All</mat-option> -->
+          <mat-option *ngFor="let item of syllabuslist" [value]="item.syllabusId">{{ item.syllabusName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center"  fxFlexOffset='1'>
+      <mat-form-field style="font-size: 17px;">
+        <mat-label>Filter by subject</mat-label>
+        <mat-select name="slectedsubject" [(ngModel)]="slectedsubject" (selectionChange)="
+            subjectChange({
+                pageNo: 1,
+                maxResult: 9
+              });
+              this.page = 1
+            ">
+          <mat-option value="all">All</mat-option>
+          <mat-option *ngFor="let item of subjectlist" [value]="item.subjectId">{{ item.subjectName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- teacher -->
+    <div fxLayout="row" fxLayoutAlign="start center"  fxFlexOffset='1'>
+      <mat-form-field>
+        <input matInput #input [matDatepicker]="start" [max]="mindate" disabled placeholder="From Date"
+          name="startDate" [(ngModel)]="startDate" (dateChange)="finalstartendDate( {pageNo: 1,
+      maxResult: 9
+    });
+    this.page = 1" />
+        <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+        <mat-datepicker #start disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlexOffset='1'>
+      <mat-form-field >
+        <input matInput #input [matDatepicker]="end" [max]="mindate" disabled placeholder="To Date"
+          name="endDate" [(ngModel)]="endDate" (dateChange)="finalstartendDate1( {pageNo: 1,
+        maxResult: 9
+      });
+      this.page = 1" />
+        <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+        <mat-datepicker #end disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <!-- reset -->
+    <div fxLayout="row" fxLayoutAlign="start start" fxFlexOffset='1'>
+      <button mat-raised-button color="accent" type="reset" (click)="resetFilter({
+    pageNo: 1,
+    maxResult: 9
+  });
+  this.page = 1">Reset</button>
+    </div>
+    <!-- reset -->
+  </div>
+</form>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="flex-p">
+  <div fxLayout="row">
+    <mat-button-toggle-group #controls="matButtonToggleGroup">
+      <mat-button-toggle value="Search"> <mat-icon matTooltip="Search">search</mat-icon> </mat-button-toggle>
+      <mat-button-toggle *ngIf="role == 'admin'" value="Delete" [disabled]="!deleteMultipleArr.length>0" (click)="ondeleteRecord({
+          pageNo: 0,
+          maxResult: 20
+        });
+        this.page = 1"> <mat-icon matTooltip="Delete" [ngClass] ="{'delete_btn':deleteMultipleArr.length>0}" >delete_forever</mat-icon> </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <form class="user-search" [class.show]="controls.value == 'Search'" autocomplete="off">
+    <mat-form-field class="user-search-input"
+      ><input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Recorded Class...(based on any Title)" [(ngModel)]="searchText" name="search"
+    /></mat-form-field>
+  </form>
+  <!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-button-toggle-group #viewType="matButtonToggleGroup">
+        <button mat-raised-button color="primary" (click)="gridRouting()"><mat-icon>view_module</mat-icon>Grid View</button>
+      <button mat-raised-button color="accent"><mat-icon>view_list</mat-icon>List View</button>
+    </mat-button-toggle-group>
+  </div> -->
+</div>
+<!-- filter for students ends -->
+
+<!-- import incompleted class from shared-component -->
+
+<app-incompleted-class [pageNo]="pageNo" [pageSize]="pageSize" [accountId]="accountId"
+  (AllIncompetedClass)="Incompletedclass($event)" (getAlllength)="getAlllength($event)"></app-incompleted-class>
+
+<table style="width: 100%;" mat-table [dataSource]="DataSource" matSort (matSortChange)="sortData($event)"
+  matSortDisableClear>
+
+  <ng-container matColumnDef="Sl.No">
+    <th mat-header-cell *matHeaderCellDef>Sl.No</th>
+    <td mat-cell *matCellDef="let row; let i =index;">{{pageSize * (pageNo) + (i+1) }} )</td>
+  </ng-container>
+
+  <ng-container matColumnDef="Title">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center;" >Title</th>
+    <td mat-cell *matCellDef="let row">{{ row.title }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="subjectName">
+    <th mat-header-cell *matHeaderCellDef>Subject name</th>
+    <td mat-cell *matCellDef="let row">{{ row.subjectName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="Teacher Name">
+    <th mat-header-cell *matHeaderCellDef>Teacher Name</th>
+    <td mat-cell *matCellDef="let row">{{ row.presenterDisplayName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="class held date">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header matSortDirection="asc">class held date</th>
+    <td mat-cell *matCellDef="let row">{{ row.scheduledDate |  date : 'dd/MM/yyyy'  }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="percentage">
+    <th mat-header-cell *matHeaderCellDef>Duration Of View</th>
+    <td mat-cell *matCellDef="let row">
+      <circle-progress [percent]="row.viewPercentage" [radius]="20" [titleFontSize]="7" [outerStrokeWidth]="6"
+        [innerStrokeWidth]="2" [outerStrokeColor]="'#00695c'" [innerStrokeColor]="'#00695c'" [animation]="true"
+        [showSubtitle]="false" [animationDuration]="300"></circle-progress>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef=" ">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-raised-button color="primary" (click)="openmoreinfo(row)">
+        <span>More Info</span>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsName"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumnsName"></tr>
+</table>
+
+<div *ngIf="!DataSource && !noClassFound">
+  <div class="demo"></div>
+</div>
+<div *ngIf="noClassFound && !DataSource" fxLayoutAlign="center center">
+  <h1 style="margin-top: 26px !important;margin-bottom: 26px !important; opacity:0.5;">No Classes Found!!!</h1>
+</div>
+<mat-paginator [hidePageSize]="false" [pageSize]="pageSize" [pageIndex]="pageNo" (page)="pageEvent = $event; pageno($event)" [length]="lengthForPagination" [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+

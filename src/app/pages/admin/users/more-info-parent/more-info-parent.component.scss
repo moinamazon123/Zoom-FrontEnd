@@ -1,0 +1,11 @@
+b {
+    font-weight: 700 !important;
+}
+
+::ng-deep .mat-dialog-container {
+    padding: 0px;
+  }
+
+  ::ng-deep .mat-dialog-container {
+    padding: 30px;
+  }

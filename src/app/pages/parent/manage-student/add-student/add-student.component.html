@@ -1,0 +1,59 @@
+<!-- dialog box to update the student details -->
+
+<div *ngIf="user">
+  <h1 class="heading" mat-dialog-title fxLayoutAlign="center center">Student Detail</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="form" autocomplete="off" class="user-form" [style.width.px]="315">
+      <div fxLayout="column">
+        <mat-form-field class="w-100">
+          <input matInput placeholder="First Name" formControlName="firstName" />
+          <mat-error *ngIf="form.controls['firstName'].errors?.required">firstName is required</mat-error>
+          <mat-error *ngIf="form.controls['firstName'].hasError('minlength')">firstName isn't long enough, minimum of 2 characters</mat-error>
+          <mat-error *ngIf="form.controls['firstName'].hasError('maxlength')">firstName is too long , maximum of 15 characters</mat-error>
+          <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Only Alphabet Allowed!!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="last Name" formControlName="lastName" />
+          <mat-error *ngIf="form.controls['lastName'].errors?.required">lastName is required</mat-error>
+          <mat-error *ngIf="form.controls['lastName'].hasError('minlength')">lastName isn't long enough, minimum of 2 characters</mat-error>
+          <mat-error *ngIf="form.controls['lastName'].hasError('maxlength')">lastName is too long , maximum of 15 characters</mat-error>
+          <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Only Alphabet Allowed!!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="address" formControlName="address" />
+          <mat-error *ngIf="form.controls['address'].errors?.required">address is required</mat-error>
+          <mat-error *ngIf="form.controls['address'].hasError('minlength')">address isn't long enough, minimum of 5 characters</mat-error>
+          <mat-error *ngIf="form.controls['address'].hasError('maxlength')">address is too long , maximum of 30 characters</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="city" formControlName="city" />
+          <mat-error *ngIf="form.controls['city'].errors?.required">city is required</mat-error>
+          <mat-error *ngIf="form.controls['city'].hasError('minlength')">city isn't long enough, minimum of 2 characters</mat-error>
+          <mat-error *ngIf="form.controls['city'].hasError('maxlength')">city is too long , maximum of 30 characters</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field class="w-100">
+          <mat-placeholder> <mat-icon>vpn_key</mat-icon> Password </mat-placeholder>
+          <input matInput formControlName="password" required [type]="passwordHide ? 'password' : 'text'" />
+          <mat-icon matSuffix (click)="passwordHide = !passwordHide" style="cursor:pointer">{{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon>
+          <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+          <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough, minimum of 5 characters</mat-error>
+          <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long , maximum of 10 characters</mat-error>
+          <mat-error *ngIf="form.controls['password'].hasError('pattern')">No pace is allowed at the begining and end.!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="School Name" formControlName="schoolName" />
+          <mat-error *ngIf="form.controls['schoolName'].errors?.required">schoolName is required</mat-error>
+          <mat-error *ngIf="form.controls['schoolName'].hasError('minlength')">schoolName isn't long enough, minimum of 5 characters</mat-error>
+          <mat-error *ngIf="form.controls['schoolName'].hasError('maxlength')">schoolName is too long , maximum of 30 characters</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" *ngIf="user.accountId" (click)="updatestudent(form.value)" [mat-dialog-close]="form.value" >
+      <span>Update</span>
+    </button>
+  </div>
+</div>

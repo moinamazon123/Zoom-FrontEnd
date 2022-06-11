@@ -1,0 +1,65 @@
+<div >
+
+  <!-- mat-dialog-title -->
+
+    <div fxFlex="row" fxLayoutAlign="space-between center" style="background-color:#206c5c; color: white">
+      <div style="margin-top:10px; margin-left: 15px;"><h1 mat-dialog-title>More Info</h1></div>
+      <div><mat-icon (click)="close()" style="cursor:pointer;margin-right: 15px;color: #f47a7a">cancel</mat-icon></div>
+    </div>
+  
+<!-- mat-dialog-content -->
+
+    <div mat-dialog-content style="margin-top: 10px;">
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+       
+        <span style="margin-top: 3px;"
+          ><span><b>Title :</b></span> {{ report.title }}
+        </span>
+      </p>
+      
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        
+        <span
+          ><span> <b>Teacher Name :</b></span> {{ report.presenterDisplayName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span> <b>Class :</b></span> {{ report.gradeName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span> <b>Program Name :</b></span> {{ report.syllabusName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Subject Name :</b></span> {{ report.subjectName }}</span
+        >
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Chapter Name :</b></span> {{ report.chapterName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row"  fxLayoutAlign="start center">
+        <span
+          ><span><b>Scheduled Date :</b></span> {{ report.scheduledDate | date:'short' }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>End Time :</b></span> {{ report.enddate | date:'short' }} 
+        </span>
+      </p>
+      
+    </div>
+  </div>

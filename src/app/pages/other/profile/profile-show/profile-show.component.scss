@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// .user-img{
+//     position: relative;
+//     margin-top:50px;
+//     margin-left: 150px;
+//     margin-bottom: 20px;
+    
+
+   
+    img{
+       
+        border-radius: 50%;
+        width: 250px;
+        height: 250px;
+        margin-top: 10px;
+       
+    }
+// }
+img:hover{
+    opacity: 0.5;
+}

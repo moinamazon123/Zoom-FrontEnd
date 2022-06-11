@@ -1,0 +1,31 @@
+<!-- recorded analytics page -->
+
+<div >
+  <div fxFlex="row" fxLayoutAlign="space-between center" style="background-color:#00695c; color: white">
+    <div style="margin-top:10px; margin-left: 15px;"><h1 mat-dialog-title>Recorded Analytics</h1></div>
+    <div><mat-icon (click)="close()" style="cursor:pointer;margin-right: 15px;color: #f47a7a">cancel</mat-icon></div>
+  </div>
+  <div mat-dialog-content>
+    <div class="divider" style="margin-bottom:10px;"></div>
+    <div fxFlex="column">
+      <p style="padding: 5px;font-size: 16px;">
+        Title : <b> {{ recordedClassDetails.title }}</b>
+      </p>
+      <p style="padding: 5px;font-size: 16px;">
+        Total Feedback Count : <b>{{ totalAnalyticsCount }} </b>
+      </p>
+      <p style="padding: 5px;font-size: 16px;">
+        Highest Selected Category :
+        <span style="margin-top: 5px; margin-left: 3px;" fxLayout="column" *ngFor="let HighestSelected of HighestSelected"
+          ><b>"{{ HighestSelected }}"</b></span
+        >
+      </p>
+    </div>
+    <div fxFlex="column" style="margin-top:-30px;" *ngIf="noRecordedAnalytics == 0">
+      <ngx-charts-pie-chart [view]="[400, 400]" [scheme]="colorScheme" [results]="data" [explodeSlices]="explodeSlices" [labels]="showLabels" [doughnut]="doughnut"> </ngx-charts-pie-chart>
+    </div>
+    <div *ngIf="noRecordedAnalytics == 1" fxLayout="row" fxLayoutAlign="center center">
+      <div><h1 style="margin-top: 40px !important; margin-bottom: 40px !important;opacity:0.5;">No Analytics Found!!!</h1></div>
+    </div>
+  </div>
+</div>

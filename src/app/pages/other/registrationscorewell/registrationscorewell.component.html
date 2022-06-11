@@ -1,0 +1,492 @@
+<div fxFill>
+  <mat-horizontal-stepper #stepper style="background: #11998e;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    ">
+    <!-- Parent Registration Form -->
+
+    <div *ngIf="!NoRegistrationForm">
+      <mat-step [stepControl]="form" label="Step 1" state="phone">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <form [formGroup]="form" autocomplete="off" (keydown.enter)="$event.preventDefault()" fxFlex="100"
+            fxFlex.gt-sm="40" fxFlex.sm="20">
+            <ng-template matStepLabel>
+              <p style="color:white !important;">Registration</p>
+            </ng-template>
+            <mat-card class="p-0 mat-elevation-z24 box register" [style.height.px]="'850'">
+              <div fxLayout="column" fxLayoutAlign="center center" class="backclr box-header"
+                style="padding-bottom: 25px;">
+                <img src="assets/img/Logo_v81.svg" style="width: 30%;margin-bottom: 5px;" />
+                <span style="padding: 10px;"><a mat-button routerLink="/login">Already have an account? Login</a></span>
+              </div>
+              <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content"
+                [style.height.px]="'670'">
+                <mat-card fxLayout="column" fxLayoutAlign="start center" class="mat-elevation-z12 box-content-inner"
+                  [style.height.px]="'640'">
+                  <span class="box-content-header">Register member</span>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Parent`s First Name" formControlName="firstName" />
+                    <mat-error *ngIf="form.controls['firstName'].errors?.required">Please Enter First Name</mat-error>
+                    <mat-error *ngIf="form.controls['firstName'].hasError('minlength')">Fist Name isn't long enough,
+                      minimum of 2 characters</mat-error>
+                    <mat-error *ngIf="form.controls['firstName'].hasError('maxlength')">First Name is too long , maximum
+                      of 20 characters</mat-error>
+                    <mat-error *ngIf="form.controls['firstName'].hasError('pattern')">Only Alphabets!!</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Parent`s Last Name" formControlName="lastName" />
+                    <mat-error *ngIf="form.controls['lastName'].errors?.required">Please Enter Last Name</mat-error>
+                    <mat-error *ngIf="form.controls['lastName'].hasError('minlength')">Last Name isn't long enough,
+                      minimum of 2 characters</mat-error>
+                    <mat-error *ngIf="form.controls['lastName'].hasError('maxlength')">Last Name is too long , maximum
+                      of 20 characters</mat-error>
+                    <mat-error *ngIf="form.controls['lastName'].hasError('pattern')">Only Alphabets!!</mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="address" formControlName="address" />
+                    <mat-error *ngIf="form.controls['address'].errors?.required">Address is required</mat-error>
+                    <mat-error *ngIf="form.controls['address'].hasError('minlength')">Address isn't long enough, minimum
+                      of 5 characters</mat-error>
+                    <mat-error *ngIf="form.controls['address'].hasError('maxlength')">Address is too long , maximum of
+                      100 characters</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="City" formControlName="city" />
+                    <mat-error *ngIf="form.controls['city'].errors?.required">City is required</mat-error>
+                    <mat-error *ngIf="form.controls['city'].hasError('minlength')">City isn't long enough, minimum of 2
+                      characters</mat-error>
+                    <mat-error *ngIf="form.controls['city'].hasError('maxlength')">City is too long , maximum of 30
+                      characters</mat-error>
+                  </mat-form-field>
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between" style="width: 100%">
+                    <mat-form-field fxFlex="30">
+                      <mat-select placeholder="Country" formControlName="countryCode">
+                        <mat-option *ngFor="let countrycode of countryCode" [value]="countrycode.code">
+                          {{ countrycode.name }} ({{ countrycode.code }})</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form.controls['countryCode'].errors?.required">Country code is required
+                      </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="68">
+                      <input matInput placeholder="Mobile Number" formControlName="mobileNum" />
+                      <mat-error *ngIf="form.controls['mobileNum'].errors?.required">Mobile Number is required
+                      </mat-error>
+                      <mat-error *ngIf="form.controls['mobileNum'].hasError('pattern')">Only Numbers!!</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field class="w-100">
+                    <button mat-raised-button color="accent" style="float: right" (click)="sendotp(form.value)"
+                      [disabled]="form.controls['primaryEmail'].invalid">
+                      <span *ngIf="!send && !resend">Send otp </span><span *ngIf="send">sending...</span><span
+                        *ngIf="resend && !send">Re-Send</span>
+                    </button>
+                    <input matInput placeholder="Email" formControlName="primaryEmail" />
+                    <mat-error *ngIf="form.controls['primaryEmail'].errors?.required">Email is required</mat-error>
+                    <mat-error *ngIf="form.controls['primaryEmail'].hasError('invalidEmail')">Invalid Email Address!!(no
+                      space allowed at beginning or end)</mat-error>
+                    <mat-error *ngIf="form.controls['primaryEmail'].hasError('minlength')">primaryEmail isn't long
+                      enough, minimum of 5 characters</mat-error>
+                    <mat-error *ngIf="form.controls['primaryEmail'].hasError('maxlength')">primaryEmail is too long ,
+                      maximum of 30 characters</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-100">
+                    <button id="verifyotp" [disabled]="isDisabled" mat-raised-button color="accent" style="float: right"
+                      (click)="verifyotp(form.value)">Verify otp</button>
+                    <input matInput placeholder="Verify OTP" formControlName="otp" />
+                    <mat-error *ngIf="form.controls['otp'].errors?.required">otp is required</mat-error>
+                    <mat-error *ngIf="form.controls['otp'].hasError('minlength')">otp isn't long enough, minimum of 2
+                      characters</mat-error>
+                    <mat-error *ngIf="form.controls['otp'].hasError('maxlength')">otp is too long , maximum of 15
+                      characters </mat-error>
+                    <mat-error *ngIf="form.controls['otp'].hasError('pattern')">Only Numbers!! </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Password" formControlName="password" type="password" />
+                    <mat-error *ngIf="form.controls['password'].errors?.required">Password is required</mat-error>
+                    <mat-error *ngIf="form.controls['password'].hasError('minlength')">Password isn't long enough,
+                      minimum of 5 characters</mat-error>
+                    <mat-error *ngIf="form.controls['password'].hasError('maxlength')">Password is too long , maximum of
+                      20 characters</mat-error>
+                    <mat-error *ngIf="form.controls['password'].hasError('pattern')">No space allowed in password!!
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password" />
+                    <mat-error *ngIf="form.controls.confirmPassword.errors?.required">Confirm Password is required
+                    </mat-error>
+                    <mat-error *ngIf="form.controls.confirmPassword.hasError('mismatchedPasswords')">Passwords do not
+                      match</mat-error>
+                  </mat-form-field>
+                </mat-card>
+                <!-- <button
+                  mat-raised-button
+                  color="primary"
+                  class="mat-elevation-z12 box-button"
+                  [disabled]="!form.valid || !show"
+                  (click)="ParentRegistration(form.value)"
+                  mat-button
+                > -->
+                <button mat-raised-button color="primary" class="mat-elevation-z12 box-button"
+                  [disabled]="!form.valid || !show" (click)="ParentRegistration(form.value)" mat-button>
+                  Next
+                </button>
+              </mat-card-content>
+            </mat-card>
+          </form>
+        </div>
+      </mat-step>
+    </div>
+
+    <!-- Student Registration Form -->
+
+    <!-- <div> -->
+    <mat-step [stepControl]="formForStudent">
+      <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 40px;">
+        <form [formGroup]="formForStudent" autocomplete="off" fxFlex="100" fxFlex.gt-sm="40" fxFlex.sm="20">
+          <ng-template matStepLabel>
+            <p style="color:white !important;">Student Registration</p>
+          </ng-template>
+          <mat-card class="p-0 mat-elevation-z12 box register" [style.height]="'700'">
+            <div fxLayout="column" fxLayoutAlign="center center" class="backclr box-header"
+              style="padding-bottom: 25px;">
+              <img src="assets/img/Logo_v81.svg" style="width: 30%;margin-bottom: 5px;" />
+            </div>
+            <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content"
+              [style.height.px]="'547'">
+              <mat-card fxLayout="column" fxLayoutAlign="start center" class="mat-elevation-z12 box-content-inner"
+                [style.height.px]="'517'">
+                <span class="box-content-header">Register Here For Subscription</span>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Student's First Name" formControlName="firstName" />
+                  <mat-error *ngIf="formForStudent.controls['firstName'].errors?.required">Please Enter First Name
+                  </mat-error>
+                  <mat-error *ngIf="formForStudent.controls['firstName'].hasError('minlength')">First Name isn't long
+                    enough, minimum of 2 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['firstName'].hasError('maxlength')">First Name is too long ,
+                    maximum of 20 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['firstName'].hasError('pattern')">Only Alphabets!!
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Student's Last Name" formControlName="lastName" autocomplete="off" />
+                  <mat-error *ngIf="formForStudent.controls['lastName'].errors?.required">Please Enter Last Name
+                  </mat-error>
+                  <mat-error *ngIf="formForStudent.controls['lastName'].hasError('minlength')">Last Name isn't long
+                    enough, minimum of 2 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['lastName'].hasError('maxlength')">Last Name is too long ,
+                    maximum of 20 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['lastName'].hasError('pattern')">Only Alphabets!!
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Address" formControlName="address" autocomplete="off" />
+                  <mat-error *ngIf="formForStudent.controls['address'].errors?.required">Address is required</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['address'].hasError('minlength')">Address isn't long enough,
+                    minimum of 5 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['address'].hasError('maxlength')">Address is too long ,
+                    maximum of 100 characters</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="City" formControlName="city" />
+                  <mat-error *ngIf="formForStudent.controls['city'].errors?.required">City is required</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['city'].hasError('minlength')">City isn't long enough,
+                    minimum of 2 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['city'].hasError('maxlength')">City is too long , maximum of
+                    30 characters</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-100">
+                  <mat-placeholder>
+                    <mat-icon>vpn_key</mat-icon> Password
+                  </mat-placeholder>
+                  <input matInput formControlName="password" type="password" />
+                  <mat-error *ngIf="formForStudent.controls['password'].errors?.required">Password is required
+                  </mat-error>
+                  <mat-error *ngIf="formForStudent.controls['password'].hasError('minlength')">Password isn't long
+                    enough, minimum of 5 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['password'].hasError('maxlength')">Password is too long ,
+                    maximum of 20 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['password'].hasError('pattern')">No pace is allowed at the
+                    begining and end.!</mat-error>
+                </mat-form-field>
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Confirm Password" formControlName="confirmPassword" type="password" />
+                  <mat-error *ngIf="formForStudent.controls.confirmPassword.errors?.required">Confirm Password is
+                    required</mat-error>
+                  <mat-error *ngIf="formForStudent.controls.confirmPassword.hasError('mismatchedPasswords')">Passwords
+                    do not match</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="w-100" *ngIf="role!='guest' && role !='parent'">
+                  <mat-label>Grade</mat-label>
+                  <mat-select formControlName="GradeID">
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                      {{food.viewValue}}<sup>th</sup>
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="formForStudent.controls['GradeID'].errors?.required">Grade is required
+                  </mat-error>
+                </mat-form-field>
+
+
+
+
+                <mat-form-field class="w-100" *ngIf="role!=='guest' && role =='parent'">
+                  <mat-select [(value)]="urlParameter" formControlName="GradeID" placeholder="Grade ID">
+                    <mat-option *ngIf="urlParameter=='SUBST000006'" [value]="urlParameter">6<sup>th</sup></mat-option>
+                    <mat-option *ngIf="urlParameter=='SUBST000007'" [value]="urlParameter">7<sup>th</sup></mat-option>
+                    <mat-option *ngIf="urlParameter=='SUBST000008'" [value]="urlParameter">8<sup>th</sup></mat-option>
+                    <mat-option *ngIf="urlParameter=='SUBST000009'" [value]="urlParameter">9<sup>th</sup></mat-option>
+                    <mat-option *ngIf="urlParameter=='SUBST000010'" [value]="urlParameter">10<sup>th</sup></mat-option>
+
+                  </mat-select>
+
+
+                </mat-form-field>
+
+
+
+
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="School Name" formControlName="schoolName" />
+                  <mat-error *ngIf="formForStudent.controls['schoolName'].errors?.required">School Name is required
+                  </mat-error>
+                  <mat-error *ngIf="formForStudent.controls['schoolName'].hasError('minlength')">School Name isn't long
+                    enough, minimum of 5 characters</mat-error>
+                  <mat-error *ngIf="formForStudent.controls['schoolName'].hasError('maxlength')">School Name is too long
+                    , maximum of 30 characters</mat-error>
+                </mat-form-field>
+              </mat-card>
+
+              <div fxLayout="row" fxLayoutGap="20px">
+                <!-- <button
+                    class="mat-elevation-z12 box-button"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="!formForStudent.valid"
+                    (click)="studentRegistrationFun(formForStudent.value)"
+                  >
+                    Next
+                  </button> -->
+                <button class="mat-elevation-z12 box-button" mat-raised-button color="primary"
+                  [disabled]="!formForStudent.valid" (click)="studentRegistrationFun()">Next</button>
+                <!-- <button class="mat-elevation-z12 box-button" mat-raised-button color="primary" type="submit"
+                  (click)="studentRegistrationFun()">
+                  Next
+                </button> -->
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </form>
+      </div>
+    </mat-step>
+    <!-- </div> -->
+
+    <!-- Product Summary -->
+
+    <!-- <div>
+      <mat-step [stepControl]="">
+        <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 25px;">
+          <ng-template matStepLabel> <p style="color:white !important;">Product Summary</p> </ng-template>
+          <div fxLayout="row" fxLayoutAlign="center" style="width: 100%;">
+            <mat-card style="width: 70%;overflow: auto" class="example-card">
+              <mat-card-header fxLayout="column" fxLayoutAlign="space-between">
+                <div fxLayoutAlign="row" style=" background-color: #084e5a;" fxFlex="100">
+                  <div style="margin-top: 5px; margin-bottom: 5px; margin-left: 25px;"><img src="assets/img/Logo_v8.svg" style="width: 80%;" /></div>
+                  <div fxLayoutAlign="end center" style="width: 100%;color: white;margin-right: 40px;"><h3></h3></div>
+                </div>
+                <br />
+              </mat-card-header>
+
+              <mat-card-content>
+                <br />
+                <div class="invoice">
+                  <div *ngIf="productDetail?.subscriptionName">
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" fxFill>
+                      <ng-container matColumnDef="Product_Name">
+                        <th style=" background-color: #dce7e9;font-weight: bold" mat-header-cell *matHeaderCellDef><h2>Program Summary</h2></th>
+                      </ng-container>
+                      <ng-container matColumnDef="Amount">
+                        <th style="padding-right:45px;text-align: center; background-color: #dce7e9;font-weight: bold" mat-header-cell *matHeaderCellDef><h2>Amount</h2></th>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+
+                    <div fxLayout="row">
+                      <div fxFlex="30" style="margin-top:20px">
+                        <h4 style="padding:10px"><b>Grade</b> : {{ productDetail?.gradeName }}</h4>
+                        <h4 style="padding:10px"><b>Program Name</b> : {{ productDetail?.syllabusName }}</h4>
+                        <h4 style="padding:10px"><b>Program description</b> :</h4>
+                        <h4
+                          style="padding:15px;padding-top:5px;text-align:left;
+    white-space: pre-wrap;"
+                          [innerHtml]="productDetail?.description"
+                        ></h4>
+                        <h4 style="padding:10px"><b>Valid Till</b> : {{ productDetail?.validTill | date }}</h4>
+                        <h4 style="padding:10px"><b>Valid For Single Student</b></h4>
+                      </div>
+
+                      <div fxFlex="70" style="margin-top:40px;">
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                          <div fxLayout="column" fxLayoutAlign="start" fxFlex="23">
+                            <h3 style="font-weight: bold;">PRICE</h3>
+                          </div>
+                          <div fxLayoutAlign="start center" fxFlex="35">
+                            <p fxLayoutAlign="center" style="font-weight: bold;text-align: left">
+                              <b>INR</b> &nbsp; {{ productDetail?.price - (productDetail?.price - productDetail?.price * 0.8474) | number: "1.2-2" }}
+                            </p>
+                          </div>
+                        </div>
+                        <br />
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                          <div fxLayout="column" fxLayoutAlign="start" fxFlex="23">
+                            <h3 style="font-weight: bold">GST @18%</h3>
+                          </div>
+                          <div fxLayoutAlign="start center" fxFlex="35">
+                            <p fxLayoutAlign="center" style="font-weight: bold;text-align: left">
+                              <b>INR</b> &nbsp; {{ productDetail?.price - productDetail?.price * 0.8474 | number: "1.2-2" }}
+                            </p>
+                          </div>
+                        </div>
+                        <br />
+
+                        <div fxLayout="row" fxFlex="100" fxLayoutAlign="end end">
+                          <div fxLayout="column" fxLayoutAlign="start" fxFlex="23">
+                            <h3 style="font-weight: bold !important;">NET PAYABLE</h3>
+                          </div>
+                          <div fxLayoutAlign="start center" fxFlex="35">
+                            <p fxLayoutAlign="center" style="font-weight: bold;text-align: left"><b>INR</b> &nbsp; {{ productDetail?.price | number: "1.2-2" }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br />
+                </div>
+
+                <br />
+
+                <br />
+              </mat-card-content>
+              <h4 style="padding:10px;text-align: center"><b>* Note</b> : If you have any discount coupons, please apply in the payment gateway.</h4>
+              <mat-card-actions fxLayoutAlign="center" class="action">
+                <button class="mat-elevation-z12 box-button" mat-raised-button color="primary" matStepperNext (click)="buynow()">Proceed to Payment</button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+
+          <div class="body"></div>
+        </div>
+      </mat-step>
+    </div> -->
+
+    <!-- Redirect to payment page spinner -->
+
+    <!-- <mat-step [stepControl]="">
+      <ng-template matStepLabel> <p style="color:white !important;">Payment Checkout</p> </ng-template>
+
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 20px;">
+          <mat-spinner color="primary"></mat-spinner>
+          <h4>Redirecting to payment page...</h4>
+        </div>
+      </div>
+    </mat-step> -->
+
+    <!-- Invoice summary -->
+    <mat-step [stepControl]="">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <ng-template matStepLabel>
+          <p style="color:white !important;">Program Summary</p>
+        </ng-template>
+        <mat-card class="example-card">
+          <mat-card-header>
+
+            <mat-card-title style="font-size: 22px;">Thank You for Choosing YOLEARN</mat-card-title>
+            <mat-card-subtitle> We are offering Scorewell program absolutely free of cost.</mat-card-subtitle>
+          </mat-card-header>
+          <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+          <mat-card-content>
+            <h3 style="font-weight: bold !important;
+            padding-left: 8px;
+            color: green;">
+              Program Features:
+
+            </h3>
+            <ul class='listing'>
+              <li> In this revision program we deal with the important and tough concepts, MCQs, short answer
+                questions etc
+                chapter wise, in view of the final examinations.</li>
+              <li> Online Classes will be taken by the best faculty of India. </li>
+              <li> Teaching through the on live interactive classes </li>
+              <li> Students can interact with the teacher in live and clarify their doubts there and then
+                itself, right from
+                the comfort of their home </li>
+              <li>Free and unlimited access to the recorded classes 24/7, either to master the tough topics
+                or to attend
+                the missed classes.</li>
+
+
+            </ul>
+            <h3 style="font-weight: bold !important;
+            padding-left: 8px;
+            color: green;">
+              Program Details 
+
+            </h3>
+            <ul class='listing'>
+            
+              <li>Start Date : 20th Jan 2020 </li>
+              <li> End Date : 29th Feb 2020</li>
+           
+            </ul>
+            <h3 style="font-weight: bold !important;
+            padding-left: 8px;
+            color: green;">
+              Class Timings For classes 9th and 10th
+
+            </h3>
+            <ul class='listing'>
+              <li> 1930 Hrs to 2030 hrs ( Indian Time) - Weekly 6 days (Monday to Saturday)</li>
+            
+            </ul>
+
+            <h3 style="font-weight: bold !important;
+            padding-left: 8px;
+            color: green;">
+              Class Timings For Classes 6th, 7th and 8th 
+
+            </h3>
+            <ul class='listing'>
+             
+        
+              <li> 2045 Hrs to 2145 hrs ( Indian Time) - Weekly 6 days (Monday to Saturday) </li>
+            </ul>
+
+
+
+
+          </mat-card-content>
+          <mat-card-actions>
+            <!-- <button mat-button color='primary' routerLink='/login'>Login</button> -->
+            <button style="    margin-left: 22px;
+            margin-bottom: 11px;
+        " mat-raised-button color="primary" routerLink='/login'>Login</button>
+            <!-- <button mat-button>SHARE</button> -->
+          </mat-card-actions>
+        </mat-card>
+
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

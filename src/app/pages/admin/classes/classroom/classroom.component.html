@@ -1,0 +1,138 @@
+<!-- list of grades -->
+
+<div fxLayout="row" class="main">
+  <div fxLayout="row" class="heading" fxLayoutAlign="center center">
+    <h3 class="heading-text">Grades</h3>
+  </div>
+  <div fxLayout="row" class="circle-content">
+    <span>
+      <div (click)="addNewGrade()" class="add grade mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon>library_add</mat-icon>
+      </div>
+    </span>
+    <span *ngFor="let grade of grade; let i = index">
+      <div id="{{ grade.gradeId }}" (click)="!grade.disabled && getProgramFunction(grade)" [ngStyle]="
+          grade.gradeId == selectedGrade.gradeId
+            ? { backgroundImage: 'linear-gradient(to right top, #c4d16b, #cecd6e, #d6ca72, #ddc777, #e2c47d, #e6c77c, #eaca7b, #eecd7a, #f0d772, #eee36a, #e9ef63, #e0fb5f)' }
+            : {}
+        " class="circle grade mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center"
+        style="background-color: red"
+        (mouseover)="hoverGradeId = grade.gradeId; hoverSyllabusId = null; hoverSubjectId = null; hoverChapterId = null">
+        <span>{{ grade.gradeName }}</span>
+      
+         
+        
+
+      </div>
+      <mat-icon *ngIf="grade.disabled" class="warn-color blockcssgrade">block</mat-icon>
+      <div fxLayout="row" fxLayoutAlign="center center" class="mat_toggl_btn">
+        <mat-slide-toggle color="primary" [checked]="grade.disabled" (change)="grade.disabled = !grade.disabled"
+          (change)="gradeStatuschange(grade, $event)"></mat-slide-toggle>
+      </div>
+    
+    </span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- list of Program -->
+
+<div fxLayout="row" class="main">
+  <div fxLayout="row" class="heading" fxLayoutAlign="center center">
+    <h3 class="heading-text">Programs</h3>
+  </div>
+  <div fxLayout="row" class="circle-content">
+    <span>
+      <div (click)="addprogram()" class="add program mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon>library_add</mat-icon>
+      </div>
+    </span>
+    <span *ngFor="let syllabus of syllabus; let j = index">
+      <div (click)="getSubjectFunction(syllabus)" [ngStyle]="
+          syllabus.syllabusId == selectedProgram.syllabusId
+            ? { backgroundImage: 'linear-gradient(to right top, #c4d16b, #cecd6e, #d6ca72, #ddc777, #e2c47d, #e6c77c, #eaca7b, #eecd7a, #f0d772, #eee36a, #e9ef63, #e0fb5f)' }
+            : {}
+        " class="circle program mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center"
+        (mouseover)="hoverSyllabusId = syllabus.syllabusId; hoverGradeId = null; hoverSubjectId = null; hoverChapterId = null">
+        {{ syllabus.syllabusName }}
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- list of subject -->
+
+<div fxLayout="row" class="main">
+  <div fxLayout="row" class="heading" fxLayoutAlign="center center">
+    <h3 class="heading-text">Subject</h3>
+  </div>
+  <div fxLayout="row" class="circle-content">
+    <span>
+      <div (click)="addsubject()" class="add subject mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon>library_add</mat-icon>
+      </div>
+    </span>
+    <span *ngFor="let subject of subjects">
+      <div (click)="getChapterFunction(subject)" [ngStyle]="
+          subject.subjectId == selectedSubject.subjectId
+            ? { backgroundImage: 'linear-gradient(to right top, #c4d16b, #cecd6e, #d6ca72, #ddc777, #e2c47d, #e6c77c, #eaca7b, #eecd7a, #f0d772, #eee36a, #e9ef63, #e0fb5f)' }
+            : {}
+        " class="circle subject mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center"
+        (mouseover)="hoverSubjectId = subject.subjectId; hoverGradeId = null; hoverSyllabusId = null; hoverChapterId = null">
+        {{ subject.subjectName }}
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- list of chapter -->
+
+<div fxLayout="row" class="main">
+  <div fxLayout="row" class="heading" fxLayoutAlign="center center">
+    <h3 class="heading-text">Chapter</h3>
+  </div>
+  <div fxLayout="row" class="circle-content">
+    <span>
+      <div (click)="addChapter()" class="add chapter mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon>library_add</mat-icon>
+      </div>
+    </span>
+    <div *ngFor="let chapter of chapters">
+   
+      <div class="circle chapter mat-elevation-z24" fxLayout="row" fxLayoutAlign="center center"
+        (mouseover)="hoverChapterId = chapter.chapterId; hoverGradeId = null; hoverSyllabusId = null; hoverSubjectId = null">
+        {{ chapter.chapterName }}
+
+
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" class="mat_toggl_btn">
+          <!-- <mat-icon *ngIf="chapter.disabled" class="warn-color blockcsschap">block</mat-icon> -->
+          <mat-slide-toggle color="primary" [checked]="chapter.disabled" (change)="chapter.disabled = !chapter.disabled"
+          (change)="chapterStatuschange(chapter, $event)"></mat-slide-toggle>
+          <!-- <div class="user-social"
+            *ngIf="breadcrumb.pageTitle == ' > Teachers' || breadcrumb.pageTitle == ' > Students'">
+            <mat-slide-toggle color="primary" [checked]="user.status" (change)="user.status = !user.status"
+              (change)="statuschange(user, $event)"></mat-slide-toggle>
+          </div> -->
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="mat_toggl_btn">
+            <mat-icon *ngIf="chapter.disabled" class="warn-color blockcsschap">block</mat-icon>
+            <!-- <mat-slide-toggle color="primary" [checked]="chapter.disabled" (change)="chapter.disabled = !chapter.disabled"
+            (change)="chapterStatuschange(chapter, $event)"></mat-slide-toggle> -->
+            <!-- <div class="user-social"
+              *ngIf="breadcrumb.pageTitle == ' > Teachers' || breadcrumb.pageTitle == ' > Students'">
+              <mat-slide-toggle color="primary" [checked]="user.status" (change)="user.status = !user.status"
+                (change)="statuschange(user, $event)"></mat-slide-toggle>
+            </div> -->
+          </div>
+   
+
+      
+    </div>
+  </div>
+</div>

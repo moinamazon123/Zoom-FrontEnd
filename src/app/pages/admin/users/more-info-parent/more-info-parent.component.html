@@ -1,0 +1,69 @@
+<div>
+  <!-- mat-dialog-title -->
+
+  <div fxFlex="row" fxLayoutAlign="space-between center" style="background-color:#00695c; color: white">
+    <div style="margin-top:10px; margin-left: 15px;"><h1 mat-dialog-title>Info Of Parent</h1></div>
+    <div><mat-icon (click)="close()" style="cursor:pointer;margin-right: 15px;color: #f47a7a">cancel</mat-icon></div>
+  </div>
+
+  <!-- mat-dialog-content -->
+
+  <div mat-dialog-content style="margin-top: 10px;">
+    <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text">assignment_ind</mat-icon>
+      <span style="margin-top: 3px;"
+        ><span><b>Parent Id :</b></span> {{ userInfo.accountId }}
+      </span>
+    </p>
+    <div class="divider" style="margin-top:5px;"></div>
+    <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">title</mat-icon>
+      <span
+        ><span> <b> Full Name :</b></span> {{ userInfo.fullName }}
+      </span>
+    </p>
+    <div class="divider" style="margin-top:5px;"></div>
+    <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">email</mat-icon>
+      <span
+        ><span><b>Email-Id :</b></span> {{ userInfo.primaryEmail }}</span
+      >
+    </p>
+    <div class="divider" style="margin-top:5px;"></div>
+    <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">phone</mat-icon>
+      <span
+        ><span><b>Mobile Number :</b></span> {{ userInfo.mobileNum }}
+      </span>
+    </p>
+    <div class="divider" style="margin-top:5px;"></div>
+    <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">assistant_photo</mat-icon>
+      <span
+        ><span><b>Country Code :</b></span> {{ userInfo.countryCode }}
+      </span>
+    </p>
+    <div *ngIf="userInfo.address" class="divider" style="margin-top:5px;"></div>
+    <p *ngIf="userInfo.address" style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">home</mat-icon>
+      <span
+        ><span><b>Address :</b></span> {{ userInfo.address }}
+      </span>
+    </p>
+    <div *ngIf="userInfo.city" class="divider" style="margin-top:5px;"></div>
+    <p *ngIf="userInfo.city" style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">home</mat-icon>
+      <span
+        ><span><b>City :</b></span> {{ userInfo.city }}
+      </span>
+    </p>
+    <div class="divider" style="margin-top:5px;"></div>
+    <div style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="muted-text" style="margin-right: 7px">event</mat-icon>
+      <span
+        ><span><b>Date Of Registration :</b></span
+        ><span style="color:green"> {{ userInfo.dateOfCreation }}</span>
+      </span>
+    </div>
+  </div>
+</div>

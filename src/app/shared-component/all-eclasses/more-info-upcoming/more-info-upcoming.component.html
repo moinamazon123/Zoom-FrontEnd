@@ -1,0 +1,52 @@
+<!-- more info dialog box for upcoming class -->
+
+<div >
+    <div fxFlex="row" fxLayoutAlign="space-between center" style="background-color:#206c5c; color: white">
+      <div style="margin-top:10px; margin-left: 15px;"><h1 mat-dialog-title>More Info</h1></div>
+      <div><mat-icon (click)="close()" style="cursor:pointer;margin-right: 15px;color: #f47a7a">cancel</mat-icon></div>
+    </div>
+  
+    <div mat-dialog-content style="margin-top: 10px;">
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span style="margin-top: 3px;"
+          ><span><b>Title :</b></span> {{ upcomingDetail.title }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span> <b> Class :</b></span> {{ upcomingDetail.gradeName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Program :</b></span> {{ upcomingDetail.syllabusName }}</span
+        >
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Subject :</b></span> {{ upcomingDetail.subjectName }}
+        </span>
+      </p>
+      <div  class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row"  fxLayoutAlign="start center">
+        <span
+          ><span><b>Chapter :</b></span> {{ upcomingDetail.chapterName }}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Scheduled Date :</b></span> {{ upcomingDetail.scheduledDate | date : 'short'}}
+        </span>
+      </p>
+      <div class="divider" style="margin-top:5px;"></div>
+      <p style="padding: 7px" fxLayout="row" fxLayoutAlign="start center">
+        <span
+          ><span><b>Duration of Class :</b></span> {{ upcomingDetail.endTime }} min
+        </span>
+      </p>
+    </div>
+  </div>
